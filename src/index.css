@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --doclly-yellow: #FFC800;
+    --doclly-black: #111111;
+    --doclly-white: #FFFFFF;
+    --doclly-gray: #F5F5F5;
+    --doclly-border: #E5E5E5;
+
+    --bg-primary: var(--doclly-white);
+    --bg-surface: var(--doclly-gray);
+    --text-primary: var(--doclly-black);
+    --text-secondary: #6B7280;
+    --border-color: var(--doclly-border);
+    --accent: var(--doclly-yellow);
+    --accent-hover: #E6B400;
+    --accent-light: #FFFBE6;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    letter-spacing: -0.01em;
+  }
+}
+
+/* ==========================================================================
+   Aesthetic Background Patterns & Ambient Glows
+   ========================================================================== */
+
+/* Modern Dot Matrix Pattern */
+.doclly-dot-pattern {
+  background-image: radial-gradient(rgba(17, 17, 17, 0.12) 1.25px, transparent 1.25px);
+  background-size: 24px 24px;
+}
+
+.doclly-dot-pattern-dense {
+  background-image: radial-gradient(rgba(17, 17, 17, 0.14) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Crisp Linear Blueprint Grid */
+.doclly-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(17, 17, 17, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 17, 17, 0.05) 1px, transparent 1px);
+}
+
+.doclly-grid-pattern-sm {
+  background-size: 20px 20px;
+  background-image: 
+    linear-gradient(to right, rgba(17, 17, 17, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 17, 17, 0.04) 1px, transparent 1px);
+}
+
+/* Plus / Crosshair Grid Pattern */
+.doclly-plus-pattern {
+  background-image: 
+    radial-gradient(circle at center, rgba(17, 17, 17, 0.15) 1.5px, transparent 1.5px),
+    linear-gradient(to right, rgba(17, 17, 17, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 17, 17, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Dark Matrix Pattern with Yellow Glow Accent */
+.doclly-dark-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Radial Mask (Smooth Falloff at edges) */
+.doclly-radial-mask {
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 80%);
+}
+
+.doclly-radial-mask-hero {
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 30%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 30%, transparent 85%);
+}
+
+/* Ambient Radial Glow */
+.doclly-ambient-glow {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(
+    circle 350px at 50% 200px,
+    rgba(255, 200, 0, 0.22),
+    rgba(255, 200, 0, 0.08) 45%,
+    rgba(255, 200, 0, 0.01) 70%,
+    transparent 80%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Subtle Shimmer & Float Keyframes */
+@keyframes docllyFloatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+@keyframes docllyPulseSlow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+.animate-doclly-float {
+  animation: docllyFloatSlow 6s ease-in-out infinite;
+}
+
+.animate-doclly-pulse {
+  animation: docllyPulseSlow 4s ease-in-out infinite;
+}
+
+/* Custom subtle scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #D4D4D4;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A3A3A3;
+}
+
+/* Crisp button focus outline */
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid var(--doclly-yellow);
+  outline-offset: 1px;
+}
+
+/* Hide spin buttons on number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Floating Micro-Animations for Hero Background Elements */
+@keyframes docllyFloat1 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+}
+
+@keyframes docllyFloat2 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(14px) rotate(-4deg); }
+}
+
+@keyframes docllyFloat3 {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-9px) scale(1.04); }
+}
+
+@keyframes docllyFloat4 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(10px) rotate(2deg); }
+}
+
+.animate-doclly-float-1 {
+  animation: docllyFloat1 7s ease-in-out infinite;
+}
+
+.animate-doclly-float-2 {
+  animation: docllyFloat2 8.5s ease-in-out infinite;
+}
+
+.animate-doclly-float-3 {
+  animation: docllyFloat3 6s ease-in-out infinite;
+}
+
+.animate-doclly-float-4 {
+  animation: docllyFloat4 7.5s ease-in-out infinite;
+}
