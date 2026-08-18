@@ -65,65 +65,62 @@ export const HomePage: React.FC = () => {
         {/* Subtle Background Dot Pattern */}
         <div className="absolute inset-0 doclly-dot-pattern opacity-35 pointer-events-none doclly-radial-mask" />
 
-        {/* REAL 3D FLOATING ICONS (NO BACKGROUND BOXES, NO SHADOWS) */}
+        {/* REAL 3D FLOATING ICONS ON FAR EDGES ONLY */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
-          {/* --- LEFT SIDE FLOATING 3D ICONS --- */}
+          {/* --- LEFT SIDE FLOATING 3D ICONS (FAR EDGES ONLY) --- */}
           
           {/* 1. 3D PDF Icon */}
-          <div className="hidden md:block absolute top-10 left-6 lg:left-14 animate-doclly-float-1">
-            <ThreeDIcon name="pdf" className="w-14 h-14 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
+          <div className="hidden md:block absolute top-10 left-4 lg:left-10 animate-doclly-float-1">
+            <ThreeDIcon name="pdf" className="w-13 h-13 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
 
           {/* 2. 3D Word Icon */}
-          <div className="hidden sm:block absolute top-48 left-3 lg:left-8 animate-doclly-float-2">
-            <ThreeDIcon name="word" className="w-14 h-14 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
+          <div className="hidden sm:block absolute top-52 left-2 lg:left-6 animate-doclly-float-2">
+            <ThreeDIcon name="word" className="w-13 h-13 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
 
           {/* 3. 3D Excel Icon */}
-          <div className="hidden md:block absolute bottom-10 left-8 lg:left-18 animate-doclly-float-3">
-            <ThreeDIcon name="excel" className="w-14 h-14 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
+          <div className="hidden md:block absolute bottom-8 left-4 lg:left-10 animate-doclly-float-3">
+            <ThreeDIcon name="excel" className="w-13 h-13 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
 
-          {/* 4. 3D Signature Icon */}
-          <div className="hidden lg:block absolute top-28 left-[24%] animate-doclly-float-4 opacity-85">
-            <ThreeDIcon name="sign" className="w-11 h-11 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
+          {/* --- RIGHT SIDE FLOATING 3D ICONS (FAR EDGES ONLY) --- */}
+
+          {/* 4. 3D PowerPoint Icon */}
+          <div className="hidden md:block absolute top-10 right-4 lg:right-10 animate-doclly-float-2">
+            <ThreeDIcon name="ppt" className="w-13 h-13 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
 
-          {/* 5. 3D Split / Scissors Icon */}
-          <div className="hidden lg:block absolute bottom-28 left-[20%] animate-doclly-float-1 opacity-80">
-            <ThreeDIcon name="split" className="w-11 h-11 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
+          {/* 5. 3D JPG / Image Icon */}
+          <div className="hidden sm:block absolute top-52 right-2 lg:right-6 animate-doclly-float-1">
+            <ThreeDIcon name="image" className="w-13 h-13 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
 
-          {/* --- RIGHT SIDE FLOATING 3D ICONS --- */}
-
-          {/* 6. 3D PowerPoint Icon */}
-          <div className="hidden md:block absolute top-10 right-6 lg:right-14 animate-doclly-float-2">
-            <ThreeDIcon name="ppt" className="w-14 h-14 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
-          </div>
-
-          {/* 7. 3D JPG / Image Icon */}
-          <div className="hidden sm:block absolute top-48 right-3 lg:right-8 animate-doclly-float-1">
-            <ThreeDIcon name="image" className="w-14 h-14 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
-          </div>
-
-          {/* 8. 3D Protect / Lock Icon */}
-          <div className="hidden md:block absolute bottom-10 right-8 lg:right-18 animate-doclly-float-4">
-            <ThreeDIcon name="protect" className="w-14 h-14 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
-          </div>
-
-          {/* 9. 3D Compress / Zip Icon */}
-          <div className="hidden lg:block absolute top-28 right-[24%] animate-doclly-float-3 opacity-85">
-            <ThreeDIcon name="compress" className="w-11 h-11 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
-          </div>
-
-          {/* 10. 3D Merge Icon */}
-          <div className="hidden lg:block absolute bottom-28 right-[20%] animate-doclly-float-2 opacity-80">
-            <ThreeDIcon name="merge" className="w-11 h-11 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
+          {/* 6. 3D Protect / Lock Icon */}
+          <div className="hidden md:block absolute bottom-8 right-4 lg:right-10 animate-doclly-float-4">
+            <ThreeDIcon name="protect" className="w-13 h-13 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
         </div>
 
         {/* Hero Content */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-5 relative z-10">
+
+          {/* Product Hunt Launch Pill */}
+          <div className="inline-flex items-center justify-center">
+            <a
+              href="https://www.producthunt.com/products/doclly?utm_source=doclly_hero&utm_medium=website"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#FFC800] hover:bg-[#F5B800] active:bg-[#E6B400] text-[#111111] border border-[#DC9F00] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] transition-all cursor-pointer group"
+            >
+              <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="12" fill="#FF6154"/>
+                <path d="M13.6 12H10.5V8.5H13.6C14.5665 8.5 15.35 9.2835 15.35 10.25C15.35 11.2165 14.5665 12 13.6 12ZM13.6 7H9V17H10.5V13.5H13.6C15.3949 13.5 16.85 12.0449 16.85 10.25C16.85 8.45507 15.3949 7 13.6 7Z" fill="white"/>
+              </svg>
+              <span>Launching on Product Hunt — <strong>August 30</strong></span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#111111] group-hover:translate-x-0.5 transition-transform" />
+            </a>
+          </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#111111] leading-[1.1]">
             Every tool you need to work with{' '}
