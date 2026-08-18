@@ -30,8 +30,8 @@ import {
   getStoredInvoices,
   createInvoiceRecord,
   downloadInvoicePdf,
+  sendInvoiceEmail,
 } from '../lib/invoice-generator';
-import { EmailInvoiceModal } from '../components/common/EmailInvoiceModal';
 
 import { AuthModal } from './AuthModal';
 
@@ -43,8 +43,6 @@ export const DashboardPage: React.FC = () => {
   const [docs, setDocs] = useState<DocItem[]>([]);
   const [payments, setPayments] = useState<RazorpayTransaction[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
-  const [selectedInvoiceForEmail, setSelectedInvoiceForEmail] = useState<Invoice | null>(null);
-  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [downloadingInvoiceId, setDownloadingInvoiceId] = useState<string | null>(null);
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -124,11 +122,6 @@ export const DashboardPage: React.FC = () => {
     }
   };
 
-  const handleOpenEmailModal = (inv: Invoice) => {
-    setSelectedInvoiceForEmail(inv);
-    setIsEmailModalOpen(true);
-  };
-
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userNameInput.trim()) return;
@@ -164,13 +157,15 @@ export const DashboardPage: React.FC = () => {
       },
       onSuccess: async (paymentId) => {
         if (user) {
-          createInvoiceRecord(user, targetPlan, planName, amountINR, paymentId);
+          const newInv = createInvoiceRecord(user, targetPlan, planName, amountINR, paymentId);
+          // Automatically email invoice to user
+          sendInvoiceEmail(newInv, user.email).catch(console.error);
           setInvoices(getStoredInvoices(user.id));
         }
         await updatePlanTier(targetPlan);
         setIsUpgrading(false);
         setPayments(getPaymentHistory());
-        showToast(`🎉 Upgraded to ${planName}!`, 'success');
+        showToast(`🎉 Upgraded to ${planName}! Tax invoice sent to ${user.email}`, 'success');
       },
       onFailure: (err) => {
         setIsUpgrading(false);
@@ -797,26 +792,15 @@ export const DashboardPage: React.FC = () => {
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleDownloadInvoice(inv)}
-                          disabled={downloadingInvoiceId === inv.id}
-                          className="px-3 py-2 bg-white hover:bg-gray-100 text-[#111111] font-bold text-xs rounded-xl border border-[#E5E5E5] transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs disabled:opacity-50"
-                        >
-                          <Download className="w-3.5 h-3.5 text-gray-700" />
-                          <span>{downloadingInvoiceId === inv.id ? 'Generating...' : 'PDF'}</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleOpenEmailModal(inv)}
-                          className="px-3 py-2 bg-[#FFC800] hover:bg-[#E5B200] text-[#111111] font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
-                        >
-                          <Mail className="w-3.5 h-3.5 text-[#111111]" />
-                          <span>Email</span>
-                        </button>
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleDownloadInvoice(inv)}
+                        disabled={downloadingInvoiceId === inv.id}
+                        className="px-4 py-2 bg-white hover:bg-gray-100 text-[#111111] font-bold text-xs rounded-xl border border-[#E5E5E5] transition-all flex items-center gap-2 cursor-pointer shadow-2xs disabled:opacity-50 hover:border-gray-400"
+                      >
+                        <Download className="w-4 h-4 text-gray-700" />
+                        <span>{downloadingInvoiceId === inv.id ? 'Generating...' : 'Download PDF'}</span>
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -954,13 +938,6 @@ export const DashboardPage: React.FC = () => {
           </div>
         </div>
       )}
-
-      {/* Email Invoice Dispatcher Modal */}
-      <EmailInvoiceModal
-        isOpen={isEmailModalOpen}
-        onClose={() => setIsEmailModalOpen(false)}
-        invoice={selectedInvoiceForEmail}
-      />
     </div>
   );
 };

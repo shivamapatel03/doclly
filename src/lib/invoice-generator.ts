@@ -59,19 +59,66 @@ export async function generateInvoicePdf(invoice: Invoice): Promise<Uint8Array> 
     color: cGold,
   });
 
-  // Company Brand
-  page.drawText('DOCLLY', {
-    x: 45,
-    y: height - 55,
-    size: 24,
-    font: fontBold,
-    color: cGold,
-  });
+  // Company Brand Logo & Wordmark
+  let logoDrawn = false;
+  try {
+    const iconRes = await fetch('/logo/image.png');
+    if (iconRes.ok) {
+      const iconBytes = await iconRes.arrayBuffer();
+      const docllyIcon = await pdfDoc.embedPng(iconBytes);
+      page.drawImage(docllyIcon, {
+        x: 45,
+        y: height - 68,
+        width: 32,
+        height: 32,
+      });
+
+      try {
+        const textRes = await fetch('/logo/text.png');
+        if (textRes.ok) {
+          const textBytes = await textRes.arrayBuffer();
+          const docllyText = await pdfDoc.embedPng(textBytes);
+          page.drawImage(docllyText, {
+            x: 84,
+            y: height - 64,
+            width: 80,
+            height: 24,
+          });
+          logoDrawn = true;
+        }
+      } catch (err) {
+        // ignore
+      }
+
+      if (!logoDrawn) {
+        page.drawText('doclly', {
+          x: 84,
+          y: height - 58,
+          size: 22,
+          font: fontBold,
+          color: rgb(1, 1, 1),
+        });
+        logoDrawn = true;
+      }
+    }
+  } catch (err) {
+    // Fallback if running outside browser fetch
+  }
+
+  if (!logoDrawn) {
+    page.drawText('DOCLLY', {
+      x: 45,
+      y: height - 55,
+      size: 24,
+      font: fontBold,
+      color: cGold,
+    });
+  }
 
   page.drawText('All-in-One Cloud Document Workspace', {
     x: 45,
-    y: height - 72,
-    size: 10,
+    y: height - 88,
+    size: 9,
     font: fontRegular,
     color: rgb(203 / 255, 213 / 255, 225 / 255),
   });
