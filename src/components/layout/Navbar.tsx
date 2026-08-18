@@ -499,7 +499,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
               {/* Get Started button */}
               <button
                 onClick={() => onOpenAuth('signup')}
-                className="inline-flex items-center justify-center px-5 py-2 text-xs sm:text-sm font-bold text-[#111111] bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent hover:bg-[#F5B800] border border-[#DC9F00] rounded-full shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] transition-all whitespace-nowrap cursor-pointer select-none"
+                className="inline-flex items-center justify-center px-5 py-2 text-xs sm:text-sm font-bold text-[#111111] bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent hover:bg-[#F5B800] border border-[#DC9F00] rounded-full shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] transition-all whitespace-nowrap cursor-pointer select-none"
               >
                 Get Started
               </button>
