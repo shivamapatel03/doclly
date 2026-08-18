@@ -9,7 +9,6 @@ import {
   Search,
   Upload,
   ArrowRight,
-  Sparkles,
   Zap,
   Shield,
   FileCheck,
@@ -21,7 +20,7 @@ import {
 interface ActionItem {
   id: string;
   name: string;
-  category: 'popular' | 'convert' | 'organize' | 'security' | 'ai';
+  category: 'popular' | 'convert' | 'organize' | 'security';
   description: string;
   route: string;
   icon3d: string;
@@ -69,6 +68,16 @@ export const DocumentActionsPage: React.FC = () => {
   // Master action list tailored for PDF and general document workflows
   const ALL_ACTIONS: ActionItem[] = [
     // Recommended / Popular
+    {
+      id: 'edit-pdf',
+      name: 'Edit PDF',
+      category: 'popular',
+      description: 'Add text, images, shapes, signatures & whiteout redactions directly on pages',
+      route: '/tools/edit-pdf',
+      icon3d: 'sign',
+      badge: 'Editor',
+      highlight: true,
+    },
     {
       id: 'compress-pdf',
       name: 'Compress PDF',
@@ -224,6 +233,24 @@ export const DocumentActionsPage: React.FC = () => {
       badge: 'Stamp',
     },
     {
+      id: 'qr-code-generator',
+      name: 'QR Code Generator',
+      category: 'security',
+      description: 'Generate high-res UPI payment QR codes, URL barcodes, and download PNG',
+      route: '/tools/qr-code-generator',
+      icon3d: 'qrcode',
+      badge: 'QR Code',
+    },
+    {
+      id: 'stamp-qr-barcode',
+      name: 'Stamp QR on PDF',
+      category: 'security',
+      description: 'Stamp UPI payment QR codes or tracking barcodes directly onto invoices & receipts',
+      route: '/tools/stamp-qr-barcode',
+      icon3d: 'barcode',
+      badge: 'Stamp',
+    },
+    {
       id: 'flatten-pdf',
       name: 'Flatten PDF',
       category: 'security',
@@ -242,34 +269,6 @@ export const DocumentActionsPage: React.FC = () => {
       badge: 'Diff',
     },
 
-    // AI Document Intelligence
-    {
-      id: 'ai-assistant',
-      name: 'Chat with Document (AI)',
-      category: 'ai',
-      description: 'Ask questions, analyze contract clauses, and query your document with AI',
-      route: '/ai/assistant',
-      icon3d: 'word',
-      badge: 'AI Chat',
-    },
-    {
-      id: 'ai-summarize',
-      name: 'Summarize with AI',
-      category: 'ai',
-      description: 'Generate instant executive summaries and bullet points',
-      route: '/ai/summarize',
-      icon3d: 'text',
-      badge: 'AI Summary',
-    },
-    {
-      id: 'ai-extract',
-      name: 'Extract Invoice / Data',
-      category: 'ai',
-      description: 'Extract key-value tables and totals into Excel / CSV format',
-      route: '/ai/extract',
-      icon3d: 'excel',
-      badge: 'AI OCR',
-    },
   ];
 
   const filteredActions = ALL_ACTIONS.filter((action) => {
@@ -286,7 +285,6 @@ export const DocumentActionsPage: React.FC = () => {
   const convertActions = filteredActions.filter((a) => a.category === 'convert');
   const organizeActions = filteredActions.filter((a) => a.category === 'organize');
   const securityActions = filteredActions.filter((a) => a.category === 'security');
-  const aiActions = filteredActions.filter((a) => a.category === 'ai');
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in duration-200">
@@ -522,53 +520,6 @@ export const DocumentActionsPage: React.FC = () => {
                   </div>
 
                   <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-[#111111] shrink-0 transition-transform group-hover:translate-x-0.5" />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Category 5: AI Intelligence */}
-        {aiActions.length > 0 && (
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-[#111111]" />
-              <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#111111]">
-                AI Document Intelligence
-              </h3>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {aiActions.map((action) => (
-                <div
-                  key={action.id}
-                  onClick={() => handleActionSelect(action.route)}
-                  className="group p-5 bg-gradient-to-br from-white to-[#FFC800]/5 border border-[#E5E5E5] hover:border-[#111111] rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-md flex flex-col justify-between space-y-4 hover:-translate-y-0.5"
-                >
-                  <div className="space-y-2.5">
-                    <div className="flex items-center justify-between">
-                      <div className="shrink-0 transition-transform duration-200 group-hover:scale-110">
-                        <ThreeDIcon name={action.icon3d} className="w-9 h-9" />
-                      </div>
-                      <span className="px-2 py-0.5 text-[10px] font-extrabold text-[#111111] bg-[#FFC800] rounded-md shadow-2xs">
-                        {action.badge}
-                      </span>
-                    </div>
-
-                    <div>
-                      <h4 className="text-xs sm:text-sm font-extrabold text-[#111111] group-hover:text-black">
-                        {action.name}
-                      </h4>
-                      <p className="text-xs text-[#6B7280] mt-1 leading-relaxed">
-                        {action.description}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="pt-3 border-t border-[#E5E5E5] flex items-center justify-between text-xs font-bold text-[#111111]">
-                    <span>Run with AI</span>
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-150 group-hover:translate-x-1" />
-                  </div>
                 </div>
               ))}
             </div>

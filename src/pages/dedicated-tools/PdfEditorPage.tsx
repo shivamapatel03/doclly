@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Canvas } from "fabric";
 import { UploadZone } from "../../components/tools/UploadZone";
@@ -11,29 +11,44 @@ import { EditorTopbar } from "../../components/pdf-editor/EditorTopbar";
 import { SignatureModal } from "../../components/tools/SignatureModal";
 import { useToast } from "../../components/common/Toast";
 import type { EditorTool } from "../../lib/pdf-editor/fabricCanvas";
-import { addImageFromDataUrl, deleteSelected, serializeCanvas } from "../../lib/pdf-editor/fabricCanvas";
+import {
+  addImageFromDataUrl,
+  deleteSelected,
+  serializeCanvas,
+  convertDetectedTextToEditable,
+  convertAllDetectedText,
+} from "../../lib/pdf-editor/fabricCanvas";
+import { detectPageText, type DetectedTextBlock } from "../../lib/pdf-editor/textDetector";
 import { renderPageToDataUrl, getPdfPageCount } from "../../lib/pdf-editor/pdfRenderer";
 import { exportToPdf } from "../../lib/pdf-editor/pdfExporter";
 import { FileSession } from "../../lib/file-session";
 import { downloadBytes } from "../../lib/utils";
-import { FileText, Loader2 } from "lucide-react";
+import { DocumentStorage } from "../../lib/storage";
+import { ThreeDIcon } from "../../components/common/ThreeDIcon";
+import { FileText, Loader2, AlertCircle, X, Sparkles } from "lucide-react";
 
 const RENDER_SCALE = 1.5;
 
 export const PdfEditorPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
+  const toast = useToast();
 
   // File state
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
 
   // PDF state
   const [pageCount, setPageCount] = useState(0);
   const [activePage, setActivePage] = useState(0);
   const [thumbnails, setThumbnails] = useState<string[]>([]);
+
+  // Text Detection / OCR state
+  const [detectedBlocks, setDetectedBlocks] = useState<DetectedTextBlock[]>([]);
+  const [isDetecting, setIsDetecting] = useState(false);
+  const [isDetectionActive, setIsDetectionActive] = useState(false);
 
   // Canvas state
   const [bgDataUrl, setBgDataUrl] = useState<string>("");
@@ -61,7 +76,27 @@ export const PdfEditorPage: React.FC = () => {
   const imageInputRef = useRef<HTMLInputElement>(null);
   const [pendingImagePos, setPendingImagePos] = useState<{ x: number; y: number } | null>(null);
 
-  // Auto-load from FileSession
+  // Fullscreen state
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const editorContainerRef = useRef<HTMLDivElement>(null);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      editorContainerRef.current?.requestFullscreen?.().catch(() => {});
+    } else {
+      document.exitFullscreen?.().catch(() => {});
+    }
+  };
+
+  useEffect(() => {
+    const handleFsChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", handleFsChange);
+    return () => document.removeEventListener("fullscreenchange", handleFsChange);
+  }, []);
+
+  // Auto-load from FileSession or Router State
   useEffect(() => {
     const f = (location.state as any)?.file || FileSession.getFile();
     if (f && f.name.toLowerCase().endsWith(".pdf") && !file) {
@@ -69,11 +104,25 @@ export const PdfEditorPage: React.FC = () => {
     }
   }, []); // eslint-disable-line
 
+  // Smart fit zoom calculation for any document aspect ratio
+  const fitPageToScreen = useCallback((w: number, h: number) => {
+    if (!w || !h) return 0.75;
+    const availW = Math.max(300, window.innerWidth - (selectedType ? 280 : 80) - 64);
+    const availH = Math.max(300, window.innerHeight - 220);
+
+    const scaleW = availW / w;
+    const scaleH = availH / h;
+
+    return Math.min(1.0, Math.max(0.2, Number(Math.min(scaleW, scaleH).toFixed(2))));
+  }, [selectedType]);
+
   const handleFileSelected = async (files: File[]) => {
     const f = files[0];
     if (!f) return;
     setFile(f);
+    FileSession.setFile(f);
     setIsLoading(true);
+    setLoadError(null);
     setActivePage(0);
     setPageStates({});
     setHistory([]);
@@ -89,15 +138,22 @@ export const PdfEditorPage: React.FC = () => {
       setCanvasWidth(width);
       setCanvasHeight(height);
 
-      // Render thumbnails (low res)
+      // Set initial fit zoom
+      setZoom(fitPageToScreen(width, height));
+
+      // Render thumbnails in background
       const thumbs: string[] = [];
-      for (let i = 1; i <= count; i++) {
-        const { dataUrl: td } = await renderPageToDataUrl(f, i, 0.3);
-        thumbs.push(td);
-        setThumbnails([...thumbs]);
+      for (let i = 1; i <= Math.min(count, 30); i++) {
+        try {
+          const { dataUrl: td } = await renderPageToDataUrl(f, i, 0.35);
+          thumbs.push(td);
+          setThumbnails([...thumbs]);
+        } catch {}
       }
-    } catch (err) {
-      toast({ title: "Error loading PDF", description: "Could not render this PDF.", variant: "error" });
+    } catch (err: any) {
+      console.error("Error loading PDF:", err);
+      setLoadError(err?.message || "Could not render this PDF document.");
+      toast.error("Could not render this PDF document. Please try another file.");
     } finally {
       setIsLoading(false);
     }
@@ -114,23 +170,72 @@ export const PdfEditorPage: React.FC = () => {
       }
 
       setActivePage(newPage);
+      setDetectedBlocks([]);
+      setIsDetectionActive(false);
       setIsLoading(true);
       try {
         const { dataUrl, width, height } = await renderPageToDataUrl(file, newPage + 1, RENDER_SCALE);
         setBgDataUrl(dataUrl);
         setCanvasWidth(width);
         setCanvasHeight(height);
+      } catch (err: any) {
+        toast.error(`Could not load page ${newPage + 1}`);
       } finally {
         setIsLoading(false);
       }
     },
-    [file, activePage]
+    [file, activePage, toast]
   );
+
+  // Auto-Detect & Edit Text (OCR) handlers
+  const handleDetectText = async () => {
+    if (!file) return;
+    if (isDetectionActive) {
+      setIsDetectionActive(false);
+      return;
+    }
+    setIsDetecting(true);
+    try {
+      const blocks = await detectPageText(file, activePage + 1, RENDER_SCALE);
+      if (blocks.length === 0) {
+        toast.info("No text layer detected on this page. You can add new text using the Add Text tool.");
+      } else {
+        setDetectedBlocks(blocks);
+        setIsDetectionActive(true);
+        toast.success(`Found ${blocks.length} text lines! Click any box to edit in-place.`);
+      }
+    } catch (err: any) {
+      console.error("Text detection error:", err);
+      toast.error("Could not scan text on this page.");
+    } finally {
+      setIsDetecting(false);
+    }
+  };
+
+  const handleSelectDetectedBlock = (block: DetectedTextBlock) => {
+    const fc = fabricRef.current;
+    if (!fc) return;
+    convertDetectedTextToEditable(fc, block);
+    setDetectedBlocks((prev) => prev.filter((b) => b.id !== block.id));
+    handleStateChange(serializeCanvas(fc));
+    setActiveTool("select");
+    toast.success("Text unlocked for editing!");
+  };
+
+  const handleConvertAllText = () => {
+    const fc = fabricRef.current;
+    if (!fc || detectedBlocks.length === 0) return;
+    convertAllDetectedText(fc, detectedBlocks);
+    setDetectedBlocks([]);
+    setIsDetectionActive(false);
+    handleStateChange(serializeCanvas(fc));
+    setActiveTool("select");
+    toast.success("All page text converted to editable text boxes!");
+  };
 
   const handleStateChange = useCallback(
     (state: object) => {
       setPageStates((prev) => ({ ...prev, [activePage]: state }));
-      // Push to undo history
       setHistory((h) => {
         const newH = h.slice(0, historyIndex + 1);
         newH.push(state);
@@ -151,26 +256,33 @@ export const PdfEditorPage: React.FC = () => {
     } else {
       obj.set({ fill: shapeColor, opacity: shapeOpacity });
     }
-    fc.renderAll();
+    fc.requestRenderAll();
     handleStateChange(serializeCanvas(fc));
   }, [textColor, fontSize, shapeColor, shapeOpacity, handleStateChange]);
 
   const handleUndo = useCallback(() => {
-    // TODO: proper per-canvas undo via Fabric history
-    const fc = fabricRef.current;
-    if (!fc) return;
     if (historyIndex <= 0) return;
     const newIndex = historyIndex - 1;
     setHistoryIndex(newIndex);
-  }, [historyIndex]);
+    const state = history[newIndex];
+    if (state && fabricRef.current) {
+      fabricRef.current.loadFromJSON(state).then(() => {
+        fabricRef.current?.requestRenderAll();
+      });
+    }
+  }, [historyIndex, history]);
 
   const handleRedo = useCallback(() => {
-    const fc = fabricRef.current;
-    if (!fc) return;
     if (historyIndex >= history.length - 1) return;
     const newIndex = historyIndex + 1;
     setHistoryIndex(newIndex);
-  }, [historyIndex, history.length]);
+    const state = history[newIndex];
+    if (state && fabricRef.current) {
+      fabricRef.current.loadFromJSON(state).then(() => {
+        fabricRef.current?.requestRenderAll();
+      });
+    }
+  }, [historyIndex, history]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -182,23 +294,43 @@ export const PdfEditorPage: React.FC = () => {
     return () => window.removeEventListener("keydown", handler);
   }, [handleUndo, handleRedo]);
 
+  const handleApplyChanges = useCallback(() => {
+    const fc = fabricRef.current;
+    if (fc) {
+      const state = serializeCanvas(fc);
+      setPageStates((prev) => ({ ...prev, [activePage]: state }));
+      toast.success("Changes applied & saved!");
+    }
+  }, [activePage, toast]);
+
   const handleDownload = async () => {
     if (!file) return;
     const fc = fabricRef.current;
     // Save active page before export
-    const allStates = fc
-      ? { ...pageStates, [activePage]: serializeCanvas(fc) }
-      : pageStates;
+    const currentState = fc ? serializeCanvas(fc) : (pageStates[activePage] ?? null);
+    const allStates = { ...pageStates, [activePage]: currentState };
+    setPageStates(allStates);
 
     setIsExporting(true);
     try {
       const statesArray = Array.from({ length: pageCount }, (_, i) => allStates[i] ?? null);
       const bytes = await exportToPdf(file, statesArray, canvasWidth, canvasHeight);
       const baseName = file.name.replace(/\.pdf$/i, "");
-      downloadBytes(bytes, `${baseName}_edited.pdf`);
-      toast({ title: "PDF downloaded successfully!", variant: "success" });
+      const outName = `${baseName}_edited.pdf`;
+      downloadBytes(bytes, outName);
+
+      // Save to document storage
+      DocumentStorage.saveDocument({
+        name: outName,
+        size: bytes.byteLength,
+        type: "application/pdf",
+        data: bytes,
+      });
+
+      toast.success("PDF exported and downloaded successfully!");
     } catch (err: any) {
-      toast({ title: "Export failed", description: err.message, variant: "error" });
+      console.error("Export error:", err);
+      toast.error(err.message || "Failed to export the edited PDF.");
     } finally {
       setIsExporting(false);
     }
@@ -217,6 +349,7 @@ export const PdfEditorPage: React.FC = () => {
     setShowSignatureModal(false);
     setPendingInsertPos(null);
     setActiveTool("select");
+    toast.success("Signature placed on canvas!");
   };
 
   // Image placement
@@ -235,6 +368,7 @@ export const PdfEditorPage: React.FC = () => {
       addImageFromDataUrl(fc, reader.result as string, pendingImagePos.x, pendingImagePos.y);
       setActiveTool("select");
       setPendingImagePos(null);
+      toast.success("Image placed on canvas!");
     };
     reader.readAsDataURL(imgFile);
     e.target.value = "";
@@ -243,19 +377,19 @@ export const PdfEditorPage: React.FC = () => {
   // Upload screen
   if (!file) {
     return (
-      <div className="min-h-screen bg-[#F9F9F9] flex flex-col items-center justify-center p-8 gap-6">
+      <div className="min-h-[85vh] bg-[#F9F9F9] flex flex-col items-center justify-center p-8 gap-6">
         <SeoHead
           title="Edit PDF Online — Add Text, Images & Signatures — Doclly"
           description="Free in-browser PDF editor. Add text, images, signatures, shapes, highlights and redactions to any PDF."
           keywords={["edit pdf", "pdf editor", "add text to pdf", "pdf annotate"]}
         />
         <div className="text-center space-y-2 mb-2">
-          <div className="w-16 h-16 bg-[#FFF8D6] rounded-2xl flex items-center justify-center mx-auto">
-            <FileText className="w-8 h-8 text-[#FFC800]" />
+          <div className="w-16 h-16 flex items-center justify-center mx-auto mb-2 drop-shadow-md">
+            <ThreeDIcon name="pdf" className="w-16 h-16" />
           </div>
-          <h1 className="text-2xl font-extrabold text-[#111111]">Edit PDF</h1>
-          <p className="text-sm text-[#6B7280] max-w-sm">
-            Add text, images, signatures, shapes, highlights and redactions — all in your browser. No uploads.
+          <h1 className="text-3xl font-extrabold text-[#111111]">Edit PDF Document</h1>
+          <p className="text-sm text-[#6B7280] max-w-md mx-auto">
+            Add text, images, legal signatures, shapes, highlights and whiteout redactions — 100% in your browser.
           </p>
         </div>
         <div className="w-full max-w-lg">
@@ -271,8 +405,30 @@ export const PdfEditorPage: React.FC = () => {
     );
   }
 
+  // Load error screen
+  if (loadError) {
+    return (
+      <div className="min-h-[85vh] bg-[#F9F9F9] flex flex-col items-center justify-center p-8 gap-4 text-center">
+        <AlertCircle className="w-12 h-12 text-red-500" />
+        <h2 className="text-xl font-bold text-[#111111]">Failed to load PDF</h2>
+        <p className="text-sm text-[#6B7280] max-w-md">{loadError}</p>
+        <button
+          onClick={() => { setFile(null); setLoadError(null); }}
+          className="mt-4 bg-[#FFC800] text-[#111111] font-bold px-6 py-2 rounded-xl text-sm hover:bg-[#f0b800] cursor-pointer"
+        >
+          Choose another PDF
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-[#F0F0F0]">
+    <div
+      ref={editorContainerRef}
+      className={`flex flex-col ${
+        isFullscreen ? "fixed inset-0 z-50 h-screen w-screen bg-[#F0F0F0]" : "h-[calc(100vh-64px)] bg-[#F0F0F0]"
+      } overflow-hidden`}
+    >
       <SeoHead
         title="Edit PDF Online — Add Text, Images & Signatures — Doclly"
         description="Free in-browser PDF editor. Add text, images, signatures, shapes, highlights and redactions to any PDF."
@@ -288,10 +444,17 @@ export const PdfEditorPage: React.FC = () => {
         canUndo={historyIndex > 0}
         canRedo={historyIndex < history.length - 1}
         isExporting={isExporting}
+        isFullscreen={isFullscreen}
         onUndo={handleUndo}
         onRedo={handleRedo}
-        onZoomIn={() => setZoom((z) => Math.min(z + 0.1, 2.5))}
-        onZoomOut={() => setZoom((z) => Math.max(z - 0.1, 0.3))}
+        onZoomIn={() => setZoom((z) => Math.min(Number((z + 0.1).toFixed(2)), 2.5))}
+        onZoomOut={() => setZoom((z) => Math.max(Number((z - 0.1).toFixed(2)), 0.2))}
+        onFitScreen={() => setZoom(fitPageToScreen(canvasWidth, canvasHeight))}
+        onToggleFullscreen={toggleFullscreen}
+        onDetectText={handleDetectText}
+        isDetecting={isDetecting}
+        isDetectionActive={isDetectionActive}
+        onApplyChanges={handleApplyChanges}
         onDownload={handleDownload}
         onBack={() => setFile(null)}
       />
@@ -299,14 +462,42 @@ export const PdfEditorPage: React.FC = () => {
       {/* Main editor area */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left tool panel */}
-        <EditorToolbar activeTool={activeTool} onToolChange={setActiveTool} />
+        <EditorToolbar
+          activeTool={activeTool}
+          onToolChange={setActiveTool}
+        />
 
         {/* Canvas area */}
-        <div className="flex flex-col flex-1 overflow-hidden">
+        <div className="flex flex-col flex-1 overflow-hidden relative">
+          {/* Text Detection Notification Banner */}
+          {isDetectionActive && detectedBlocks.length > 0 && (
+            <div className="bg-amber-500 text-[#111111] px-4 py-1.5 flex items-center justify-between text-xs font-semibold shrink-0 select-none shadow-sm z-30 animate-in slide-in-from-top-2 duration-150">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
+                <span>Text Detection Active: Click any highlighted text block to edit in-place.</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleConvertAllText}
+                  className="bg-[#111111] text-[#FFC800] hover:bg-black px-2.5 py-1 rounded-md text-xs font-bold transition-colors cursor-pointer"
+                >
+                  Convert All Text ({detectedBlocks.length})
+                </button>
+                <button
+                  onClick={() => setIsDetectionActive(false)}
+                  className="p-1 hover:bg-black/10 rounded cursor-pointer text-[#111111]"
+                  title="Close Text Mode"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
+
           {isLoading ? (
-            <div className="flex-1 flex items-center justify-center gap-3">
-              <Loader2 className="w-6 h-6 animate-spin text-[#FFC800]" />
-              <span className="text-sm text-[#6B7280]">Rendering page…</span>
+            <div className="flex-1 flex flex-col items-center justify-center gap-3 bg-[#E5E5E5]">
+              <Loader2 className="w-8 h-8 animate-spin text-[#111111]" />
+              <span className="text-sm font-semibold text-[#111111]">Rendering page {activePage + 1}…</span>
             </div>
           ) : bgDataUrl ? (
             <EditorCanvas
@@ -315,16 +506,21 @@ export const PdfEditorPage: React.FC = () => {
               canvasHeight={canvasHeight}
               zoom={zoom}
               activeTool={activeTool}
+              onToolChange={setActiveTool}
               savedState={pageStates[activePage] ?? null}
               onStateChange={handleStateChange}
               onObjectSelected={setSelectedType}
               onCanvasReady={(fc) => { fabricRef.current = fc; }}
+              onZoomChange={setZoom}
               textColor={textColor}
               fontSize={fontSize}
               shapeColor={shapeColor}
               shapeOpacity={shapeOpacity}
               onRequestSignature={handleRequestSignature}
               onRequestImage={handleRequestImage}
+              detectedBlocks={detectedBlocks}
+              isDetectionActive={isDetectionActive}
+              onSelectDetectedBlock={handleSelectDetectedBlock}
             />
           ) : null}
 
@@ -343,11 +539,12 @@ export const PdfEditorPage: React.FC = () => {
           fontSize={fontSize}
           shapeColor={shapeColor}
           shapeOpacity={shapeOpacity}
-          onTextColorChange={setTextColor}
-          onFontSizeChange={setFontSize}
-          onShapeColorChange={setShapeColor}
-          onShapeOpacityChange={setShapeOpacity}
+          onTextColorChange={(c) => { setTextColor(c); handleApplyProperties(); }}
+          onFontSizeChange={(s) => { setFontSize(s); handleApplyProperties(); }}
+          onShapeColorChange={(c) => { setShapeColor(c); handleApplyProperties(); }}
+          onShapeOpacityChange={(o) => { setShapeOpacity(o); handleApplyProperties(); }}
           onApplyProperties={handleApplyProperties}
+          onClose={() => setSelectedType(null)}
         />
       </div>
 
@@ -361,12 +558,11 @@ export const PdfEditorPage: React.FC = () => {
       />
 
       {/* Signature modal */}
-      {showSignatureModal && (
-        <SignatureModal
-          onSave={handleSignatureSave}
-          onClose={() => { setShowSignatureModal(false); setPendingInsertPos(null); }}
-        />
-      )}
+      <SignatureModal
+        isOpen={showSignatureModal}
+        onSaveSignature={handleSignatureSave}
+        onClose={() => { setShowSignatureModal(false); setPendingInsertPos(null); }}
+      />
     </div>
   );
 };

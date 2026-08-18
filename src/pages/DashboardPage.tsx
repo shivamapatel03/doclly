@@ -7,6 +7,11 @@ import {
   Trash2,
   Download,
   CheckCircle2,
+  Sparkles,
+  ShieldCheck,
+  Files,
+  AlertTriangle,
+  X,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getFile3DIcon, ThreeDIcon } from '../components/common/ThreeDIcon';
@@ -34,6 +39,7 @@ export const DashboardPage: React.FC = () => {
   const [isUpgrading, setIsUpgrading] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<'signin' | 'signup'>('signin');
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
   const openAuth = (mode: 'signin' | 'signup') => {
     setAuthModalMode(mode);
@@ -227,12 +233,15 @@ export const DashboardPage: React.FC = () => {
 
         {planTier !== 'free' && (
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-black rounded-full bg-[#FFC800] text-[#111111] border border-[#E5B200] shadow-2xs">
+            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-bold rounded-full bg-[#0F172A] text-white border border-[#FFC800]/40 shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
               <ThreeDIcon
                 name={planTier === 'business' ? 'diamond' : 'crown'}
                 className="w-4 h-4"
               />
-              <span>{planTier === 'business' ? 'Business Pro User' : 'Pro User'}</span>
+              <span className="tracking-wider text-xs font-black text-white">
+                {planTier === 'business' ? 'BUSINESS MEMBER' : 'DOCLLY PRO'}
+              </span>
             </span>
           </div>
         )}
@@ -479,53 +488,83 @@ export const DashboardPage: React.FC = () => {
         <div className="space-y-6">
           {/* Active Subscription Card: Shown only for Pro / Paid Users */}
           {planTier !== 'free' && (
-            <div className="bg-[#FFFDF0] border-2 border-[#FFC800] rounded-2xl p-5 sm:p-6 space-y-4 shadow-xs">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-3.5">
-                  <div className="p-2.5 bg-[#FFC800] rounded-2xl shrink-0 shadow-2xs border border-[#E5B200]">
+            <div className="bg-white border border-[#111111] rounded-3xl p-6 sm:p-7 space-y-6 shadow-md relative overflow-hidden">
+              {/* Subtle ambient corner gradient */}
+              <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-[#FFC800]/15 via-transparent to-transparent rounded-bl-full pointer-events-none" />
+
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-[#0F172A] border border-[#FFC800]/40 flex items-center justify-center shrink-0 shadow-sm">
                     <ThreeDIcon
                       name={planTier === 'business' ? 'diamond' : 'crown'}
-                      className="w-8 h-8"
+                      className="w-9 h-9"
                     />
                   </div>
                   <div>
-                    <div className="flex items-center gap-2">
-                      <span className="px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider bg-[#FFC800] text-[#111111] rounded-full border border-[#E5B200]">
-                        {planTier === 'business' ? 'Business Pro User' : 'Pro User'}
+                    <div className="flex items-center gap-2.5">
+                      <span className="px-3 py-1 text-xs font-black uppercase tracking-wider bg-[#0F172A] text-white rounded-full border border-[#FFC800]/40 shadow-2xs">
+                        {planTier === 'business' ? 'Business Team' : 'Doclly Pro'}
                       </span>
-                      <span className="text-xs font-bold text-emerald-600 flex items-center gap-1">
-                        ● Active
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        Active Subscription
                       </span>
                     </div>
-                    <p className="text-xs text-[#111111] font-medium mt-1">
+                    <p className="text-xs sm:text-sm text-[#4B5563] font-medium mt-1.5 max-w-xl">
                       {planTier === 'pro'
-                        ? 'Pro membership active with 25 GB cloud storage & unlimited fast processing.'
-                        : 'Enterprise grade plan with 100 GB storage & dedicated support.'}
+                        ? 'Unlimited scanned text OCR editing, 100+ batch files, invoice UPI QR auto-stamping & extreme compression unlocked.'
+                        : 'Enterprise grade team access with 10 seats, developer API keys, and priority SLA.'}
                     </p>
                   </div>
                 </div>
 
                 <button
-                  onClick={handleDowngradeFree}
-                  className="px-3 py-1.5 text-xs font-bold text-gray-600 hover:text-rose-600 hover:bg-rose-50 border border-gray-300 rounded-lg transition-colors cursor-pointer self-start sm:self-center"
+                  onClick={() => setIsCancelModalOpen(true)}
+                  className="px-4 py-2 text-xs font-bold text-[#6B7280] hover:text-rose-600 hover:bg-rose-50 border border-[#E5E5E5] hover:border-rose-200 rounded-xl transition-all cursor-pointer self-start sm:self-center shrink-0 shadow-2xs"
                 >
                   Cancel Plan
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-[#FFC800]/40 text-xs">
-                <div className="p-3 bg-white/90 border border-[#FFC800]/50 rounded-xl flex items-center gap-3">
-                  <ThreeDIcon name="storage" className="w-5 h-5 shrink-0" />
+              {/* 4 Active Superpower Capability Badges */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-4 border-t border-[#E5E5E5] text-xs relative z-10">
+                <div className="p-3.5 bg-[#F9FAFB] border border-[#E5E5E5] rounded-2xl flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center shrink-0">
+                    <Sparkles className="w-4 h-4 text-amber-600" />
+                  </div>
                   <div>
-                    <span className="text-[#6B7280] font-medium">Cloud Storage Capacity</span>
-                    <p className="text-sm font-bold text-[#111111] mt-0.5">{totalStorageGB} GB Total</p>
+                    <span className="text-[11px] text-[#6B7280] font-semibold block">Scanned PDF OCR</span>
+                    <span className="text-xs font-bold text-[#111111]">Unlimited Text Edit</span>
                   </div>
                 </div>
-                <div className="p-3 bg-white/90 border border-[#FFC800]/50 rounded-xl flex items-center gap-3">
-                  <ThreeDIcon name="billing" className="w-5 h-5 shrink-0" />
+
+                <div className="p-3.5 bg-[#F9FAFB] border border-[#E5E5E5] rounded-2xl flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center shrink-0">
+                    <Files className="w-4 h-4 text-blue-600" />
+                  </div>
                   <div>
-                    <span className="text-[#6B7280] font-medium">Payment Method</span>
-                    <p className="text-sm font-bold text-[#111111] mt-0.5">UPI / Cards / NetBanking</p>
+                    <span className="text-[11px] text-[#6B7280] font-semibold block">Batch File Queue</span>
+                    <span className="text-xs font-bold text-[#111111]">100+ Files in 1 Click</span>
+                  </div>
+                </div>
+
+                <div className="p-3.5 bg-[#F9FAFB] border border-[#E5E5E5] rounded-2xl flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center shrink-0">
+                    <ThreeDIcon name="barcode" className="w-5 h-5 shrink-0" />
+                  </div>
+                  <div>
+                    <span className="text-[11px] text-[#6B7280] font-semibold block">Invoice QR Stamper</span>
+                    <span className="text-xs font-bold text-[#111111]">UPI / Barcode Auto</span>
+                  </div>
+                </div>
+
+                <div className="p-3.5 bg-[#F9FAFB] border border-[#E5E5E5] rounded-2xl flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center shrink-0">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  </div>
+                  <div>
+                    <span className="text-[11px] text-[#6B7280] font-semibold block">Compression Ratio</span>
+                    <span className="text-xs font-bold text-[#111111]">Extreme 90% (&lt;200KB)</span>
                   </div>
                 </div>
               </div>
@@ -552,38 +591,42 @@ export const DashboardPage: React.FC = () => {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
                           <ThreeDIcon name="crown" className="w-6 h-6" />
-                          <h4 className="text-lg font-bold text-[#111111]">Pro Plan</h4>
+                          <h4 className="text-lg font-bold text-[#111111]">Doclly Pro</h4>
                         </div>
                         <span className="px-2.5 py-0.5 text-[10px] font-bold text-[#111111] bg-[#FFC800] rounded-full">
                           Most Popular
                         </span>
                       </div>
                       <div className="flex items-baseline gap-1">
-                        <span className="text-3xl font-extrabold text-[#111111]">₹499</span>
+                        <span className="text-3xl font-extrabold text-[#111111]">₹99</span>
                         <span className="text-xs text-[#6B7280]">/ month</span>
                       </div>
                       <ul className="space-y-2 text-xs text-[#111111] pt-3 border-t border-gray-100">
                         <li className="flex items-center gap-2">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                          <span>25 GB Cloud Storage</span>
+                          <span>Unlimited In-Place Scanned Text Edit (OCR)</span>
                         </li>
                         <li className="flex items-center gap-2">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                          <span>Unlimited Document Batch Conversions</span>
+                          <span>100+ Bulk Files Batch Processing</span>
                         </li>
                         <li className="flex items-center gap-2">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                          <span>Priority High-Speed Server Processing</span>
+                          <span>Multi-Invoice UPI QR Auto-Stamping</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <span>Extreme 90% Ultra Compression</span>
                         </li>
                       </ul>
                     </div>
 
                     <Button
-                      onClick={() => handleUpgradePlan('pro', 499)}
+                      onClick={() => handleUpgradePlan('pro', 99)}
                       disabled={isUpgrading}
                       className="w-full mt-4 flex items-center justify-center bg-[#FFC800] hover:bg-[#E6B400] text-[#111111] font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow-xs cursor-pointer"
                     >
-                      Upgrade to Pro (₹499)
+                      Upgrade to Pro (₹99/mo)
                     </Button>
                   </div>
                 )}
@@ -594,39 +637,38 @@ export const DashboardPage: React.FC = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
                         <ThreeDIcon name="diamond" className="w-6 h-6" />
-                        <h4 className="text-lg font-bold text-[#111111]">Business Plan</h4>
+                        <h4 className="text-lg font-bold text-[#111111]">Business Team</h4>
                       </div>
                       <span className="px-2.5 py-0.5 text-[10px] font-bold text-white bg-[#111111] rounded-full">
-                        Enterprise
+                        Team
                       </span>
                     </div>
                     <div className="flex items-baseline gap-1">
-                      <span className="text-3xl font-extrabold text-[#111111]">₹1,999</span>
+                      <span className="text-3xl font-extrabold text-[#111111]">₹999</span>
                       <span className="text-xs text-[#6B7280]">/ month</span>
                     </div>
                     <ul className="space-y-2 text-xs text-[#111111] pt-3 border-t border-gray-100">
                       <li className="flex items-center gap-2">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>100 GB High-Capacity Storage</span>
+                        <span>Up to 10 Team Seats</span>
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>Custom Document Watermarking & APIs</span>
+                        <span>High-Volume Developer API Access</span>
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>24/7 Dedicated Support & SLA</span>
+                        <span>24/7 Dedicated Phone & Email SLA</span>
                       </li>
                     </ul>
                   </div>
 
                   <Button
-                    onClick={() => handleUpgradePlan('business', 1999)}
+                    onClick={() => handleUpgradePlan('business', 999)}
                     disabled={isUpgrading}
-                    variant="outline"
-                    className="w-full mt-4 flex items-center justify-center font-bold text-xs sm:text-sm py-2.5 rounded-xl border-[#111111] text-[#111111] hover:bg-gray-100 shadow-2xs cursor-pointer"
+                    className="w-full mt-4 flex items-center justify-center bg-[#111111] hover:bg-black text-white font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow-xs cursor-pointer"
                   >
-                    Upgrade to Business (₹1,999)
+                    Upgrade to Business (₹999/mo)
                   </Button>
                 </div>
               </div>
@@ -746,6 +788,64 @@ export const DashboardPage: React.FC = () => {
               )}
             </div>
           </form>
+        </div>
+      )}
+
+      {/* Cancel Subscription Confirmation Modal */}
+      {isCancelModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full border border-[#E5E5E5] shadow-2xl space-y-6 animate-in zoom-in-95 duration-150">
+            <div className="flex items-start justify-between">
+              <div className="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center">
+                <AlertTriangle className="w-6 h-6 text-amber-600" />
+              </div>
+              <button
+                onClick={() => setIsCancelModalOpen(false)}
+                className="p-1 text-[#6B7280] hover:text-[#111111] rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-xl font-extrabold text-[#111111] tracking-tight">
+                Cancel Doclly Pro Subscription?
+              </h3>
+              <p className="text-xs sm:text-sm text-[#4B5563] leading-relaxed">
+                You will retain full access to all Pro features until your current billing period ends. After that, your account will smoothly revert to the <strong>Free Starter</strong> tier with <strong>zero future charges</strong>.
+              </p>
+            </div>
+
+            <div className="p-4 bg-gray-50 border border-gray-200 rounded-2xl space-y-2 text-xs text-[#4B5563]">
+              <div className="flex items-center gap-2 text-[#111111] font-bold">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>What happens next:</span>
+              </div>
+              <ul className="list-disc list-inside space-y-1 text-[11px]">
+                <li>No automated renewal or further deduction on Razorpay/UPI.</li>
+                <li>Your saved documents and workspace data remain 100% safe.</li>
+                <li>You can re-upgrade to Doclly Pro anytime with 1 click.</li>
+              </ul>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <button
+                onClick={() => setIsCancelModalOpen(false)}
+                className="flex-1 px-4 py-2.5 bg-[#FFC800] hover:bg-[#E5B200] text-[#111111] font-extrabold text-xs sm:text-sm rounded-xl shadow-xs cursor-pointer transition-colors"
+              >
+                Keep My Pro Plan
+              </button>
+              <button
+                onClick={async () => {
+                  setIsCancelModalOpen(false);
+                  await handleDowngradeFree();
+                }}
+                className="px-4 py-2.5 bg-white hover:bg-rose-50 text-rose-600 hover:text-rose-700 font-bold text-xs sm:text-sm border border-gray-200 hover:border-rose-200 rounded-xl cursor-pointer transition-colors"
+              >
+                Confirm Cancellation
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

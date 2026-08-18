@@ -168,6 +168,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
 
   const SECURITY_TOOLS = [
     {
+      to: '/tools/edit-pdf',
+      label: 'Edit PDF',
+      desc: 'Add text, shapes, images & redact',
+      icon3d: 'sign',
+    },
+    {
       to: '/tools/sign-pdf',
       label: 'Sign PDF',
       desc: 'Stamp electronic signature',
@@ -178,6 +184,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
       label: 'Watermark PDF',
       desc: 'Add text stamps to pages',
       icon3d: 'watermark',
+    },
+    {
+      to: '/tools/qr-code-generator',
+      label: 'QR Code Generator',
+      desc: 'Create UPI, URL & text QR codes',
+      icon3d: 'qrcode',
+    },
+    {
+      to: '/tools/stamp-qr-barcode',
+      label: 'Stamp QR on PDF',
+      desc: 'Stamp payment QR & barcodes',
+      icon3d: 'barcode',
     },
     {
       to: '/tools/protect-pdf',

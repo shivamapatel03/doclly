@@ -36,11 +36,11 @@ export const PricingPage: React.FC = () => {
     const amountINR =
       targetPlan === 'pro'
         ? billingCycle === 'annual'
-          ? 399 * 12
-          : 499
+          ? 799
+          : 99
         : billingCycle === 'annual'
-        ? 1599 * 12
-        : 1999;
+        ? 7999
+        : 999;
 
     setIsProcessing(true);
 
@@ -77,19 +77,22 @@ export const PricingPage: React.FC = () => {
       <div className="absolute inset-0 doclly-dot-pattern opacity-35 pointer-events-none doclly-radial-mask" />
 
       <SeoHead
-        title="Simple, Transparent Pricing — Doclly"
-        description="Free forever tier for quick tasks. Upgrade to Pro (₹499/mo) or Business (₹1,999/mo) for unlimited AI extraction and batch workflows."
+        title="Simple, Transparent Pricing — Doclly Pro (₹99/mo)"
+        description="Edit scanned PDF text like MS Word, auto-stamp invoices, and batch process 100+ files with Doclly Pro for just ₹99/mo."
       />
 
       <Breadcrumb items={[{ label: 'Pricing' }]} />
 
       {/* Header & Annual Switch */}
-      <div className="text-center max-w-2xl mx-auto space-y-4 relative z-10">
+      <div className="text-center max-w-3xl mx-auto space-y-4 relative z-10">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FFC800]/20 border border-[#FFC800]/50 rounded-full text-xs font-black text-[#111111]">
+          ⚡ UNBEATABLE VALUE
+        </div>
         <h1 className="text-3xl sm:text-5xl font-extrabold text-[#111111] tracking-tight">
-          Simple, transparent plans.
+          Adobe Acrobat power. Just ₹99.
         </h1>
-        <p className="text-sm sm:text-base text-[#6B7280]">
-          Process documents for free forever, or upgrade for unlimited AI power, batch workflows, and team collaboration.
+        <p className="text-sm sm:text-base text-[#6B7280] max-w-2xl mx-auto">
+          Process documents for free forever, or unlock unlimited in-place scanned PDF text editing, UPI invoice stamping, and 100+ batch files for less than a cup of coffee.
         </p>
 
         {/* Billing Toggle */}
@@ -102,7 +105,7 @@ export const PricingPage: React.FC = () => {
                 : 'text-[#6B7280] hover:text-[#111111]'
             }`}
           >
-            Monthly Billing
+            Monthly Billing (₹99)
           </button>
           <button
             onClick={() => setBillingCycle('annual')}
@@ -112,9 +115,9 @@ export const PricingPage: React.FC = () => {
                 : 'text-[#6B7280] hover:text-[#111111]'
             }`}
           >
-            <span>Annual Billing</span>
+            <span>Annual Billing (₹799/yr)</span>
             <span className="text-[10px] font-bold text-[#111111] bg-[#FFC800] px-1.5 py-0.2 rounded-full border border-[#E5E5E5]">
-              Save 20%
+              Save 33% (₹66/mo)
             </span>
           </button>
         </div>
@@ -154,7 +157,7 @@ export const PricingPage: React.FC = () => {
                 <div className="flex items-baseline gap-1 pt-2">
                   <span className="text-4xl font-extrabold text-[#111111]">{price}</span>
                   <span className="text-xs text-[#6B7280]">
-                    {plan.id === 'free' ? 'forever' : billingCycle === 'annual' ? '/mo (billed annually)' : '/month'}
+                    {plan.id === 'free' ? 'forever' : billingCycle === 'annual' ? '/year (₹66/mo)' : '/month'}
                   </span>
                 </div>
 
@@ -210,21 +213,20 @@ export const PricingPage: React.FC = () => {
               <tr>
                 <th className="px-5 py-3 font-semibold">Feature</th>
                 <th className="px-5 py-3 font-semibold text-center w-28">Free</th>
-                <th className="px-5 py-3 font-semibold text-center w-28 text-[#111111]">Pro</th>
-                <th className="px-5 py-3 font-semibold text-center w-28">Business</th>
+                <th className="px-5 py-3 font-semibold text-center w-28 text-[#111111]">Doclly Pro (₹99)</th>
+                <th className="px-5 py-3 font-semibold text-center w-28">Business Team</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E5E5E5]">
               {[
-                { name: 'Basic PDF Tools (Merge, Split, Rotate)', free: '10/day', pro: 'Unlimited', biz: 'Unlimited' },
-                { name: 'Max File Size', free: '25 MB', pro: '250 MB', biz: '1 GB' },
-                { name: 'AI Document Assistant & Chat', free: '5 queries/day', pro: 'Unlimited', biz: 'Unlimited' },
-                { name: 'Smart Invoice & Receipt OCR (Excel Export)', free: false, pro: true, biz: true },
-                { name: 'Multi-Step Automated Workflows', free: false, pro: true, biz: true },
-                { name: 'Contract Diff & Redline Compare', free: false, pro: true, biz: true },
-                { name: 'Cloud Workspace & Storage Quota', free: '1 GB', pro: '25 GB', biz: '100 GB' },
-                { name: 'Developer REST API Access', free: false, pro: false, biz: true },
-                { name: 'Dedicated Priority Support', free: false, pro: true, biz: '24/7 Phone & Email' },
+                { name: 'All 25+ PDF Tools Access', free: true, pro: true, biz: true },
+                { name: 'Batch / Bulk File Processing', free: '1–3 files', pro: '100 files in 1 click', biz: 'Unlimited' },
+                { name: 'In-Place Scanned PDF Text Edit (OCR)', free: '1 page test', pro: 'Unlimited Full Document', biz: 'Unlimited' },
+                { name: 'Invoice UPI QR & Barcode Auto-Stamping', free: '1 file', pro: 'Batch Auto-Stamp (100+)', biz: 'Multi-Seat API' },
+                { name: 'Extreme 90% Ultra Compression (<200KB)', free: false, pro: true, biz: true },
+                { name: 'Max File Size Limit', free: '25 MB', pro: '500 MB', biz: '2 GB' },
+                { name: 'High-Speed VIP Priority Engine', free: false, pro: true, biz: true },
+                { name: 'Commercial Use License & Support', free: false, pro: true, biz: 'Dedicated 24/7' },
               ].map((row, idx) => (
                 <tr key={idx} className="hover:bg-[#F5F5F5]/50">
                   <td className="px-5 py-3 font-medium text-[#111111]">{row.name}</td>

@@ -139,7 +139,7 @@ export const HomePage: React.FC = () => {
 
           {/* Tiny live document count */}
           <div className="flex justify-center">
-            <LiveStatsCounter baseCount={1850} />
+            <LiveStatsCounter />
           </div>
 
           {/* Quick Drag & Drop Action Zone */}

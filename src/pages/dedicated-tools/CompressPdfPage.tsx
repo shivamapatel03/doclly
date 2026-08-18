@@ -9,8 +9,10 @@ import { useToast } from '../../components/common/Toast';
 import { compressPdf } from '../../lib/pdf-engine';
 import { downloadBytes, formatFileSize } from '../../lib/utils';
 import { ALL_TOOLS } from '../../lib/constants';
-import { Minimize2, Sparkles } from 'lucide-react';
+import { Minimize2, Sparkles, Lock } from 'lucide-react';
 import { DocumentStorage } from '../../lib/storage';
+import { useAuth } from '../../context/AuthContext';
+import { UpgradeModal } from '../../components/common/UpgradeModal';
 
 import { FileSession } from '../../lib/file-session';
 import { useLocation } from 'react-router-dom';
@@ -18,13 +20,17 @@ import { useLocation } from 'react-router-dom';
 export const CompressPdfPage: React.FC = () => {
   const tool = ALL_TOOLS.find((t) => t.id === 'compress-pdf')!;
   const location = useLocation();
+  const { user } = useAuth();
+  const isPro = user?.planTier === 'pro' || user?.planTier === 'business';
+
   const [file, setFile] = useState<File | null>(() => {
     const f = (location.state as any)?.file || FileSession.getFile();
     return f && f.name.toLowerCase().endsWith('.pdf') ? f : null;
   });
-  const [compressionLevel, setCompressionLevel] = useState<'low' | 'balanced' | 'high'>('balanced');
+  const [compressionLevel, setCompressionLevel] = useState<'low' | 'balanced' | 'high' | 'extreme'>('balanced');
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   
   const [result, setResult] = useState<{
     data: Uint8Array;
@@ -135,11 +141,11 @@ const handleCompress = async () => {
                   <label className="text-xs font-bold text-[#111111] uppercase tracking-wider">
                     Select Compression Level
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     {[
                       {
                         id: 'low',
-                        title: 'Low Compression',
+                        title: 'Low',
                         desc: 'Best quality, ~25% smaller',
                         badge: 'High Quality',
                       },
@@ -151,31 +157,66 @@ const handleCompress = async () => {
                       },
                       {
                         id: 'high',
-                        title: 'High Compression',
+                        title: 'High',
                         desc: 'Smallest size, ~65% smaller',
                         badge: 'Max Reduction',
                       },
+                      {
+                        id: 'extreme',
+                        title: 'Extreme 90%',
+                        desc: 'Target <200 KB (Govt portals), ~90% smaller',
+                        badge: 'PRO',
+                      },
                     ].map((lvl) => {
                       const isSelected = compressionLevel === lvl.id;
+                      const isExtreme = lvl.id === 'extreme';
+                      const isLocked = isExtreme && !isPro;
+
                       return (
                         <div
                           key={lvl.id}
-                          onClick={() => setCompressionLevel(lvl.id as any)}
-                          className={`p-4 rounded-xl border cursor-pointer transition-all ${
-                            isSelected
+                          onClick={() => {
+                            if (isLocked) {
+                              setIsUpgradeModalOpen(true);
+                              return;
+                            }
+                            setCompressionLevel(lvl.id as any);
+                          }}
+                          className={`p-4 rounded-xl border cursor-pointer transition-all relative overflow-hidden ${
+                            isLocked
+                              ? 'border-amber-200 bg-amber-50/40 hover:bg-amber-50/80 hover:border-amber-300 shadow-2xs'
+                              : isSelected
                               ? 'border-[#111111] bg-[#FFC800]/15 ring-2 ring-[#FFC800]/50 shadow-2xs'
                               : 'border-[#E5E5E5] hover:bg-[#F5F5F5]'
                           }`}
                         >
                           <div className="flex items-center justify-between mb-2">
-                            <span className="text-xs font-bold text-[#111111]">{lvl.title}</span>
-                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
-                              isSelected ? 'bg-[#FFC800] text-[#111111] border-[#E5E5E5]' : 'bg-white text-gray-600 border-[#E5E5E5]'
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-xs font-bold text-[#111111]">{lvl.title}</span>
+                              {isLocked && (
+                                <Lock className="w-3 h-3 text-amber-600 shrink-0" />
+                              )}
+                            </div>
+                            <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${
+                              isLocked
+                                ? 'bg-gradient-to-r from-[#FFC800] to-[#F59E0B] text-[#111111] border-amber-300 shadow-2xs flex items-center gap-0.5'
+                                : isExtreme
+                                ? 'bg-[#111111] text-[#FFC800] border-[#111111]'
+                                : isSelected
+                                ? 'bg-[#FFC800] text-[#111111] border-[#E5E5E5]'
+                                : 'bg-white text-gray-600 border-[#E5E5E5]'
                             }`}>
-                              {lvl.badge}
+                              {isLocked ? (
+                                <>
+                                  <Lock className="w-2.5 h-2.5 stroke-[2.5]" />
+                                  <span>PRO</span>
+                                </>
+                              ) : (
+                                lvl.badge
+                              )}
                             </span>
                           </div>
-                          <p className="text-xs text-[#6B7280]">{lvl.desc}</p>
+                          <p className="text-xs text-[#6B7280] leading-snug">{lvl.desc}</p>
                         </div>
                       );
                     })}
@@ -189,7 +230,13 @@ const handleCompress = async () => {
                     variant="primary"
                     disabled={isProcessing}
                     isLoading={isProcessing}
-                    onClick={handleCompress}
+                    onClick={() => {
+                      if (compressionLevel === 'extreme' && !isPro) {
+                        setIsUpgradeModalOpen(true);
+                        return;
+                      }
+                      handleCompress();
+                    }}
                     leftIcon={<Minimize2 className="w-4 h-4" />}
                   >
                     Compress PDF Now
@@ -206,6 +253,13 @@ const handleCompress = async () => {
           </>
         )}
       </div>
+
+      {/* Doclly Pro Upgrade Modal for Extreme 90% */}
+      <UpgradeModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+        featureReason="Extreme 90% Ultra Compression (<200 KB) is a Doclly Pro feature."
+      />
     </div>
   );
 };

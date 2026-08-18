@@ -548,7 +548,7 @@ export async function unlockPdf(file: File, password = ''): Promise<Uint8Array> 
 
 export async function compressPdf(
   file: File,
-  level: 'low' | 'balanced' | 'high' = 'balanced'
+  level: 'low' | 'balanced' | 'high' | 'extreme' = 'balanced'
 ): Promise<{
   data: Uint8Array;
   originalSize: number;
@@ -573,6 +573,9 @@ export async function compressPdf(
     } else if (level === 'high') {
       scale = 0.7;
       jpegQuality = 0.35;
+    } else if (level === 'extreme') {
+      scale = 0.55;
+      jpegQuality = 0.22;
     }
 
     const buffer = await readFileAsArrayBuffer(file);

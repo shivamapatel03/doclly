@@ -202,7 +202,6 @@ export const AISummarizePage: React.FC = () => {
                     disabled={isProcessing}
                     isLoading={isProcessing}
                     onClick={handleSummarize}
-                    leftIcon={<Sparkles className="w-4 h-4" />}
                   >
                     Generate Summary
                   </Button>

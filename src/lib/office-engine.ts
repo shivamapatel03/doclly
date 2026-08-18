@@ -1,4 +1,4 @@
-﻿import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx';
 import { Document, Paragraph, TextRun, HeadingLevel, Packer } from 'docx';
 import { readFileAsArrayBuffer, readFileAsText } from './utils';
 
@@ -45,53 +45,112 @@ export async function excelToCsv(file: File): Promise<string> {
   return XLSX.utils.sheet_to_csv(sheet);
 }
 
-export async function cleanSpreadsheetData(
-  file: File,
-  options: {
-    deduplicate?: boolean;
-    trimWhitespace?: boolean;
-    removeEmptyRows?: boolean;
-  } = { deduplicate: true, trimWhitespace: true, removeEmptyRows: true }
-): Promise<{
+export interface CleanSpreadsheetOptions {
+  deduplicate?: boolean;
+  trimWhitespace?: boolean;
+  removeEmptyRows?: boolean;
+  textCase?: 'none' | 'upper' | 'lower' | 'title';
+  findText?: string;
+  replaceText?: string;
+  outputFormat?: 'xlsx' | 'csv';
+}
+
+export interface CleanSpreadsheetResult {
   data: Uint8Array;
+  csvText: string;
   originalRowCount: number;
   cleanedRowCount: number;
   duplicatesRemoved: number;
-}> {
+  emptyRowsRemoved: number;
+  headers: string[];
+  previewRows: (string | number)[][];
+}
+
+export async function cleanSpreadsheetData(
+  file: File,
+  options: CleanSpreadsheetOptions = {
+    deduplicate: true,
+    trimWhitespace: true,
+    removeEmptyRows: true,
+    textCase: 'none',
+    outputFormat: 'xlsx',
+  }
+): Promise<CleanSpreadsheetResult> {
   const buffer = await readFileAsArrayBuffer(file);
   const workbook = XLSX.read(buffer, { type: 'array' });
-  const sheetName = workbook.SheetNames[0];
+  const sheetName = workbook.SheetNames[0] || 'Sheet1';
   const sheet = workbook.Sheets[sheetName];
 
   const rawRows: any[][] = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
-  const originalRowCount = rawRows.length;
+  const originalRowCount = Math.max(0, rawRows.length - 1);
 
   if (rawRows.length === 0) {
     const emptyWb = XLSX.utils.book_new();
     const emptyBuf = XLSX.write(emptyWb, { bookType: 'xlsx', type: 'array' });
-    return { data: new Uint8Array(emptyBuf), originalRowCount: 0, cleanedRowCount: 0, duplicatesRemoved: 0 };
+    return {
+      data: new Uint8Array(emptyBuf),
+      csvText: '',
+      originalRowCount: 0,
+      cleanedRowCount: 0,
+      duplicatesRemoved: 0,
+      emptyRowsRemoved: 0,
+      headers: [],
+      previewRows: [],
+    };
   }
 
-  const headerRow = rawRows[0];
+  const headerRow = rawRows[0].map((h) => String(h ?? '').trim() || 'Column');
   let dataRows = rawRows.slice(1);
 
   // 1. Trim whitespace
-  if (options.trimWhitespace) {
+  if (options.trimWhitespace !== false) {
     dataRows = dataRows.map((row) =>
       row.map((cell) => (typeof cell === 'string' ? cell.trim() : cell))
     );
   }
 
   // 2. Remove completely empty rows
-  if (options.removeEmptyRows) {
+  let emptyRowsRemoved = 0;
+  if (options.removeEmptyRows !== false) {
+    const initialCount = dataRows.length;
     dataRows = dataRows.filter((row) =>
       row.some((cell) => cell !== '' && cell !== null && cell !== undefined)
     );
+    emptyRowsRemoved = initialCount - dataRows.length;
   }
 
-  // 3. Deduplicate
+  // 3. Find and Replace
+  if (options.findText) {
+    const search = options.findText;
+    const rep = options.replaceText ?? '';
+    dataRows = dataRows.map((row) =>
+      row.map((cell) => {
+        if (typeof cell === 'string' && search) {
+          return cell.replaceAll(search, rep);
+        }
+        return cell;
+      })
+    );
+  }
+
+  // 4. Text Case Transformation
+  if (options.textCase && options.textCase !== 'none') {
+    dataRows = dataRows.map((row) =>
+      row.map((cell) => {
+        if (typeof cell !== 'string') return cell;
+        if (options.textCase === 'upper') return cell.toUpperCase();
+        if (options.textCase === 'lower') return cell.toLowerCase();
+        if (options.textCase === 'title') {
+          return cell.replace(/\b\w+/g, (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase());
+        }
+        return cell;
+      })
+    );
+  }
+
+  // 5. Deduplicate
   let duplicatesRemoved = 0;
-  if (options.deduplicate) {
+  if (options.deduplicate !== false) {
     const seen = new Set<string>();
     const uniqueRows: any[][] = [];
     for (const row of dataRows) {
@@ -112,11 +171,17 @@ export async function cleanSpreadsheetData(
   XLSX.utils.book_append_sheet(newWb, newSheet, 'Cleaned Data');
 
   const outBuffer = XLSX.write(newWb, { bookType: 'xlsx', type: 'array' });
+  const csvOutput = XLSX.utils.sheet_to_csv(newSheet);
+
   return {
     data: new Uint8Array(outBuffer),
-    originalRowCount: Math.max(0, originalRowCount - 1),
+    csvText: csvOutput,
+    originalRowCount,
     cleanedRowCount: dataRows.length,
     duplicatesRemoved,
+    emptyRowsRemoved,
+    headers: headerRow,
+    previewRows: dataRows.slice(0, 50),
   };
 }
 

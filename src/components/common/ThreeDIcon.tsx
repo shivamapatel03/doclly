@@ -15,11 +15,8 @@ export const Word3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 
         <stop offset="0%" stopColor="#1E40AF" />
         <stop offset="100%" stopColor="#172554" />
       </linearGradient>
-      <filter id="w3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#1E3A8A" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#w3d_shadow)">
+      </defs>
+    <g>
       <path d="M7 6C7 4.89543 7.89543 4 9 4H21L29 12V30C29 31.1046 28.1046 32 27 32H9C7.89543 32 7 31.1046 7 30V6Z" fill="url(#w3d_base)" />
       <path d="M21 4V10C21 11.1046 21.8954 12 23 12H29L21 4Z" fill="url(#w3d_fold)" />
       <path d="M9 4.5H20.5L28.5 12.5V30C28.5 30.8284 27.8284 31.5 27 31.5H9C8.17157 31.5 7.5 30.8284 7.5 30V6C7.5 5.17157 8.17157 4.5 9 4.5Z" stroke="white" strokeOpacity="0.25" strokeWidth="1" />
@@ -48,11 +45,8 @@ export const Excel3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7
         <stop offset="0%" stopColor="#065F46" />
         <stop offset="100%" stopColor="#022C22" />
       </linearGradient>
-      <filter id="x3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#064E3B" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#x3d_shadow)">
+      </defs>
+    <g>
       <path d="M7 6C7 4.89543 7.89543 4 9 4H21L29 12V30C29 31.1046 28.1046 32 27 32H9C7.89543 32 7 31.1046 7 30V6Z" fill="url(#x3d_base)" />
       <path d="M21 4V10C21 11.1046 21.8954 12 23 12H29L21 4Z" fill="url(#x3d_fold)" />
       <path d="M9 4.5H20.5L28.5 12.5V30C28.5 30.8284 27.8284 31.5 27 31.5H9C8.17157 31.5 7.5 30.8284 7.5 30V6C7.5 5.17157 8.17157 4.5 9 4.5Z" stroke="white" strokeOpacity="0.25" strokeWidth="1" />
@@ -81,11 +75,8 @@ export const Ppt3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 h
         <stop offset="0%" stopColor="#C2410C" />
         <stop offset="100%" stopColor="#7C2D12" />
       </linearGradient>
-      <filter id="p3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#7C2D12" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#p3d_shadow)">
+      </defs>
+    <g>
       <path d="M7 6C7 4.89543 7.89543 4 9 4H21L29 12V30C29 31.1046 28.1046 32 27 32H9C7.89543 32 7 31.1046 7 30V6Z" fill="url(#p3d_base)" />
       <path d="M21 4V10C21 11.1046 21.8954 12 23 12H29L21 4Z" fill="url(#p3d_fold)" />
       <path d="M9 4.5H20.5L28.5 12.5V30C28.5 30.8284 27.8284 31.5 27 31.5H9C8.17157 31.5 7.5 30.8284 7.5 30V6C7.5 5.17157 8.17157 4.5 9 4.5Z" stroke="white" strokeOpacity="0.25" strokeWidth="1" />
@@ -116,11 +107,8 @@ export const Image3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7
         <stop offset="0%" stopColor="#D97706" />
         <stop offset="100%" stopColor="#92400E" />
       </linearGradient>
-      <filter id="img3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#78350F" floodOpacity="0.25" />
-      </filter>
-    </defs>
-    <g filter="url(#img3d_shadow)">
+      </defs>
+    <g>
       <rect x="5" y="5" width="26" height="26" rx="6" fill="url(#img3d_base)" />
       <rect x="5.5" y="5.5" width="25" height="25" rx="5.5" stroke="white" strokeOpacity="0.3" />
       <rect x="7" y="7" width="22" height="22" rx="4.5" fill="url(#img3d_sky)" />
@@ -143,11 +131,8 @@ export const Text3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 
         <stop offset="0%" stopColor="#C7D2FE" />
         <stop offset="100%" stopColor="#818CF8" />
       </linearGradient>
-      <filter id="txt3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#312E81" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#txt3d_shadow)">
+      </defs>
+    <g>
       <path d="M7 6C7 4.89543 7.89543 4 9 4H21L29 12V30C29 31.1046 28.1046 32 27 32H9C7.89543 32 7 31.1046 7 30V6Z" fill="url(#txt3d_base)" />
       <path d="M21 4V10C21 11.1046 21.8954 12 23 12H29L21 4Z" fill="url(#txt3d_fold)" />
       <path d="M9 4.5H20.5L28.5 12.5V30C28.5 30.8284 27.8284 31.5 27 31.5H9C8.17157 31.5 7.5 30.8284 7.5 30V6C7.5 5.17157 8.17157 4.5 9 4.5Z" stroke="white" strokeOpacity="0.25" strokeWidth="1" />
@@ -165,11 +150,8 @@ export const Html3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 
         <stop offset="0%" stopColor="#06B6D4" />
         <stop offset="100%" stopColor="#0E7490" />
       </linearGradient>
-      <filter id="h3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#164E63" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#h3d_shadow)">
+      </defs>
+    <g>
       <rect x="5" y="6" width="26" height="24" rx="5" fill="url(#h3d_base)" />
       <rect x="5.5" y="6.5" width="25" height="23" rx="4.5" stroke="white" strokeOpacity="0.3" />
       <circle cx="9.5" cy="10.5" r="1" fill="white" fillOpacity="0.8" />
@@ -193,11 +175,8 @@ export const Merge3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7
         <stop offset="0%" stopColor="#FB7185" />
         <stop offset="100%" stopColor="#E11D48" />
       </linearGradient>
-      <filter id="mrg3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#881337" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#mrg3d_shadow)">
+      </defs>
+    <g>
       <rect x="6" y="5" width="17" height="21" rx="3.5" fill="url(#mrg3d_1)" />
       <rect x="13" y="10" width="17" height="21" rx="3.5" fill="url(#mrg3d_2)" />
       <rect x="13.5" y="10.5" width="16" height="20" rx="3" stroke="white" strokeOpacity="0.3" />
@@ -210,20 +189,32 @@ export const Merge3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7
 export const Split3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 h-7' }) => (
   <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <defs>
-      <linearGradient id="splt3d_base" x1="6" y1="4" x2="28" y2="32" gradientUnits="userSpaceOnUse">
+      <linearGradient id="splt3d_card" x1="5" y1="5" x2="31" y2="31" gradientUnits="userSpaceOnUse">
         <stop offset="0%" stopColor="#A855F7" />
         <stop offset="100%" stopColor="#7E22CE" />
       </linearGradient>
-      <filter id="splt3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#581C87" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#splt3d_shadow)">
-      <path d="M7 6C7 4.89543 7.89543 4 9 4H16V32H9C7.89543 32 7 31.1046 7 30V6Z" fill="url(#splt3d_base)" />
-      <path d="M20 4H27C28.1046 4 29 4.89543 29 6V30C29 31.1046 28.1046 32 27 32H20V4Z" fill="url(#splt3d_base)" />
-      <circle cx="15" cy="18" r="2.5" stroke="white" strokeWidth="1.5" />
-      <circle cx="21" cy="18" r="2.5" stroke="white" strokeWidth="1.5" />
-      <path d="M16.5 16.5L21 12M19.5 16.5L15 12" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+      <linearGradient id="splt3d_split" x1="14" y1="8" x2="22" y2="28" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FFFFFF" />
+        <stop offset="100%" stopColor="#F3E8FF" />
+      </linearGradient>
+      </defs>
+    <g>
+      {/* 3D Purple Card Base */}
+      <rect x="6" y="5" width="24" height="26" rx="5" fill="url(#splt3d_card)" />
+      <rect x="6.5" y="5.5" width="23" height="25" rx="4.5" stroke="white" strokeOpacity="0.3" strokeWidth="1" />
+      
+      {/* Center Dashed Separation Line */}
+      <line x1="18" y1="8" x2="18" y2="28" stroke="white" strokeOpacity="0.4" strokeWidth="1.5" strokeDasharray="2 2" />
+      
+      {/* Left Sheet Segment */}
+      <rect x="9" y="9" width="6.5" height="18" rx="2" fill="url(#splt3d_split)" />
+      {/* Right Sheet Segment */}
+      <rect x="20.5" y="9" width="6.5" height="18" rx="2" fill="url(#splt3d_split)" />
+      
+      {/* Scissor / Cut Icon in center */}
+      <circle cx="15.5" cy="18" r="2" fill="#7E22CE" />
+      <circle cx="20.5" cy="18" r="2" fill="#7E22CE" />
+      <path d="M16 16.5L20 19.5M20 16.5L16 19.5" stroke="white" strokeWidth="1.2" strokeLinecap="round" />
     </g>
   </svg>
 );
@@ -235,11 +226,8 @@ export const RemovePages3DIcon: React.FC<{ className?: string }> = ({ className 
         <stop offset="0%" stopColor="#EF4444" />
         <stop offset="100%" stopColor="#B91C1C" />
       </linearGradient>
-      <filter id="rm3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#7F1D1D" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#rm3d_shadow)">
+      </defs>
+    <g>
       <rect x="7" y="5" width="22" height="26" rx="4" fill="url(#rm3d_base)" />
       <rect x="7.5" y="5.5" width="21" height="25" rx="3.5" stroke="white" strokeOpacity="0.3" />
       <circle cx="18" cy="18" r="6" fill="#7F1D1D" fillOpacity="0.45" />
@@ -259,11 +247,8 @@ export const ExtractPages3DIcon: React.FC<{ className?: string }> = ({ className
         <stop offset="0%" stopColor="#38BDF8" />
         <stop offset="100%" stopColor="#0284C7" />
       </linearGradient>
-      <filter id="ext3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#0369A1" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#ext3d_shadow)">
+      </defs>
+    <g>
       <rect x="11" y="11" width="18" height="20" rx="3.5" fill="url(#ext3d_back)" opacity="0.6" />
       <rect x="7" y="5" width="18" height="20" rx="3.5" fill="url(#ext3d_front)" />
       <rect x="7.5" y="5.5" width="17" height="19" rx="3" stroke="white" strokeOpacity="0.3" />
@@ -279,11 +264,8 @@ export const Organize3DIcon: React.FC<{ className?: string }> = ({ className = '
         <stop offset="0%" stopColor="#8B5CF6" />
         <stop offset="100%" stopColor="#6D28D9" />
       </linearGradient>
-      <filter id="org3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#4C1D95" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#org3d_shadow)">
+      </defs>
+    <g>
       <rect x="6" y="6" width="10.5" height="10.5" rx="2.5" fill="url(#org3d_base)" />
       <rect x="19.5" y="6" width="10.5" height="10.5" rx="2.5" fill="url(#org3d_base)" opacity="0.75" />
       <rect x="6" y="19.5" width="10.5" height="10.5" rx="2.5" fill="url(#org3d_base)" opacity="0.75" />
@@ -305,11 +287,8 @@ export const Sign3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 
         <stop offset="0%" stopColor="#1E293B" />
         <stop offset="100%" stopColor="#0F172A" />
       </linearGradient>
-      <filter id="sgn3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#78350F" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#sgn3d_shadow)">
+      </defs>
+    <g>
       <rect x="6" y="5" width="20" height="26" rx="4" fill="url(#sgn3d_base)" />
       <rect x="6.5" y="5.5" width="19" height="25" rx="3.5" stroke="white" strokeOpacity="0.3" />
       <path d="M10 24C12 21 14 25 16 23C18 21 19 24 21 24" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
@@ -327,11 +306,8 @@ export const Watermark3DIcon: React.FC<{ className?: string }> = ({ className = 
         <stop offset="0%" stopColor="#06B6D4" />
         <stop offset="100%" stopColor="#0891B2" />
       </linearGradient>
-      <filter id="wtm3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#164E63" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#wtm3d_shadow)">
+      </defs>
+    <g>
       <rect x="7" y="5" width="22" height="26" rx="4" fill="url(#wtm3d_base)" />
       <rect x="7.5" y="5.5" width="21" height="25" rx="3.5" stroke="white" strokeOpacity="0.3" />
       <circle cx="18" cy="18" r="6.5" stroke="white" strokeWidth="1.5" strokeDasharray="2 2" />
@@ -352,11 +328,8 @@ export const Protect3DIcon: React.FC<{ className?: string }> = ({ className = 'w
         <stop offset="0%" stopColor="#FDE047" />
         <stop offset="100%" stopColor="#CA8A04" />
       </linearGradient>
-      <filter id="prt3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#881337" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#prt3d_shadow)">
+      </defs>
+    <g>
       <rect x="7" y="5" width="22" height="26" rx="4" fill="url(#prt3d_base)" />
       <rect x="7.5" y="5.5" width="21" height="25" rx="3.5" stroke="white" strokeOpacity="0.3" />
       <path d="M14 17V13C14 10.7909 15.7909 9 18 9C20.2091 9 22 10.7909 22 13V17" stroke="#FEF08A" strokeWidth="2.2" strokeLinecap="round" />
@@ -378,11 +351,8 @@ export const Unlock3DIcon: React.FC<{ className?: string }> = ({ className = 'w-
         <stop offset="0%" stopColor="#A7F3D0" />
         <stop offset="100%" stopColor="#34D399" />
       </linearGradient>
-      <filter id="unl3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#064E3B" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#unl3d_shadow)">
+      </defs>
+    <g>
       <rect x="7" y="5" width="22" height="26" rx="4" fill="url(#unl3d_base)" />
       <rect x="7.5" y="5.5" width="21" height="25" rx="3.5" stroke="white" strokeOpacity="0.3" />
       <path d="M14 13V11C14 8.79086 15.7909 7 18 7C20.2091 7 22 8.79086 22 11" stroke="white" strokeWidth="2.2" strokeLinecap="round" />
@@ -400,11 +370,8 @@ export const Flatten3DIcon: React.FC<{ className?: string }> = ({ className = 'w
         <stop offset="0%" stopColor="#D97706" />
         <stop offset="100%" stopColor="#B45309" />
       </linearGradient>
-      <filter id="flt3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#78350F" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#flt3d_shadow)">
+      </defs>
+    <g>
       <rect x="6" y="8" width="24" height="5" rx="2" fill="#FDE68A" />
       <rect x="6" y="15" width="24" height="5" rx="2" fill="#F59E0B" />
       <rect x="6" y="22" width="24" height="7" rx="2.5" fill="url(#flt3d_base)" />
@@ -424,11 +391,8 @@ export const Compare3DIcon: React.FC<{ className?: string }> = ({ className = 'w
         <stop offset="0%" stopColor="#38BDF8" />
         <stop offset="100%" stopColor="#0284C7" />
       </linearGradient>
-      <filter id="cmp3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#0F172A" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#cmp3d_shadow)">
+      </defs>
+    <g>
       <rect x="5" y="6" width="13" height="24" rx="3" fill="url(#cmp3d_1)" />
       <rect x="18" y="6" width="13" height="24" rx="3" fill="url(#cmp3d_2)" />
       <rect x="18.5" y="6.5" width="12" height="23" rx="2.5" stroke="white" strokeOpacity="0.3" />
@@ -447,11 +411,8 @@ export const Compress3DIcon: React.FC<{ className?: string }> = ({ className = '
         <stop offset="0%" stopColor="#14B8A6" />
         <stop offset="100%" stopColor="#0F766E" />
       </linearGradient>
-      <filter id="cps3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#134E4A" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#cps3d_shadow)">
+      </defs>
+    <g>
       <rect x="7" y="5" width="22" height="26" rx="4" fill="url(#cps3d_base)" />
       <rect x="7.5" y="5.5" width="21" height="25" rx="3.5" stroke="white" strokeOpacity="0.3" />
       <path d="M12 18H16M16 18L14 16M16 18L14 20" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -476,11 +437,8 @@ export const Pdf3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 h
         <stop offset="0%" stopColor="#991B1B" />
         <stop offset="100%" stopColor="#7F1D1D" />
       </linearGradient>
-      <filter id="pdf3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#7F1D1D" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#pdf3d_shadow)">
+      </defs>
+    <g>
       <path d="M7 6C7 4.89543 7.89543 4 9 4H21L29 12V30C29 31.1046 28.1046 32 27 32H9C7.89543 32 7 31.1046 7 30V6Z" fill="url(#pdf3d_base)" />
       <path d="M21 4V10C21 11.1046 21.8954 12 23 12H29L21 4Z" fill="url(#pdf3d_fold)" />
       <path d="M9 4.5H20.5L28.5 12.5V30C28.5 30.8284 27.8284 31.5 27 31.5H9C8.17157 31.5 7.5 30.8284 7.5 30V6C7.5 5.17157 8.17157 4.5 9 4.5Z" stroke="white" strokeOpacity="0.25" strokeWidth="1" />
@@ -503,11 +461,8 @@ export const Upload3DIcon: React.FC<{ className?: string }> = ({ className = 'w-
         <stop offset="0%" stopColor="#FFFFFF" />
         <stop offset="100%" stopColor="#F5F5F5" />
       </linearGradient>
-      <filter id="up3d_shadow" x="2" y="4" width="44" height="42" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="2" floodColor="#B45309" floodOpacity="0.25" />
-      </filter>
-    </defs>
-    <g filter="url(#up3d_shadow)">
+      </defs>
+    <g>
       <path d="M6 14C6 11.7909 7.79086 10 10 10H19.5L24 14H38C40.2091 14 42 15.7909 42 18V38C42 40.2091 40.2091 42 38 42H10C7.79086 42 6 40.2091 6 38V14Z" fill="url(#up3d_folder)" />
       <path d="M6 16H42V38C42 40.2091 40.2091 42 38 42H10C7.79086 42 6 40.2091 6 38V16Z" fill="#FFC800" />
       <rect x="6.5" y="14.5" width="35" height="27" rx="3.5" stroke="white" strokeOpacity="0.35" />
@@ -525,11 +480,8 @@ export const Flash3DIcon: React.FC<{ className?: string }> = ({ className = 'w-1
         <stop offset="50%" stopColor="#F59E0B" />
         <stop offset="100%" stopColor="#D97706" />
       </linearGradient>
-      <filter id="fl3d_shadow" x="4" y="2" width="32" height="36" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="2" floodColor="#B45309" floodOpacity="0.3" />
-      </filter>
-    </defs>
-    <g filter="url(#fl3d_shadow)">
+      </defs>
+    <g>
       <path d="M22 4L10 20H19L16 36L30 18H21L24 4H22Z" fill="url(#fl3d_grad)" />
       <path d="M21 6L12 19H19L17 32L27 19H21L23 6H21Z" fill="white" fillOpacity="0.35" />
     </g>
@@ -543,11 +495,8 @@ export const Shield3DIcon: React.FC<{ className?: string }> = ({ className = 'w-
         <stop offset="0%" stopColor="#34D399" />
         <stop offset="100%" stopColor="#059669" />
       </linearGradient>
-      <filter id="sh3d_shadow" x="4" y="2" width="32" height="36" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="2" floodColor="#065F46" floodOpacity="0.3" />
-      </filter>
-    </defs>
-    <g filter="url(#sh3d_shadow)">
+      </defs>
+    <g>
       <path d="M20 4L32 9V19C32 27 26.5 33.5 20 36C13.5 33.5 8 27 8 19V9L20 4Z" fill="url(#sh3d_grad)" />
       <path d="M20 6.5L29.5 10.5V18.5C29.5 25 25 30.5 20 32.5V6.5Z" fill="white" fillOpacity="0.2" />
       <path d="M15 19L18.5 22.5L25 15.5" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -562,11 +511,8 @@ export const Mouse3DIcon: React.FC<{ className?: string }> = ({ className = 'w-1
         <stop offset="0%" stopColor="#60A5FA" />
         <stop offset="100%" stopColor="#2563EB" />
       </linearGradient>
-      <filter id="mo3d_shadow" x="6" y="4" width="28" height="34" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="2" floodColor="#1E40AF" floodOpacity="0.25" />
-      </filter>
-    </defs>
-    <g filter="url(#mo3d_shadow)">
+      </defs>
+    <g>
       <rect x="11" y="6" width="18" height="28" rx="9" fill="url(#mo3d_grad)" stroke="white" strokeWidth="1.2" />
       <rect x="18.5" y="10" width="3" height="6" rx="1.5" fill="white" />
     </g>
@@ -580,11 +526,8 @@ export const Cycle3DIcon: React.FC<{ className?: string }> = ({ className = 'w-1
         <stop offset="0%" stopColor="#A855F7" />
         <stop offset="100%" stopColor="#7E22CE" />
       </linearGradient>
-      <filter id="cy3d_shadow" x="4" y="4" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="2" floodColor="#581C87" floodOpacity="0.25" />
-      </filter>
-    </defs>
-    <g filter="url(#cy3d_shadow)">
+      </defs>
+    <g>
       <circle cx="20" cy="20" r="14" fill="url(#cy3d_grad)" />
       <circle cx="20" cy="20" r="13" stroke="white" strokeWidth="1" strokeOpacity="0.3" />
       <path d="M20 12C15.6 12 12 15.6 12 20H10L13.5 24L17 20H15C15 17.2 17.2 15 20 15C22.8 15 25 17.2 25 20C25 22.8 22.8 25 20 25C18.6 25 17.3 24.4 16.5 23.5L14.4 25.6C15.8 27.1 17.8 28 20 28C24.4 28 28 24.4 28 20C28 15.6 24.4 12 20 12Z" fill="white" />
@@ -611,11 +554,8 @@ export const Chart3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7
         <stop offset="0%" stopColor="#34D399" />
         <stop offset="100%" stopColor="#059669" />
       </linearGradient>
-      <filter id="ch3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#0F172A" floodOpacity="0.32" />
-      </filter>
-    </defs>
-    <g filter="url(#ch3d_shadow)">
+      </defs>
+    <g>
       <rect x="4" y="4" width="28" height="28" rx="6" fill="url(#ch3d_card)" />
       <rect x="4.5" y="4.5" width="27" height="27" rx="5.5" stroke="white" strokeOpacity="0.18" strokeWidth="1" />
       <line x1="8" y1="14" x2="28" y2="14" stroke="white" strokeOpacity="0.08" strokeDasharray="2 2" />
@@ -651,11 +591,8 @@ export const Folder3DIcon: React.FC<{ className?: string }> = ({ className = 'w-
         <stop offset="0%" stopColor="#E0F2FE" />
         <stop offset="100%" stopColor="#BAE6FD" />
       </linearGradient>
-      <filter id="fld3d_shadow" x="2" y="3" width="32" height="30" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#B45309" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#fld3d_shadow)">
+      </defs>
+    <g>
       <path d="M4 10C4 8.34315 5.34315 7 7 7H13.5L16.5 10H29C30.6569 10 32 11.3431 32 13V26C32 27.6569 30.6569 29 29 29H7C5.34315 29 4 27.6569 4 26V10Z" fill="url(#fld3d_back)" />
       <rect x="9" y="6" width="15" height="15" rx="2" fill="url(#fld3d_sheet1)" stroke="#CBD5E1" strokeWidth="0.8" />
       <line x1="12" y1="9.5" x2="19" y2="9.5" stroke="#94A3B8" strokeWidth="1.2" strokeLinecap="round" />
@@ -688,11 +625,8 @@ export const CreditCard3DIcon: React.FC<{ className?: string }> = ({ className =
         <stop offset="50%" stopColor="#F59E0B" stopOpacity="0.5" />
         <stop offset="100%" stopColor="#E11D48" stopOpacity="0.6" />
       </linearGradient>
-      <filter id="cc3d_shadow" x="2" y="5" width="32" height="26" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#0F172A" floodOpacity="0.32" />
-      </filter>
-    </defs>
-    <g filter="url(#cc3d_shadow)">
+      </defs>
+    <g>
       <rect x="4" y="8" width="28" height="20" rx="4" fill="url(#cc3d_card)" />
       <rect x="4.5" y="8.5" width="27" height="19" rx="3.5" stroke="white" strokeOpacity="0.25" strokeWidth="1" />
       <path d="M4 12H32V15H4V12Z" fill="url(#cc3d_ribbon)" />
@@ -723,11 +657,8 @@ export const User3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 
         <stop offset="0%" stopColor="#EEF2FF" />
         <stop offset="100%" stopColor="#C7D2FE" />
       </linearGradient>
-      <filter id="usr3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#312E81" floodOpacity="0.3" />
-      </filter>
-    </defs>
-    <g filter="url(#usr3d_shadow)">
+      </defs>
+    <g>
       <circle cx="18" cy="18" r="14" fill="url(#usr3d_bg)" />
       <circle cx="18" cy="18" r="13.5" stroke="white" strokeOpacity="0.3" strokeWidth="1" />
       <path d="M7 14C9 8 27 8 29 14" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.4" />
@@ -750,11 +681,8 @@ export const Clock3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7
         <stop offset="0%" stopColor="#FFFFFF" />
         <stop offset="100%" stopColor="#F1F5F9" />
       </linearGradient>
-      <filter id="clk3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#064E3B" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#clk3d_shadow)">
+      </defs>
+    <g>
       <rect x="16" y="2" width="4" height="3" rx="1" fill="#047857" />
       <rect x="15" y="1.5" width="6" height="1.5" rx="0.75" fill="#34D399" />
       <circle cx="18" cy="19" r="13" fill="url(#clk3d_rim)" />
@@ -783,11 +711,8 @@ export const Storage3DIcon: React.FC<{ className?: string }> = ({ className = 'w
         <stop offset="0%" stopColor="#1E293B" />
         <stop offset="100%" stopColor="#0F172A" />
       </linearGradient>
-      <filter id="stg3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#1E3A8A" floodOpacity="0.28" />
-      </filter>
-    </defs>
-    <g filter="url(#stg3d_shadow)">
+      </defs>
+    <g>
       <rect x="6" y="5" width="24" height="26" rx="5" fill="url(#stg3d_base)" />
       <rect x="6.5" y="5.5" width="23" height="25" rx="4.5" stroke="white" strokeOpacity="0.3" strokeWidth="1" />
       <rect x="9" y="8" width="18" height="6" rx="2" fill="url(#stg3d_bay)" />
@@ -809,32 +734,34 @@ export const Storage3DIcon: React.FC<{ className?: string }> = ({ className = 'w
 export const Crown3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 h-7' }) => (
   <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <defs>
-      <linearGradient id="crn3d_gold" x1="4" y1="6" x2="32" y2="30" gradientUnits="userSpaceOnUse">
+      <linearGradient id="crw3d_base" x1="4" y1="4" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#1E293B" />
+        <stop offset="100%" stopColor="#0F172A" />
+      </linearGradient>
+      <linearGradient id="crw3d_gold" x1="8" y1="10" x2="28" y2="28" gradientUnits="userSpaceOnUse">
         <stop offset="0%" stopColor="#FDE047" />
         <stop offset="50%" stopColor="#F59E0B" />
         <stop offset="100%" stopColor="#D97706" />
       </linearGradient>
-      <linearGradient id="crn3d_rim" x1="6" y1="24" x2="30" y2="30" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#B45309" />
-        <stop offset="100%" stopColor="#78350F" />
-      </linearGradient>
-      <filter id="crn3d_shadow" x="2" y="4" width="32" height="28" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#78350F" floodOpacity="0.32" />
-      </filter>
     </defs>
-    <g filter="url(#crn3d_shadow)">
-      <path d="M6 25L9 9L15 17L18 7L21 17L27 9L30 25H6Z" fill="url(#crn3d_gold)" />
-      <path d="M6 25L9 9L15 17L18 7L21 17L27 9L30 25H6Z" stroke="white" strokeOpacity="0.35" strokeWidth="1" />
-      <path d="M18 7L15 17L18 25L21 17L18 7Z" fill="white" fillOpacity="0.25" />
-      <path d="M9 9L13 25H6L9 9Z" fill="white" fillOpacity="0.18" />
-      <path d="M27 9L30 25H23L27 9Z" fill="#78350F" fillOpacity="0.2" />
-      <rect x="5" y="24" width="26" height="5" rx="2.5" fill="url(#crn3d_rim)" stroke="#FDE047" strokeWidth="0.8" />
-      <circle cx="9" cy="9" r="2" fill="#EF4444" stroke="#FDE047" strokeWidth="0.8" />
-      <circle cx="18" cy="7" r="2.5" fill="#3B82F6" stroke="#FDE047" strokeWidth="0.8" />
-      <circle cx="27" cy="9" r="2" fill="#10B981" stroke="#FDE047" strokeWidth="0.8" />
-      <circle cx="12" cy="26.5" r="1.2" fill="#EF4444" />
-      <circle cx="18" cy="26.5" r="1.5" fill="#3B82F6" />
-      <circle cx="24" cy="26.5" r="1.2" fill="#10B981" />
+    <g>
+      {/* 3D Dark Titanium Squircle Container */}
+      <rect x="4" y="4" width="28" height="28" rx="7" fill="url(#crw3d_base)" />
+      <rect x="4.5" y="4.5" width="27" height="27" rx="6.5" stroke="#FFC800" strokeOpacity="0.4" strokeWidth="1" />
+      
+      {/* 3D Geometric Gold Crown */}
+      <path
+        d="M9 24L10.5 14L15 19L18 11L21 19L25.5 14L27 24H9Z"
+        fill="url(#crw3d_gold)"
+      />
+      {/* Crown Base Gem Bar */}
+      <rect x="9" y="23" width="18" height="2.5" rx="1.25" fill="#B45309" />
+      <circle cx="18" cy="11" r="1.5" fill="#FEF08A" />
+      <circle cx="10.5" cy="14" r="1.2" fill="#FEF08A" />
+      <circle cx="25.5" cy="14" r="1.2" fill="#FEF08A" />
+      <circle cx="14" cy="24.2" r="0.75" fill="#38BDF8" />
+      <circle cx="18" cy="24.2" r="0.75" fill="#EF4444" />
+      <circle cx="22" cy="24.2" r="0.75" fill="#38BDF8" />
     </g>
   </svg>
 );
@@ -842,28 +769,21 @@ export const Crown3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7
 export const Diamond3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 h-7' }) => (
   <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <defs>
-      <linearGradient id="dia3d_top" x1="6" y1="8" x2="30" y2="16" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#38BDF8" />
-        <stop offset="100%" stopColor="#818CF8" />
+      <linearGradient id="dmd3d_base" x1="4" y1="4" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#0F172A" />
+        <stop offset="100%" stopColor="#020617" />
       </linearGradient>
-      <linearGradient id="dia3d_btm" x1="6" y1="16" x2="30" y2="30" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#0284C7" />
-        <stop offset="100%" stopColor="#4F46E5" />
+      <linearGradient id="dmd3d_gem" x1="8" y1="8" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#BAE6FD" />
+        <stop offset="50%" stopColor="#38BDF8" />
+        <stop offset="100%" stopColor="#0284C7" />
       </linearGradient>
-      <filter id="dia3d_shadow" x="2" y="4" width="32" height="28" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#312E81" floodOpacity="0.32" />
-      </filter>
     </defs>
-    <g filter="url(#dia3d_shadow)">
-      <polygon points="11,8 25,8 31,15 5,15" fill="url(#dia3d_top)" />
-      <polygon points="5,15 31,15 18,30" fill="url(#dia3d_btm)" />
-      <polygon points="11,8 15,15 7,15" fill="white" fillOpacity="0.4" />
-      <polygon points="25,8 29,15 21,15" fill="#1E1B4B" fillOpacity="0.3" />
-      <polygon points="15,8 21,8 18,15" fill="white" fillOpacity="0.6" />
-      <polygon points="18,15 11,15 18,30" fill="white" fillOpacity="0.25" />
-      <polygon points="18,15 25,15 18,30" fill="#1E1B4B" fillOpacity="0.2" />
-      <polygon points="11,8 25,8 31,15 18,30 5,15" stroke="white" strokeOpacity="0.4" strokeWidth="1" />
-      <path d="M26 6L27 9L30 10L27 11L26 14L25 11L22 10L25 9L26 6Z" fill="#FDE047" />
+    <g>
+      <rect x="4" y="4" width="28" height="28" rx="7" fill="url(#dmd3d_base)" />
+      <rect x="4.5" y="4.5" width="27" height="27" rx="6.5" stroke="#38BDF8" strokeOpacity="0.4" strokeWidth="1" />
+      <path d="M12 12H24L28 17L18 27L8 17L12 12Z" fill="url(#dmd3d_gem)" />
+      <path d="M8 17H28M12 12L15 17L18 27L21 17L24 12M15 17L18 12L21 17" stroke="white" strokeWidth="0.8" strokeOpacity="0.6" />
     </g>
   </svg>
 );
@@ -875,11 +795,8 @@ export const Receipt3DIcon: React.FC<{ className?: string }> = ({ className = 'w
         <stop offset="0%" stopColor="#FFFFFF" />
         <stop offset="100%" stopColor="#F1F5F9" />
       </linearGradient>
-      <filter id="rcp3d_shadow" x="3" y="2" width="30" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#475569" floodOpacity="0.25" />
-      </filter>
-    </defs>
-    <g filter="url(#rcp3d_shadow)">
+      </defs>
+    <g>
       <path d="M8 5L10 4L12 5L14 4L16 5L18 4L20 5L22 4L24 5L26 4L28 5V30L26 31L24 30L22 31L20 30L18 31L16 30L14 31L12 30L10 31L8 30V5Z" fill="url(#rcp3d_paper)" stroke="#CBD5E1" strokeWidth="1" />
       <rect x="11" y="8" width="14" height="2.5" rx="1.25" fill="#1E293B" />
       <line x1="11" y1="13.5" x2="20" y2="13.5" stroke="#94A3B8" strokeWidth="1.2" strokeLinecap="round" />
@@ -903,11 +820,8 @@ export const Star3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 
         <stop offset="50%" stopColor="#F59E0B" />
         <stop offset="100%" stopColor="#D97706" />
       </linearGradient>
-      <filter id="str3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#B45309" floodOpacity="0.32" />
-      </filter>
-    </defs>
-    <g filter="url(#str3d_shadow)">
+      </defs>
+    <g>
       <polygon points="18,4 22.3,13 32,14.4 25,21.2 26.7,31 18,26.3 9.3,31 11,21.2 4,14.4 13.7,13" fill="url(#str3d_gold)" />
       <polygon points="18,4 18,26.3 13.7,13" fill="white" fillOpacity="0.4" />
       <polygon points="18,4 22.3,13 18,26.3" fill="white" fillOpacity="0.2" />
@@ -929,11 +843,8 @@ export const Trash3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7
         <stop offset="0%" stopColor="#F87171" />
         <stop offset="100%" stopColor="#DC2626" />
       </linearGradient>
-      <filter id="trh3d_shadow" x="3" y="4" width="30" height="28" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#7F1D1D" floodOpacity="0.3" />
-      </filter>
-    </defs>
-    <g filter="url(#trh3d_shadow)">
+      </defs>
+    <g>
       <path d="M10 13L12 29C12 30.1046 12.8954 31 14 31H22C23.1046 31 24 30.1046 24 29L26 13H10Z" fill="url(#trh3d_body)" />
       <path d="M10 13L12 29C12 30.1046 12.8954 31 14 31H22C23.1046 31 24 30.1046 24 29L26 13H10Z" stroke="white" strokeOpacity="0.25" strokeWidth="0.8" />
       <line x1="14.5" y1="16" x2="15.5" y2="28" stroke="white" strokeOpacity="0.4" strokeWidth="1.2" strokeLinecap="round" />
@@ -952,11 +863,8 @@ export const Security3DIcon: React.FC<{ className?: string }> = ({ className = '
         <stop offset="0%" stopColor="#10B981" />
         <stop offset="100%" stopColor="#047857" />
       </linearGradient>
-      <filter id="sec3d_shadow" x="2" y="2" width="32" height="32" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2.5" stdDeviation="1.8" floodColor="#064E3B" floodOpacity="0.3" />
-      </filter>
-    </defs>
-    <g filter="url(#sec3d_shadow)">
+      </defs>
+    <g>
       <path d="M18 4L29 8.5V17C29 24.2 24.2 30 18 32C11.8 30 7 24.2 7 17V8.5L18 4Z" fill="url(#sec3d_shield)" />
       <path d="M18 6.2L26.8 9.8V16.6C26.8 22.4 23 27 18 29.8V6.2Z" fill="white" fillOpacity="0.2" />
       <path d="M18 4L29 8.5V17C29 24.2 24.2 30 18 32C11.8 30 7 24.2 7 17V8.5L18 4Z" stroke="white" strokeOpacity="0.3" strokeWidth="1" />
@@ -965,6 +873,96 @@ export const Security3DIcon: React.FC<{ className?: string }> = ({ className = '
     </g>
   </svg>
 );
+
+export const QrCode3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 h-7' }) => (
+  <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <defs>
+      <linearGradient id="qr3d_base" x1="4" y1="4" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#1E293B" />
+        <stop offset="100%" stopColor="#0F172A" />
+      </linearGradient>
+      <linearGradient id="qr3d_accent" x1="6" y1="6" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FFD233" />
+        <stop offset="100%" stopColor="#FFB703" />
+      </linearGradient>
+      <linearGradient id="qr3d_inner" x1="6" y1="6" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FFFFFF" />
+        <stop offset="100%" stopColor="#F8FAFC" />
+      </linearGradient>
+      </defs>
+    <g>
+      {/* Outer 3D Rounded Card */}
+      <rect x="4" y="4" width="28" height="28" rx="7" fill="url(#qr3d_base)" />
+      <rect x="4.5" y="4.5" width="27" height="27" rx="6.5" stroke="white" strokeOpacity="0.25" strokeWidth="1" />
+      <rect x="5.5" y="5.5" width="25" height="25" rx="5.5" fill="url(#qr3d_inner)" />
+      
+      {/* Top-Left QR Target Finder */}
+      <rect x="8" y="8" width="7" height="7" rx="2" fill="#0F172A" />
+      <rect x="9.5" y="9.5" width="4" height="4" rx="1" fill="#FFFFFF" />
+      <rect x="10.5" y="10.5" width="2" height="2" rx="0.5" fill="url(#qr3d_accent)" />
+
+      {/* Top-Right QR Target Finder */}
+      <rect x="21" y="8" width="7" height="7" rx="2" fill="#0F172A" />
+      <rect x="22.5" y="9.5" width="4" height="4" rx="1" fill="#FFFFFF" />
+      <rect x="23.5" y="10.5" width="2" height="2" rx="0.5" fill="url(#qr3d_accent)" />
+
+      {/* Bottom-Left QR Target Finder */}
+      <rect x="8" y="21" width="7" height="7" rx="2" fill="#0F172A" />
+      <rect x="9.5" y="22.5" width="4" height="4" rx="1" fill="#FFFFFF" />
+      <rect x="10.5" y="23.5" width="2" height="2" rx="0.5" fill="url(#qr3d_accent)" />
+
+      {/* Data Pixels with 3D Depth */}
+      <rect x="16.5" y="8.5" width="2.5" height="2.5" rx="0.6" fill="#0F172A" />
+      <rect x="16.5" y="12.5" width="2.5" height="2.5" rx="0.6" fill="#0F172A" />
+      <rect x="12.5" y="16.5" width="2.5" height="2.5" rx="0.6" fill="#0F172A" />
+      <rect x="16.5" y="16.5" width="2.5" height="2.5" rx="0.6" fill="url(#qr3d_accent)" />
+      <rect x="21" y="16.5" width="2.5" height="2.5" rx="0.6" fill="#0F172A" />
+      <rect x="25.5" y="16.5" width="2.5" height="2.5" rx="0.6" fill="#0F172A" />
+      <rect x="16.5" y="21" width="2.5" height="2.5" rx="0.6" fill="#0F172A" />
+      <rect x="21" y="21" width="2.5" height="2.5" rx="0.6" fill="url(#qr3d_accent)" />
+      <rect x="25.5" y="21" width="2.5" height="2.5" rx="0.6" fill="#0F172A" />
+      <rect x="16.5" y="25.5" width="2.5" height="2.5" rx="0.6" fill="#0F172A" />
+      <rect x="21" y="25.5" width="2.5" height="2.5" rx="0.6" fill="#0F172A" />
+      <rect x="25.5" y="25.5" width="2.5" height="2.5" rx="0.6" fill="url(#qr3d_accent)" />
+    </g>
+  </svg>
+);
+
+export const Barcode3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 h-7' }) => (
+  <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <defs>
+      <linearGradient id="bc3d_base" x1="4" y1="4" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#1E293B" />
+        <stop offset="100%" stopColor="#0F172A" />
+      </linearGradient>
+      <linearGradient id="bc3d_inner" x1="6" y1="6" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FFFFFF" />
+        <stop offset="100%" stopColor="#F8FAFC" />
+      </linearGradient>
+      </defs>
+    <g>
+      <rect x="4" y="4" width="28" height="28" rx="7" fill="url(#bc3d_base)" />
+      <rect x="4.5" y="4.5" width="27" height="27" rx="6.5" stroke="white" strokeOpacity="0.25" strokeWidth="1" />
+      <rect x="5.5" y="5.5" width="25" height="25" rx="5.5" fill="url(#bc3d_inner)" />
+      
+      {/* Vertical Barcode Lines */}
+      <rect x="8" y="9" width="1.5" height="15" rx="0.5" fill="#0F172A" />
+      <rect x="10.5" y="9" width="2.5" height="15" rx="0.5" fill="#0F172A" />
+      <rect x="14" y="9" width="1" height="15" rx="0.5" fill="#0F172A" />
+      <rect x="16" y="9" width="3" height="15" rx="0.5" fill="#FFB703" />
+      <rect x="20" y="9" width="1.5" height="15" rx="0.5" fill="#0F172A" />
+      <rect x="22.5" y="9" width="1" height="15" rx="0.5" fill="#0F172A" />
+      <rect x="24.5" y="9" width="3" height="15" rx="0.5" fill="#0F172A" />
+      
+      {/* Numbers underneath */}
+      <rect x="9" y="26" width="3" height="1.5" rx="0.5" fill="#64748B" />
+      <rect x="14" y="26" width="8" height="1.5" rx="0.5" fill="#64748B" />
+      <rect x="24" y="26" width="3" height="1.5" rx="0.5" fill="#64748B" />
+    </g>
+  </svg>
+);
+
+
 
 const THREE_D_ICON_MAP: Record<string, React.FC<{ className?: string }>> = {
   pdf: Pdf3DIcon,
@@ -986,6 +984,10 @@ const THREE_D_ICON_MAP: Record<string, React.FC<{ className?: string }>> = {
   flatten: Flatten3DIcon,
   compare: Compare3DIcon,
   compress: Compress3DIcon,
+  qrcode: QrCode3DIcon,
+  qr: QrCode3DIcon,
+  barcode: Barcode3DIcon,
+  stamp: Barcode3DIcon,
   upload: Upload3DIcon,
   flash: Flash3DIcon,
   shield: Shield3DIcon,
@@ -1037,6 +1039,8 @@ export function getTool3DIcon(toolId?: string, iconName?: string): string {
   if (!toolId && !iconName) return 'pdf';
   const id = (toolId || '').toLowerCase();
   
+  if (id.includes('stamp') || id.includes('barcode')) return 'barcode';
+  if (id.includes('qr') || id.includes('qrcode')) return 'qrcode';
   if (id === 'pdf-to-word' || id === 'word-to-pdf') return 'word';
   if (id === 'pdf-to-excel' || id === 'excel-to-pdf' || id.includes('csv') || id.includes('excel')) return 'excel';
   if (id === 'pdf-to-ppt' || id === 'ppt-to-pdf' || id.includes('ppt') || id.includes('presentation')) return 'ppt';
@@ -1058,6 +1062,8 @@ export function getTool3DIcon(toolId?: string, iconName?: string): string {
 
   // Fallback by iconName
   const icon = (iconName || '').toLowerCase();
+  if (icon.includes('barcode') || icon.includes('stamp')) return 'barcode';
+  if (icon.includes('qr')) return 'qrcode';
   if (icon.includes('filetext') || icon.includes('fileplus')) return 'word';
   if (icon.includes('table') || icon.includes('sheet') || icon.includes('spreadsheet')) return 'excel';
   if (icon.includes('presentation')) return 'ppt';
@@ -1129,6 +1135,8 @@ export function getFile3DIcon(filename?: string, className = 'w-7 h-7'): React.R
   const iconName = getFile3DIconName(filename);
   return <ThreeDIcon name={iconName} className={className} />;
 }
+
+
 
 
 

@@ -14,39 +14,22 @@ export const EditorPageStrip: React.FC<EditorPageStripProps> = ({
   if (thumbnails.length <= 1) return null;
 
   return (
-    <div className="flex items-center gap-2 overflow-x-auto bg-[#F9F9F9] border-t border-[#E5E5E5] px-4 py-2 shrink-0 scrollbar-thin">
+    <div className="flex items-center justify-center gap-2 overflow-x-auto bg-[#F9F9F9] border-t border-[#E5E5E5] px-3 py-1.5 shrink-0 select-none scrollbar-thin">
       {thumbnails.map((thumb, i) => (
         <button
           key={i}
           onClick={() => onPageSelect(i)}
           title={`Page ${i + 1}`}
-          className={`shrink-0 flex flex-col items-center gap-1 cursor-pointer group`}
+          className={`shrink-0 flex items-center gap-1.5 px-2 py-0.5 rounded-md border transition-all cursor-pointer ${
+            activePage === i
+              ? "bg-[#FFF9DB] border-[#FFC800] text-[#111111] font-bold shadow-xs"
+              : "bg-white border-[#E5E5E5] text-[#6B7280] hover:border-[#9CA3AF]"
+          }`}
         >
-          <div
-            className={`relative rounded-md overflow-hidden border-2 transition-all ${
-              activePage === i
-                ? "border-[#FFC800] shadow-md"
-                : "border-[#E5E5E5] hover:border-[#9CA3AF]"
-            }`}
-          >
-            {thumb ? (
-              <img src={thumb} alt={`Page ${i + 1}`} className="h-20 w-auto object-contain block" />
-            ) : (
-              <div className="h-20 w-16 bg-[#F0F0F0] flex items-center justify-center">
-                <span className="text-[10px] text-[#9CA3AF]">...</span>
-              </div>
-            )}
-            {activePage === i && (
-              <div className="absolute inset-0 bg-[#FFC800]/10" />
-            )}
-          </div>
-          <span
-            className={`text-[10px] font-medium ${
-              activePage === i ? "text-[#111111]" : "text-[#9CA3AF]"
-            }`}
-          >
-            {i + 1}
-          </span>
+          {thumb && (
+            <img src={thumb} alt={`P${i + 1}`} className="h-6 w-auto object-contain rounded-xs" />
+          )}
+          <span className="text-[11px] font-mono">Page {i + 1}</span>
         </button>
       ))}
     </div>

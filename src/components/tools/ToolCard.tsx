@@ -21,7 +21,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
           <div className="w-10 h-10 flex items-center justify-center shrink-0">
             <ThreeDIcon
               name={icon3dName}
-              className="w-10 h-10 drop-shadow-md transition-transform duration-200 group-hover:scale-110"
+              className="w-10 h-10 transition-transform duration-200 group-hover:scale-110"
             />
           </div>
 

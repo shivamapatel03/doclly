@@ -39,6 +39,9 @@ import { ProtectPdfPage, UnlockPdfPage, FlattenPdfPage } from './dedicated-tools
 import { WatermarkPdfPage } from './dedicated-tools/WatermarkPdfPage';
 import { OfficeConvertersPage } from './dedicated-tools/OfficeConvertersPage';
 import { PdfEditorPage } from './dedicated-tools/PdfEditorPage';
+import { ExcelCleanupPage } from './dedicated-tools/ExcelCleanupPage';
+import { StampQrBarcodePage } from './dedicated-tools/StampQrBarcodePage';
+import { QrCodeGeneratorPage } from './dedicated-tools/QrCodeGeneratorPage';
 import { Copy, Check } from 'lucide-react';
 import { ThreeDIcon } from '../components/common/ThreeDIcon';
 
@@ -64,7 +67,9 @@ export const ToolPage: React.FC = () => {
   if (toolId === 'edit-pdf') return <PdfEditorPage />;
   if (toolId === 'csv-to-excel') return <OfficeConvertersPage mode="csv-to-excel" />;
   if (toolId === 'excel-to-csv') return <OfficeConvertersPage mode="excel-to-csv" />;
-  if (toolId === 'excel-cleanup') return <OfficeConvertersPage mode="excel-cleanup" />;
+  if (toolId === 'excel-cleanup') return <ExcelCleanupPage />;
+  if (toolId === 'qr-code-generator') return <QrCodeGeneratorPage />;
+  if (toolId === 'stamp-qr-barcode' || toolId === 'qr-barcode-stamper') return <StampQrBarcodePage />;
 
   const tool = ALL_TOOLS.find((t) => t.id === toolId);
   if (!tool) {
