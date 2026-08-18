@@ -153,7 +153,7 @@ export const UpgradeModal: React.FC<UpgradeModalProps> = ({
             <button
               onClick={handleUpgrade}
               disabled={isProcessing}
-              className="w-full py-3 px-5 rounded-xl bg-[#FFC800] hover:bg-[#E5B200] text-[#111111] font-extrabold text-sm transition-all duration-150 shadow-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 active:scale-[0.99]"
+              className="w-full py-3 px-5 rounded-xl bg-[#FFC800] hover:bg-[#E5B200] text-[#111111] font-extrabold text-sm transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 select-none"
             >
               {isProcessing ? (
                 <span>Opening Checkout...</span>

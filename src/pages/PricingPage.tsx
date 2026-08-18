@@ -182,12 +182,12 @@ export const PricingPage: React.FC = () => {
                 <button
                   onClick={() => handlePlanSelect(plan)}
                   disabled={isProcessing || isCurrentPlan}
-                  className={`w-full py-3 rounded-xl text-sm font-bold transition-colors cursor-pointer ${
+                  className={`w-full py-3.5 rounded-full text-sm font-bold transition-all cursor-pointer select-none ${
                     isCurrentPlan
-                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default'
+                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] cursor-default'
                       : plan.isPrimary
-                      ? 'bg-[#FFC800] hover:bg-[#E6B400] text-[#111111] border border-[#E5E5E5]'
-                      : 'bg-[#F5F5F5] hover:bg-[#EAEAEA] text-[#111111] border border-[#E5E5E5]'
+                      ? 'bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent hover:bg-[#F5B800] text-[#111111] border border-[#DC9F00] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)]'
+                      : 'bg-[#F5F5F5] bg-gradient-to-b from-white/60 to-transparent hover:bg-[#EAEAEA] text-[#111111] border border-[#D5D5D5] shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_2px_4px_rgba(0,0,0,0.05),0_1px_2px_rgba(0,0,0,0.04)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_4px_8px_rgba(0,0,0,0.08)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]'
                   }`}
                 >
                   {isCurrentPlan ? 'Current Active Plan' : plan.cta}

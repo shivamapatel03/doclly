@@ -665,13 +665,13 @@ export const DashboardPage: React.FC = () => {
                       </ul>
                     </div>
 
-                    <Button
+                    <button
                       onClick={() => handleUpgradePlan('pro', 99)}
                       disabled={isUpgrading}
-                      className="w-full mt-4 flex items-center justify-center bg-[#FFC800] hover:bg-[#E6B400] text-[#111111] font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow-xs cursor-pointer"
+                      className="w-full mt-4 py-3 rounded-full text-xs sm:text-sm font-bold flex items-center justify-center bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent hover:bg-[#F5B800] text-[#111111] border border-[#DC9F00] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] transition-all cursor-pointer disabled:opacity-50 select-none"
                     >
                       Upgrade to Pro (₹99/mo)
-                    </Button>
+                    </button>
                   </div>
                 )}
 
@@ -707,13 +707,13 @@ export const DashboardPage: React.FC = () => {
                     </ul>
                   </div>
 
-                  <Button
+                  <button
                     onClick={() => handleUpgradePlan('business', 999)}
                     disabled={isUpgrading}
-                    className="w-full mt-4 flex items-center justify-center bg-[#111111] hover:bg-black text-white font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow-xs cursor-pointer"
+                    className="w-full mt-4 py-3 rounded-full text-xs sm:text-sm font-bold flex items-center justify-center bg-[#111111] bg-gradient-to-b from-white/20 to-transparent hover:bg-black text-white border border-black/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_2px_4px_rgba(0,0,0,0.2),0_1px_2px_rgba(0,0,0,0.1)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_4px_8px_rgba(0,0,0,0.25)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] transition-all cursor-pointer disabled:opacity-50 select-none"
                   >
                     Upgrade to Business (₹999/mo)
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>
