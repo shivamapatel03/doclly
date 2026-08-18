@@ -628,7 +628,7 @@ export const StampQrBarcodePage: React.FC = () => {
                     <button
                       onClick={handleStampAndDownload}
                       disabled={isStamping}
-                      className="w-full py-3 bg-[#FFC800] hover:bg-[#f0b800] disabled:bg-[#FFF0A0] text-[#111111] text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-sm"
+                      className="w-full py-2.5 px-4 bg-[#FFC800] hover:bg-[#F5B800] active:bg-[#E6B400] disabled:opacity-50 text-[#111111] text-xs sm:text-sm font-bold rounded-full border border-[#DC9F00] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] flex items-center justify-center gap-2 transition-all cursor-pointer select-none"
                     >
                       {isStamping ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
                       {isStamping ? "Stamping Document..." : "Stamp & Download PDF"}
@@ -664,7 +664,7 @@ export const StampQrBarcodePage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <button
                     onClick={handleDownloadStandaloneCode}
-                    className="py-2.5 bg-[#FFC800] hover:bg-[#f0b800] text-[#111111] text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-xs"
+                    className="py-2 px-4 bg-[#FFC800] hover:bg-[#F5B800] active:bg-[#E6B400] text-[#111111] text-xs font-bold rounded-full border border-[#DC9F00] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] flex items-center justify-center gap-2 transition-all cursor-pointer select-none"
                   >
                     <Download className="w-4 h-4" />
                     Download High-Res PNG
@@ -672,7 +672,7 @@ export const StampQrBarcodePage: React.FC = () => {
 
                   <button
                     onClick={() => setActiveTab("stamp")}
-                    className="py-2.5 bg-[#F3F4F6] hover:bg-[#E5E7EB] text-[#111111] text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className="py-2 px-4 bg-[#F5F5F5] hover:bg-[#EAEAEA] active:bg-[#E0E0E0] text-[#111111] text-xs font-bold rounded-full border border-[#D5D5D5] shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_2px_4px_rgba(0,0,0,0.05),0_1px_2px_rgba(0,0,0,0.04)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_4px_8px_rgba(0,0,0,0.08)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)] flex items-center justify-center gap-2 transition-all cursor-pointer select-none"
                   >
                     <FileText className="w-4 h-4" />
                     Stamp onto a PDF Document

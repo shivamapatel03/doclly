@@ -148,11 +148,11 @@ export const QrCodeGeneratorPage: React.FC = () => {
 
           <button
             onClick={handleGoToPdfStamper}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#FFF9DB] hover:bg-[#FFF3B8] text-amber-950 border border-amber-300 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-xs self-start sm:self-auto"
+            className="flex items-center gap-1.5 px-4 py-2 bg-[#F5F5F5] hover:bg-[#EAEAEA] active:bg-[#E0E0E0] text-[#111111] border border-[#D5D5D5] rounded-full text-xs font-bold shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_2px_4px_rgba(0,0,0,0.05),0_1px_2px_rgba(0,0,0,0.04)] transition-all cursor-pointer select-none self-start sm:self-auto"
           >
-            <FileText className="w-4 h-4 text-amber-700" />
+            <FileText className="w-4 h-4 text-[#111111]" />
             Stamp on PDF / Invoice
-            <ArrowRight className="w-3.5 h-3.5 text-amber-700" />
+            <ArrowRight className="w-3.5 h-3.5 text-[#111111]" />
           </button>
         </div>
 
@@ -417,7 +417,7 @@ export const QrCodeGeneratorPage: React.FC = () => {
             <div className="space-y-2 pt-1">
               <button
                 onClick={handleDownloadPng}
-                className="w-full py-3 bg-[#FFC800] hover:bg-[#f0b800] text-[#111111] text-xs sm:text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-xs"
+                className="w-full py-2.5 px-4 bg-[#FFC800] hover:bg-[#F5B800] active:bg-[#E6B400] text-[#111111] text-xs sm:text-sm font-bold rounded-full border border-[#DC9F00] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] flex items-center justify-center gap-2 transition-all cursor-pointer select-none"
               >
                 <Download className="w-4 h-4" />
                 Download High-Res PNG
@@ -425,7 +425,7 @@ export const QrCodeGeneratorPage: React.FC = () => {
 
               <button
                 onClick={handleCopyToClipboard}
-                className="w-full py-2.5 bg-[#F3F4F6] hover:bg-[#E5E7EB] text-[#111111] text-xs font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                className="w-full py-2 px-4 bg-[#F5F5F5] hover:bg-[#EAEAEA] active:bg-[#E0E0E0] text-[#111111] text-xs font-bold rounded-full border border-[#D5D5D5] shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_2px_4px_rgba(0,0,0,0.05),0_1px_2px_rgba(0,0,0,0.04)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_4px_8px_rgba(0,0,0,0.08)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)] flex items-center justify-center gap-2 transition-all cursor-pointer select-none"
               >
                 {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
                 {copied ? "Copied!" : "Copy Image to Clipboard"}
@@ -433,9 +433,9 @@ export const QrCodeGeneratorPage: React.FC = () => {
 
               <button
                 onClick={handleGoToPdfStamper}
-                className="w-full py-2.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                className="w-full py-2 px-4 bg-[#F5F5F5] hover:bg-[#EAEAEA] active:bg-[#E0E0E0] text-[#111111] text-xs font-bold rounded-full border border-[#D5D5D5] shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_2px_4px_rgba(0,0,0,0.05),0_1px_2px_rgba(0,0,0,0.04)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_4px_8px_rgba(0,0,0,0.08)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)] flex items-center justify-center gap-2 transition-all cursor-pointer select-none"
               >
-                <FileText className="w-4 h-4 text-amber-700" />
+                <FileText className="w-4 h-4 text-[#111111]" />
                 Stamp onto an Invoice / PDF
               </button>
             </div>

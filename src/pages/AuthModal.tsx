@@ -220,19 +220,24 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </div>
           )}
 
-          <Button
+          <button
             type="submit"
-            size="lg"
-            variant="primary"
-            isLoading={isLoading}
-            className="w-full mt-2"
+            disabled={isLoading}
+            className="w-full mt-3 py-2.5 px-5 rounded-full text-xs sm:text-sm font-bold flex items-center justify-center bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent hover:bg-[#F5B800] text-[#111111] border border-[#DC9F00] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] transition-all cursor-pointer disabled:opacity-50 select-none"
           >
-            {mode === 'signin'
-              ? 'Sign In'
-              : mode === 'signup'
-              ? 'Create Account'
-              : 'Send Reset Link'}
-          </Button>
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <span className="w-3.5 h-3.5 border-2 border-[#111111] border-t-transparent rounded-full animate-spin" />
+                <span>Processing...</span>
+              </span>
+            ) : mode === 'signin' ? (
+              'Sign In'
+            ) : mode === 'signup' ? (
+              'Create Account'
+            ) : (
+              'Send Reset Link'
+            )}
+          </button>
         </form>
 
         {/* Footer Toggle */}

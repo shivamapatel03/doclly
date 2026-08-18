@@ -277,8 +277,7 @@ export const DashboardPage: React.FC = () => {
 
         {planTier !== 'free' && (
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-bold rounded-full bg-[#0F172A] text-white border border-[#FFC800]/40 shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-black rounded-full bg-[#0F172A] bg-gradient-to-b from-white/15 to-transparent text-white border border-[#FFC800]/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_2px_4px_rgba(0,0,0,0.15),0_1px_2px_rgba(0,0,0,0.1)] tracking-wider select-none">
               <ThreeDIcon
                 name={planTier === 'business' ? 'diamond' : 'crown'}
                 className="w-4 h-4"
@@ -796,9 +795,9 @@ export const DashboardPage: React.FC = () => {
                         type="button"
                         onClick={() => handleDownloadInvoice(inv)}
                         disabled={downloadingInvoiceId === inv.id}
-                        className="px-4 py-2 bg-white hover:bg-gray-100 text-[#111111] font-bold text-xs rounded-xl border border-[#E5E5E5] transition-all flex items-center gap-2 cursor-pointer shadow-2xs disabled:opacity-50 hover:border-gray-400"
+                        className="px-4 py-2 bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent hover:bg-[#F5B800] text-[#111111] font-bold text-xs rounded-full border border-[#DC9F00] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50 select-none"
                       >
-                        <Download className="w-4 h-4 text-gray-700" />
+                        <Download className="w-4 h-4 text-[#111111]" />
                         <span>{downloadingInvoiceId === inv.id ? 'Generating...' : 'Download PDF'}</span>
                       </button>
                     </div>
@@ -857,15 +856,13 @@ export const DashboardPage: React.FC = () => {
             </div>
 
             <div className="pt-2 flex items-center justify-between border-t border-[#E5E5E5]">
-              <Button
+              <button
                 type="submit"
-                size="sm"
-                variant="primary"
                 disabled={isSavingProfile}
-                className="font-bold"
+                className="inline-flex items-center justify-center px-4 py-2 text-xs sm:text-sm font-bold text-[#111111] bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent hover:bg-[#F5B800] border border-[#DC9F00] rounded-full shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] transition-all whitespace-nowrap cursor-pointer disabled:opacity-50 select-none"
               >
                 {isSavingProfile ? 'Saving...' : 'Save Profile Changes'}
-              </Button>
+              </button>
 
               {user && (
                 <button

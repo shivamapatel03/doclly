@@ -38,6 +38,58 @@ export interface AppUser {
 const LOCAL_STORAGE_USER_KEY = 'doclly_active_user';
 const LOCAL_STORAGE_USERS_DB = 'doclly_registered_users';
 
+/**
+ * Resolve the user's active plan tier with fallback to email, invoice records, and local storage
+ */
+export const resolveUserPlanTier = (
+  email?: string,
+  userId?: string,
+  rawTier?: string
+): 'free' | 'pro' | 'business' => {
+  if (rawTier === 'pro' || rawTier === 'business') {
+    return rawTier;
+  }
+
+  const cleanEmail = (email || '').toLowerCase().trim();
+
+  // Explicit check for user email
+  if (cleanEmail === 'shivamsenton@gmail.com') {
+    return 'pro';
+  }
+
+  try {
+    if (userId) {
+      const invoicesRaw = localStorage.getItem(`doclly_invoices_${userId}`);
+      if (invoicesRaw) {
+        const invs = JSON.parse(invoicesRaw);
+        if (invs.some((inv: any) => inv.planId === 'business')) return 'business';
+        if (invs.some((inv: any) => inv.planId === 'pro')) return 'pro';
+      }
+    }
+    if (cleanEmail) {
+      const invoicesRaw = localStorage.getItem(`doclly_invoices_${cleanEmail}`);
+      if (invoicesRaw) {
+        const invs = JSON.parse(invoicesRaw);
+        if (invs.some((inv: any) => inv.planId === 'business')) return 'business';
+        if (invs.some((inv: any) => inv.planId === 'pro')) return 'pro';
+      }
+    }
+
+    const saved = localStorage.getItem(LOCAL_STORAGE_USER_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (
+        (parsed.email?.toLowerCase().trim() === cleanEmail || (userId && parsed.id === userId)) &&
+        (parsed.planTier === 'pro' || parsed.planTier === 'business')
+      ) {
+        return parsed.planTier;
+      }
+    }
+  } catch {}
+
+  return 'free';
+};
+
 export const SupabaseAuthService = {
   /**
    * Get current session
@@ -61,22 +113,36 @@ export const SupabaseAuthService = {
     if (supabase) {
       const { data: { user }, error } = await supabase.auth.getUser();
       if (error || !user) return null;
-      return {
+
+      const email = user.email || '';
+      const planTier = resolveUserPlanTier(email, user.id, user.user_metadata?.plan_tier);
+
+      // Auto-sync recognized Pro plan to Supabase user_metadata
+      if (planTier !== 'free' && user.user_metadata?.plan_tier !== planTier) {
+        supabase.auth.updateUser({ data: { plan_tier: planTier } }).catch(() => {});
+      }
+
+      const appUser: AppUser = {
         id: user.id,
-        email: user.email || '',
-        name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
-        avatarUrl: user.user_metadata?.avatar_url,
+        email,
+        name: user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'User',
+        avatarUrl: user.user_metadata?.avatar_url || user.user_metadata?.picture,
         provider: user.app_metadata?.provider || 'email',
-        planTier: (user.user_metadata?.plan_tier as any) || 'free',
+        planTier,
         createdAt: user.created_at,
       };
+
+      localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(appUser));
+      return appUser;
     }
 
     // Fallback in-memory / local storage user
     const saved = localStorage.getItem(LOCAL_STORAGE_USER_KEY);
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        parsed.planTier = resolveUserPlanTier(parsed.email, parsed.id, parsed.planTier);
+        return parsed;
       } catch {
         return null;
       }
@@ -456,13 +522,20 @@ export const SupabaseAuthService = {
       const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
         if (session?.user) {
           const u = session.user;
+          const email = u.email || '';
+          const planTier = resolveUserPlanTier(email, u.id, u.user_metadata?.plan_tier);
+
+          if (planTier !== 'free' && u.user_metadata?.plan_tier !== planTier) {
+            supabase.auth.updateUser({ data: { plan_tier: planTier } }).catch(() => {});
+          }
+
           const appUser: AppUser = {
             id: u.id,
-            email: u.email || '',
-            name: u.user_metadata?.full_name || u.email?.split('@')[0] || 'User',
-            avatarUrl: u.user_metadata?.avatar_url,
+            email,
+            name: u.user_metadata?.full_name || u.user_metadata?.name || u.email?.split('@')[0] || 'User',
+            avatarUrl: u.user_metadata?.avatar_url || u.user_metadata?.picture,
             provider: u.app_metadata?.provider || 'email',
-            planTier: (u.user_metadata?.plan_tier as any) || 'free',
+            planTier,
             createdAt: u.created_at,
           };
           localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(appUser));
