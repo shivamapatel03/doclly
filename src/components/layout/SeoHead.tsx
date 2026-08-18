@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { trackPageView } from '../../lib/analytics';
 
 interface FaqItem {
   question: string;
@@ -30,6 +31,9 @@ export const SeoHead: React.FC<SeoHeadProps> = ({
     // 1. Update Title
     const formattedTitle = title.includes('Doclly') ? title : `${title} — Doclly`;
     document.title = formattedTitle;
+
+    // Trigger Google Analytics 4 (GA4) Page View
+    trackPageView(location.pathname, formattedTitle);
 
     // Helper function to set or create meta tag
     const setMeta = (selector: string, attr: string, value: string, content: string) => {
