@@ -6,6 +6,7 @@ import { ToastProvider } from './components/common/Toast';
 import { AuthProvider } from './context/AuthContext';
 import { CommandMenu } from './components/common/CommandMenu';
 import { AuthModal } from './pages/AuthModal';
+import { PwaInstallPrompt } from './components/common/PwaInstallPrompt';
 
 // Pages
 import { HomePage } from './pages/HomePage';
@@ -92,6 +93,9 @@ export const AppContent: React.FC = () => {
         onClose={() => setIsAuthOpen(false)}
         initialMode={authMode}
       />
+
+      {/* PWA Install Banner */}
+      <PwaInstallPrompt />
     </div>
   );
 };

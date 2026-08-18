@@ -1,0 +1,62 @@
+{
+  "name": "Doclly — Free & Secure PDF Tools",
+  "short_name": "Doclly",
+  "description": "100% free and secure document tools: Convert images to PDF, PDF to Word/Excel, compress up to 90%, edit, sign, and merge documents.",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFC800",
+  "orientation": "any",
+  "categories": ["productivity", "utilities", "business"],
+  "icons": [
+    {
+      "src": "/logo/image.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo/image.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo/image.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "JPG to PDF",
+      "short_name": "Image to PDF",
+      "description": "Convert images to PDF",
+      "url": "/tools/jpg-to-pdf",
+      "icons": [{ "src": "/logo/image.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Compress PDF",
+      "short_name": "Compress",
+      "description": "Reduce PDF file size",
+      "url": "/tools/compress-pdf",
+      "icons": [{ "src": "/logo/image.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "PDF to Word",
+      "short_name": "PDF to Word",
+      "description": "Convert PDF to editable Word DOCX",
+      "url": "/tools/pdf-to-word",
+      "icons": [{ "src": "/logo/image.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Sign PDF",
+      "short_name": "Sign PDF",
+      "description": "Add digital and electronic signatures",
+      "url": "/tools/sign-pdf",
+      "icons": [{ "src": "/logo/image.png", "sizes": "192x192" }]
+    }
+  ]
+}
