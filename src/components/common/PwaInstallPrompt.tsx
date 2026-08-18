@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Download, X, Smartphone, Sparkles } from 'lucide-react';
+import { Download, X } from 'lucide-react';
 import { Button } from './Button';
 
 interface BeforeInstallPromptEvent extends Event {
@@ -62,14 +62,14 @@ export const PwaInstallPrompt: React.FC = () => {
     <div className="fixed bottom-5 right-5 z-50 max-w-sm w-[calc(100vw-2.5rem)] bg-white/95 backdrop-blur-md border border-neutral-200/90 rounded-2xl shadow-2xl p-4 transition-all duration-300 animate-in fade-in slide-in-from-bottom-4">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#FFC800]/15 border border-[#FFC800]/30 flex items-center justify-center text-[#111111] shrink-0">
-            <Smartphone className="w-5 h-5 text-amber-600" />
+          <div className="w-10 h-10 rounded-xl bg-[#FFC800]/15 border border-[#FFC800]/30 flex items-center justify-center shrink-0 p-1">
+            <img src="/logo/image.png" alt="Doclly" className="w-7 h-7 object-contain" />
           </div>
           <div>
             <h4 className="text-sm font-bold text-neutral-900 flex items-center gap-1.5">
               Install Doclly App
               <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-100 text-amber-800">
-                <Sparkles className="w-2.5 h-2.5 mr-0.5" /> Free
+                Free
               </span>
             </h4>
             <p className="text-xs text-neutral-500 mt-0.5">
