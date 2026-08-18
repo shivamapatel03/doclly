@@ -85,9 +85,6 @@ export const PricingPage: React.FC = () => {
 
       {/* Header & Annual Switch */}
       <div className="text-center max-w-3xl mx-auto space-y-4 relative z-10">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FFC800]/20 border border-[#FFC800]/50 rounded-full text-xs font-black text-[#111111]">
-          ⚡ UNBEATABLE VALUE
-        </div>
         <h1 className="text-3xl sm:text-5xl font-extrabold text-[#111111] tracking-tight">
           Adobe Acrobat power. Just ₹99.
         </h1>

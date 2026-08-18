@@ -16,7 +16,6 @@ import {
 } from 'lucide-react';
 import { ThreeDIcon } from '../components/common/ThreeDIcon';
 import { FileSession } from '../lib/file-session';
-import { LiveStatsCounter } from '../components/common/LiveStatsCounter';
 
 export const HomePage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -136,11 +135,6 @@ export const HomePage: React.FC = () => {
           <p className="text-base sm:text-lg text-[#6B7280] max-w-2xl mx-auto leading-relaxed">
             Merge, split, compress, convert, edit, sign, and protect your PDF files. Fast, private, and 100% free with no file limits.
           </p>
-
-          {/* Tiny live document count */}
-          <div className="flex justify-center">
-            <LiveStatsCounter />
-          </div>
 
           {/* Quick Drag & Drop Action Zone */}
           <div id="main-upload" className="max-w-xl mx-auto mt-2">
