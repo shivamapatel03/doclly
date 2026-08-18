@@ -320,22 +320,43 @@ export const Watermark3DIcon: React.FC<{ className?: string }> = ({ className = 
 export const Protect3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 h-7' }) => (
   <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <defs>
-      <linearGradient id="prt3d_base" x1="6" y1="4" x2="28" y2="32" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#F43F5E" />
-        <stop offset="100%" stopColor="#BE123C" />
+      <linearGradient id="prt3d_base" x1="6" y1="4" x2="30" y2="32" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FB7185" />
+        <stop offset="50%" stopColor="#E11D48" />
+        <stop offset="100%" stopColor="#9F1239" />
       </linearGradient>
-      <linearGradient id="prt3d_gold" x1="12" y1="14" x2="24" y2="28" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#FDE047" />
-        <stop offset="100%" stopColor="#CA8A04" />
+      <linearGradient id="prt3d_gold" x1="10" y1="14" x2="26" y2="28" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FEF08A" />
+        <stop offset="50%" stopColor="#F59E0B" />
+        <stop offset="100%" stopColor="#B45309" />
       </linearGradient>
-      </defs>
+      <linearGradient id="prt3d_shackle" x1="12" y1="7" x2="24" y2="17" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FFFFFF" />
+        <stop offset="60%" stopColor="#E2E8F0" />
+        <stop offset="100%" stopColor="#94A3B8" />
+      </linearGradient>
+    </defs>
     <g>
-      <rect x="7" y="5" width="22" height="26" rx="4" fill="url(#prt3d_base)" />
-      <rect x="7.5" y="5.5" width="21" height="25" rx="3.5" stroke="white" strokeOpacity="0.3" />
-      <path d="M14 17V13C14 10.7909 15.7909 9 18 9C20.2091 9 22 10.7909 22 13V17" stroke="#FEF08A" strokeWidth="2.2" strokeLinecap="round" />
-      <rect x="12" y="16" width="12" height="10" rx="2.5" fill="url(#prt3d_gold)" />
-      <circle cx="18" cy="20.5" r="1.3" fill="#713F12" />
-      <path d="M18 21.8V23.5" stroke="#713F12" strokeWidth="1.2" strokeLinecap="round" />
+      {/* 3D Ruby Card Plate */}
+      <rect x="5" y="5" width="26" height="26" rx="6" fill="url(#prt3d_base)" />
+      <rect x="5.5" y="5.5" width="25" height="25" rx="5.5" stroke="white" strokeOpacity="0.35" strokeWidth="1" />
+      
+      {/* Heavy Steel Closed Shackle */}
+      <path
+        d="M13 16V12C13 9.23858 15.2386 7 18 7C20.7614 7 23 9.23858 23 12V16"
+        stroke="url(#prt3d_shackle)"
+        strokeWidth="2.8"
+        strokeLinecap="round"
+      />
+      
+      {/* 3D Solid Gold Padlock Body */}
+      <rect x="10" y="15" width="16" height="12" rx="3" fill="url(#prt3d_gold)" />
+      <rect x="10.5" y="15.5" width="15" height="11" rx="2.5" stroke="#FEF08A" strokeOpacity="0.6" strokeWidth="0.8" />
+      
+      {/* Keyhole & Cyan Status Dot */}
+      <circle cx="18" cy="20" r="1.5" fill="#713F12" />
+      <path d="M18 21.5V23.5" stroke="#713F12" strokeWidth="1.2" strokeLinecap="round" />
+      <circle cx="23" cy="18" r="1" fill="#38BDF8" />
     </g>
   </svg>
 );
@@ -343,22 +364,50 @@ export const Protect3DIcon: React.FC<{ className?: string }> = ({ className = 'w
 export const Unlock3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 h-7' }) => (
   <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <defs>
-      <linearGradient id="unl3d_base" x1="6" y1="4" x2="28" y2="32" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#10B981" />
+      <linearGradient id="unl3d_base" x1="6" y1="4" x2="30" y2="32" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#34D399" />
+        <stop offset="50%" stopColor="#10B981" />
         <stop offset="100%" stopColor="#047857" />
       </linearGradient>
-      <linearGradient id="unl3d_gold" x1="12" y1="14" x2="24" y2="28" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#A7F3D0" />
-        <stop offset="100%" stopColor="#34D399" />
+      <linearGradient id="unl3d_gold" x1="8" y1="14" x2="24" y2="28" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FEF08A" />
+        <stop offset="50%" stopColor="#F59E0B" />
+        <stop offset="100%" stopColor="#B45309" />
       </linearGradient>
-      </defs>
+      <linearGradient id="unl3d_shackle" x1="10" y1="5" x2="26" y2="15" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FFFFFF" />
+        <stop offset="60%" stopColor="#E2E8F0" />
+        <stop offset="100%" stopColor="#94A3B8" />
+      </linearGradient>
+      <linearGradient id="unl3d_key" x1="20" y1="16" x2="30" y2="26" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FFFFFF" />
+        <stop offset="100%" stopColor="#FEF08A" />
+      </linearGradient>
+    </defs>
     <g>
-      <rect x="7" y="5" width="22" height="26" rx="4" fill="url(#unl3d_base)" />
-      <rect x="7.5" y="5.5" width="21" height="25" rx="3.5" stroke="white" strokeOpacity="0.3" />
-      <path d="M14 13V11C14 8.79086 15.7909 7 18 7C20.2091 7 22 8.79086 22 11" stroke="white" strokeWidth="2.2" strokeLinecap="round" />
-      <rect x="12" y="16" width="12" height="10" rx="2.5" fill="url(#unl3d_gold)" />
-      <circle cx="18" cy="20.5" r="1.3" fill="#064E3B" />
-      <path d="M18 21.8V23.5" stroke="#064E3B" strokeWidth="1.2" strokeLinecap="round" />
+      {/* 3D Vibrant Emerald Card Plate */}
+      <rect x="5" y="5" width="26" height="26" rx="6" fill="url(#unl3d_base)" />
+      <rect x="5.5" y="5.5" width="25" height="25" rx="5.5" stroke="white" strokeOpacity="0.35" strokeWidth="1" />
+      
+      {/* Swung-Open & Lifted Shackle */}
+      <path
+        d="M12 15V10C12 7.23858 14.2386 5 17 5C19.7614 5 22 7.23858 22 10V11"
+        stroke="url(#unl3d_shackle)"
+        strokeWidth="2.8"
+        strokeLinecap="round"
+      />
+      
+      {/* 3D Padlock Body Shifted Left */}
+      <rect x="9" y="15" width="14" height="12" rx="3" fill="url(#unl3d_gold)" />
+      <rect x="9.5" y="15.5" width="13" height="11" rx="2.5" stroke="#FEF08A" strokeOpacity="0.6" strokeWidth="0.8" />
+      
+      {/* Keyhole */}
+      <circle cx="16" cy="20" r="1.3" fill="#713F12" />
+      <path d="M16 21.3V23" stroke="#713F12" strokeWidth="1.1" strokeLinecap="round" />
+      
+      {/* 3D Floating Unlock Key */}
+      <circle cx="26" cy="18" r="2.2" stroke="url(#unl3d_key)" strokeWidth="1.2" fill="none" />
+      <path d="M26 20.2V26M26 23.5H28M26 25.5H27.5" stroke="url(#unl3d_key)" strokeWidth="1.2" strokeLinecap="round" />
     </g>
   </svg>
 );
@@ -1056,8 +1105,8 @@ export function getTool3DIcon(toolId?: string, iconName?: string): string {
   if (id.includes('flatten')) return 'flatten';
   if (id.includes('sign')) return 'sign';
   if (id.includes('watermark')) return 'watermark';
-  if (id.includes('protect') || id.includes('lock')) return 'protect';
-  if (id.includes('unlock')) return 'unlock';
+  if (id.includes('unlock') || id.includes('decrypt')) return 'unlock';
+  if (id.includes('protect') || id.includes('lock') || id.includes('encrypt') || id.includes('secure')) return 'protect';
   if (id.includes('compare')) return 'compare';
 
   // Fallback by iconName
@@ -1078,8 +1127,8 @@ export function getTool3DIcon(toolId?: string, iconName?: string): string {
   if (icon.includes('layers')) return 'flatten';
   if (icon.includes('pen')) return 'sign';
   if (icon.includes('stamp')) return 'watermark';
-  if (icon.includes('lock')) return 'protect';
-  if (icon.includes('unlock')) return 'unlock';
+  if (icon.includes('unlock') || icon.includes('decrypt') || icon.includes('key')) return 'unlock';
+  if (icon.includes('lock') || icon.includes('protect') || icon.includes('shield')) return 'protect';
   if (icon.includes('compare')) return 'compare';
 
   return 'pdf';
