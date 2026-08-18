@@ -62,8 +62,8 @@ export const PwaInstallPrompt: React.FC = () => {
     <div className="fixed bottom-5 right-5 z-50 max-w-sm w-[calc(100vw-2.5rem)] bg-white/95 backdrop-blur-md border border-neutral-200/90 rounded-2xl shadow-2xl p-4 transition-all duration-300 animate-in fade-in slide-in-from-bottom-4">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#FFC800]/15 border border-[#FFC800]/30 flex items-center justify-center shrink-0 p-1">
-            <img src="/logo/image.png" alt="Doclly" className="w-7 h-7 object-contain" />
+          <div className="w-11 h-11 rounded-xl bg-white border border-neutral-200/90 shadow-[0_2px_6px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,1)] flex items-center justify-center shrink-0 p-1.5">
+            <img src="/logo/image.png" alt="Doclly" className="w-7 h-7 object-contain drop-shadow-2xs" />
           </div>
           <div>
             <h4 className="text-sm font-bold text-neutral-900 flex items-center gap-1.5">
