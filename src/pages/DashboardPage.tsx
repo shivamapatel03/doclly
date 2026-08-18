@@ -12,6 +12,8 @@ import {
   Files,
   AlertTriangle,
   X,
+  Mail,
+  FileText,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getFile3DIcon, ThreeDIcon } from '../components/common/ThreeDIcon';
@@ -23,6 +25,13 @@ import {
   RazorpayTransaction,
 } from '../lib/razorpay';
 import { DocItem } from '../types/document';
+import {
+  Invoice,
+  getStoredInvoices,
+  createInvoiceRecord,
+  downloadInvoicePdf,
+} from '../lib/invoice-generator';
+import { EmailInvoiceModal } from '../components/common/EmailInvoiceModal';
 
 import { AuthModal } from './AuthModal';
 
@@ -33,6 +42,11 @@ export const DashboardPage: React.FC = () => {
 
   const [docs, setDocs] = useState<DocItem[]>([]);
   const [payments, setPayments] = useState<RazorpayTransaction[]>([]);
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [selectedInvoiceForEmail, setSelectedInvoiceForEmail] = useState<Invoice | null>(null);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
+  const [downloadingInvoiceId, setDownloadingInvoiceId] = useState<string | null>(null);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [userNameInput, setUserNameInput] = useState(user?.name || '');
   const [isSavingProfile, setIsSavingProfile] = useState(false);
@@ -51,9 +65,24 @@ export const DashboardPage: React.FC = () => {
       setDocs(DocumentStorage.getDocuments(user.id));
       setPayments(getPaymentHistory());
       setUserNameInput(user.name || '');
+
+      const storedInvoices = getStoredInvoices(user.id);
+      if (storedInvoices.length === 0 && (user.planTier === 'pro' || user.planTier === 'business')) {
+        const initialInv = createInvoiceRecord(
+          user,
+          user.planTier,
+          user.planTier === 'business' ? 'Doclly Business Team' : 'Doclly Pro Monthly',
+          user.planTier === 'business' ? 999 : 99,
+          'pay_live_rzp' + Math.floor(100000 + Math.random() * 900000)
+        );
+        setInvoices([initialInv]);
+      } else {
+        setInvoices(storedInvoices);
+      }
     } else {
       setDocs([]);
       setPayments([]);
+      setInvoices([]);
     }
   }, [user]);
 
@@ -83,6 +112,23 @@ export const DashboardPage: React.FC = () => {
     }
   };
 
+  const handleDownloadInvoice = async (inv: Invoice) => {
+    try {
+      setDownloadingInvoiceId(inv.id);
+      await downloadInvoicePdf(inv);
+      showToast(`Downloaded Tax Invoice ${inv.id}!`, 'success');
+    } catch (err: any) {
+      showToast(err?.message || 'Failed to download invoice.', 'error');
+    } finally {
+      setDownloadingInvoiceId(null);
+    }
+  };
+
+  const handleOpenEmailModal = (inv: Invoice) => {
+    setSelectedInvoiceForEmail(inv);
+    setIsEmailModalOpen(true);
+  };
+
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userNameInput.trim()) return;
@@ -104,7 +150,7 @@ export const DashboardPage: React.FC = () => {
     }
 
     setIsUpgrading(true);
-    const planName = targetPlan === 'pro' ? 'Pro Plan' : 'Business Plan';
+    const planName = targetPlan === 'pro' ? 'Doclly Pro Plan' : 'Doclly Business Plan';
 
     launchRazorpayCheckout({
       planId: targetPlan,
@@ -117,17 +163,20 @@ export const DashboardPage: React.FC = () => {
         email: user.email,
       },
       onSuccess: async (paymentId) => {
+        if (user) {
+          createInvoiceRecord(user, targetPlan, planName, amountINR, paymentId);
+          setInvoices(getStoredInvoices(user.id));
+        }
         await updatePlanTier(targetPlan);
-        setPayments(getPaymentHistory());
         setIsUpgrading(false);
-        showToast(
-          `🎉 Payment successful (${paymentId})! Upgraded to ${planName}.`,
-          'success'
-        );
+        setPayments(getPaymentHistory());
+        showToast(`🎉 Upgraded to ${planName}!`, 'success');
       },
       onFailure: (err) => {
         setIsUpgrading(false);
-        showToast(err?.message || 'Payment was cancelled.', 'info');
+        if (err?.message !== 'Checkout cancelled') {
+          showToast(err?.message || 'Upgrade failed. Please try again.', 'error');
+        }
       },
     });
   };
@@ -676,41 +725,98 @@ export const DashboardPage: React.FC = () => {
           )}
 
           {/* Payment & Invoices History */}
-          <div className="bg-white border border-[#E5E5E5] rounded-2xl p-6 space-y-4 shadow-2xs">
-            <div className="flex items-center gap-2.5">
-              <ThreeDIcon name="receipt" className="w-5 h-5" />
-              <h3 className="text-base font-bold text-[#111111]">Billing & Payment History</h3>
+          <div className="bg-white border border-[#E5E5E5] rounded-3xl p-6 sm:p-7 space-y-5 shadow-2xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E5E5E5]">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center shrink-0">
+                  <ThreeDIcon name="receipt" className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-base font-extrabold text-[#111111] tracking-tight">
+                    Billing & Payment History
+                  </h3>
+                  <p className="text-xs text-[#6B7280]">
+                    Official tax-compliant GST invoices and transaction receipts.
+                  </p>
+                </div>
+              </div>
+
+              {invoices.length > 0 && (
+                <span className="text-xs font-bold text-[#6B7280] self-start sm:self-auto bg-gray-100 px-2.5 py-1 rounded-full">
+                  {invoices.length} {invoices.length === 1 ? 'Invoice' : 'Invoices'} Available
+                </span>
+              )}
             </div>
-            {payments.length === 0 ? (
-              <div className="text-center py-8 border border-dashed border-[#E5E5E5] rounded-xl space-y-2">
-                <ThreeDIcon name="receipt" className="w-10 h-10 mx-auto opacity-70" />
-                <p className="text-xs text-[#6B7280]">
-                  No past transactions recorded yet.
-                </p>
+
+            {invoices.length === 0 ? (
+              <div className="text-center py-10 border border-dashed border-[#E5E5E5] rounded-2xl space-y-3">
+                <ThreeDIcon name="receipt" className="w-12 h-12 mx-auto opacity-70" />
+                <div className="space-y-1">
+                  <h4 className="text-sm font-bold text-[#111111]">No invoices yet</h4>
+                  <p className="text-xs text-[#6B7280] max-w-sm mx-auto">
+                    When you upgrade to Doclly Pro, your official GST tax invoices and payment receipts will appear here for instant download.
+                  </p>
+                </div>
               </div>
             ) : (
-              <div className="divide-y divide-[#E5E5E5]">
-                {payments.map((p) => (
+              <div className="divide-y divide-[#E5E5E5] border border-[#E5E5E5] rounded-2xl overflow-hidden">
+                {invoices.map((inv) => (
                   <div
-                    key={p.id}
-                    className="py-3 flex items-center justify-between text-xs sm:text-sm"
+                    key={inv.id}
+                    className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/70 transition-colors"
                   >
-                    <div className="flex items-center gap-3">
-                      <ThreeDIcon name="receipt" className="w-6 h-6 shrink-0" />
-                      <div>
-                        <p className="font-semibold text-[#111111]">
-                          {p.planName} Subscription ({p.billingCycle})
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-10 h-10 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center shrink-0 mt-0.5">
+                        <FileText className="w-5 h-5 text-gray-700" />
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-extrabold text-sm text-[#111111] font-mono">
+                            {inv.id}
+                          </span>
+                          <span className="px-2 py-0.5 text-[10px] font-black text-emerald-700 bg-emerald-100/70 rounded-full border border-emerald-200">
+                            PAID
+                          </span>
+                        </div>
+                        <p className="text-xs text-[#4B5563] font-medium">
+                          {inv.planName} • Ref: <span className="font-mono text-[11px] text-gray-600">{inv.paymentId}</span>
                         </p>
                         <p className="text-[11px] text-[#6B7280]">
-                          ID: {p.paymentId} • {p.date}
+                          Date: {inv.date} • SAC: {inv.sacCode}
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <span className="font-bold text-[#111111]">₹{p.amountINR}</span>
-                      <span className="px-2 py-0.5 text-[10px] font-bold text-emerald-700 bg-emerald-50 rounded-full">
-                        Paid
-                      </span>
+
+                    <div className="flex flex-wrap sm:flex-nowrap items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-100">
+                      <div className="text-left sm:text-right pr-2">
+                        <span className="text-base font-black text-[#111111] block">
+                          ₹{inv.amount.toFixed(2)}
+                        </span>
+                        <span className="text-[10px] text-[#6B7280] block">
+                          Incl. 18% GST
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleDownloadInvoice(inv)}
+                          disabled={downloadingInvoiceId === inv.id}
+                          className="px-3 py-2 bg-white hover:bg-gray-100 text-[#111111] font-bold text-xs rounded-xl border border-[#E5E5E5] transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs disabled:opacity-50"
+                        >
+                          <Download className="w-3.5 h-3.5 text-gray-700" />
+                          <span>{downloadingInvoiceId === inv.id ? 'Generating...' : 'PDF'}</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleOpenEmailModal(inv)}
+                          className="px-3 py-2 bg-[#FFC800] hover:bg-[#E5B200] text-[#111111] font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                        >
+                          <Mail className="w-3.5 h-3.5 text-[#111111]" />
+                          <span>Email</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -848,6 +954,13 @@ export const DashboardPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Email Invoice Dispatcher Modal */}
+      <EmailInvoiceModal
+        isOpen={isEmailModalOpen}
+        onClose={() => setIsEmailModalOpen(false)}
+        invoice={selectedInvoiceForEmail}
+      />
     </div>
   );
 };

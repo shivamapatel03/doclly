@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useToast } from './Toast';
 import { launchRazorpayCheckout } from '../../lib/razorpay';
 import { AuthModal } from '../../pages/AuthModal';
+import { createInvoiceRecord } from '../../lib/invoice-generator';
 
 interface UpgradeModalProps {
   isOpen: boolean;
@@ -50,6 +51,13 @@ export const UpgradeModal: React.FC<UpgradeModalProps> = ({
         email: user.email,
       },
       onSuccess: async (paymentId) => {
+        createInvoiceRecord(
+          user,
+          'pro',
+          isAnnual ? 'Doclly Pro Annual' : 'Doclly Pro Monthly',
+          price,
+          paymentId
+        );
         await updatePlanTier('pro');
         setIsProcessing(false);
         onClose();
