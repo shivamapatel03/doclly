@@ -72,7 +72,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
-        className={`relative flex flex-col items-center justify-center p-8 sm:p-12 rounded-2xl border-2 border-dashed transition-all cursor-pointer select-none overflow-hidden ${
+        className={`relative flex flex-col items-center justify-center p-5 sm:p-8 rounded-2xl border-2 border-dashed transition-all cursor-pointer select-none overflow-hidden ${
           isDragging
             ? 'border-[#111111] bg-[#FFC800]/15 shadow-md scale-[1.01]'
             : 'border-[#E5E5E5] bg-white hover:border-[#111111]/40 hover:bg-[#FBFBFB] shadow-2xs hover:shadow-xs'

@@ -92,6 +92,7 @@ const handleAddRow = () => {
         name: filename,
         size: bytes.byteLength,
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        data: bytes,
       });
       toast.success('Generated Excel (.xlsx) workbook successfully!');
     } catch (err: any) {

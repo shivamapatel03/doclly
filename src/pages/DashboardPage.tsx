@@ -19,9 +19,11 @@ import {
 } from '../lib/razorpay';
 import { DocItem } from '../types/document';
 
+import { AuthModal } from './AuthModal';
+
 export const DashboardPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'recent' | 'billing' | 'account'>('overview');
-  const { user, updatePlanTier, updateProfile, signOut } = useAuth();
+  const { user, isLoading, updatePlanTier, updateProfile, signOut } = useAuth();
   const { showToast } = useToast();
 
   const [docs, setDocs] = useState<DocItem[]>([]);
@@ -30,17 +32,27 @@ export const DashboardPage: React.FC = () => {
   const [userNameInput, setUserNameInput] = useState(user?.name || '');
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [isUpgrading, setIsUpgrading] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<'signin' | 'signup'>('signin');
+
+  const openAuth = (mode: 'signin' | 'signup') => {
+    setAuthModalMode(mode);
+    setIsAuthModalOpen(true);
+  };
 
   useEffect(() => {
-    setDocs(DocumentStorage.getDocuments());
-    setPayments(getPaymentHistory());
-    if (user?.name) {
-      setUserNameInput(user.name);
+    if (user?.id) {
+      setDocs(DocumentStorage.getDocuments(user.id));
+      setPayments(getPaymentHistory());
+      setUserNameInput(user.name || '');
+    } else {
+      setDocs([]);
+      setPayments([]);
     }
   }, [user]);
 
   const planTier = user?.planTier || 'free';
-  const stats = DocumentStorage.getUserStats(planTier);
+  const stats = DocumentStorage.getUserStats(planTier, user?.id);
 
   const planDisplayName =
     planTier === 'business'
@@ -50,25 +62,19 @@ export const DashboardPage: React.FC = () => {
       : 'Free Starter';
 
   const handleDeleteDoc = (docId: string, docName: string) => {
-    const updated = DocumentStorage.deletePermanently(docId);
+    if (!user) return;
+    const updated = DocumentStorage.deletePermanently(docId, user.id);
     setDocs(updated);
     showToast(`Removed "${docName}" from workspace.`, 'info');
   };
 
-  const handleDownloadDoc = (doc: DocItem) => {
+  const handleDownloadDoc = async (doc: DocItem) => {
     showToast(`Preparing download for "${doc.name}"...`, 'success');
-    // Simulated safe browser download
-    const blob = new Blob([doc.extractedText || 'Doclly Processed Content'], {
-      type: doc.type || 'application/pdf',
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = doc.name;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    try {
+      await DocumentStorage.downloadDocument(doc, user?.id);
+    } catch (err: any) {
+      showToast(err?.message || 'Failed to download document.', 'error');
+    }
   };
 
   const handleSaveProfile = async (e: React.FormEvent) => {
@@ -131,6 +137,74 @@ export const DashboardPage: React.FC = () => {
 
   const storageUsedMB = (stats.storageUsedBytes / (1024 * 1024)).toFixed(2);
   const totalStorageGB = (stats.totalStorageBytes / (1024 * 1024 * 1024)).toFixed(0);
+
+  if (isLoading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex flex-col items-center justify-center space-y-4">
+        <div className="w-10 h-10 border-4 border-[#FFC800] border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-semibold text-gray-500">Loading your workspace...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-6">
+        <SeoHead
+          title="Sign In — Doclly Dashboard"
+          description="Sign in or create an account to access your personal document workspace and dashboard."
+        />
+        <Breadcrumb items={[{ label: 'Dashboard' }]} />
+
+        <div className="bg-white border-2 border-[#E5E5E5] rounded-3xl p-8 sm:p-12 text-center space-y-6 shadow-sm max-w-xl mx-auto">
+          <div className="w-16 h-16 mx-auto bg-amber-50 rounded-3xl border border-amber-100 flex items-center justify-center shadow-2xs">
+            <ThreeDIcon name="user" className="w-10 h-10" />
+          </div>
+
+          <div className="space-y-2">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111111] tracking-tight">
+              Sign in to your Dashboard
+            </h1>
+            <p className="text-xs sm:text-sm text-[#6B7280] max-w-md mx-auto leading-relaxed">
+              Please sign in or create a free account to access your private workspace documents, cloud storage quotas, recent files, and subscription billing.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            <button
+              onClick={() => openAuth('signin')}
+              className="w-full sm:w-auto px-6 py-3 bg-[#FFC800] hover:bg-[#E5B200] text-[#111111] font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-transform active:scale-95 cursor-pointer"
+            >
+              Sign In to Account
+            </button>
+            <button
+              onClick={() => openAuth('signup')}
+              className="w-full sm:w-auto px-6 py-3 bg-[#111111] hover:bg-black text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-transform active:scale-95 cursor-pointer"
+            >
+              Create Free Account
+            </button>
+          </div>
+
+          <div className="pt-6 border-t border-[#E5E5E5] flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-[#6B7280]">
+            <span className="flex items-center gap-1.5">
+              <ThreeDIcon name="security" className="w-4 h-4" />
+              100% Secure & Private
+            </span>
+            <span className="flex items-center gap-1.5">
+              <ThreeDIcon name="storage" className="w-4 h-4" />
+              1 GB Free Cloud Storage
+            </span>
+          </div>
+        </div>
+
+        <AuthModal
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)}
+          initialMode={authModalMode}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">

@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { ThreeDIcon } from '../components/common/ThreeDIcon';
 import { FileSession } from '../lib/file-session';
+import { LiveStatsCounter } from '../components/common/LiveStatsCounter';
 
 export const HomePage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -57,7 +58,7 @@ export const HomePage: React.FC = () => {
       />
 
       {/* 1. HERO SECTION WITH OFFICIAL HUGEICONS FLOATING IN BACKGROUND */}
-      <section className="relative pt-8 sm:pt-14 pb-10 overflow-hidden">
+      <section className="relative pt-6 sm:pt-10 pb-8 overflow-hidden">
         {/* Ambient Soft Glows */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl pointer-events-none -z-10" />
         <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl pointer-events-none -z-10" />
@@ -123,9 +124,9 @@ export const HomePage: React.FC = () => {
         </div>
 
         {/* Hero Content */}
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 relative z-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-5 relative z-10">
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#111111] leading-[1.1]">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#111111] leading-[1.1]">
             Every tool you need to work with{' '}
             <span className="underline decoration-[#FFC800] decoration-4 underline-offset-4">
               PDFs & Documents
@@ -136,8 +137,13 @@ export const HomePage: React.FC = () => {
             Merge, split, compress, convert, edit, sign, and protect your PDF files. Fast, private, and 100% free with no file limits.
           </p>
 
+          {/* Tiny live document count */}
+          <div className="flex justify-center">
+            <LiveStatsCounter baseCount={1850} />
+          </div>
+
           {/* Quick Drag & Drop Action Zone */}
-          <div id="main-upload" className="max-w-xl mx-auto pt-4">
+          <div id="main-upload" className="max-w-xl mx-auto mt-2">
             <UploadZone
               onFilesSelected={handleHeroFileSelected}
               accepts={['.pdf', '.docx', '.doc', '.xlsx', '.xls', '.csv', '.pptx', '.jpg', '.png', '.webp']}

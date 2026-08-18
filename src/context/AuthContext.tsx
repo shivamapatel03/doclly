@@ -56,7 +56,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signInWithGoogle = async () => {
     const res = await SupabaseAuthService.signInWithGoogle();
-    if (res.success) {
+    if (res.success && res.user) {
+      // Popup resolved with the user directly — set it immediately
+      setUser(res.user);
+    } else if (res.success) {
+      // Fallback: fetch current user in case onAuthStateChange fires first
       const u = await SupabaseAuthService.getCurrentUser();
       if (u) setUser(u);
     }

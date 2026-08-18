@@ -86,7 +86,7 @@ export const ProtectPdfPage: React.FC = () => {
       const name = `protected_${file.name}`;
       setResultBytes(bytes);
       setResultFilename(name);
-      DocumentStorage.saveDocument({ name, size: bytes.byteLength, type: 'application/pdf' });
+      DocumentStorage.saveDocument({ name, size: bytes.byteLength, type: 'application/pdf', data: bytes });
       toast.success('PDF protected successfully!');
     } catch (err: any) {
       toast.error(err.message || 'Failed to protect PDF.');
@@ -240,7 +240,7 @@ export const UnlockPdfPage: React.FC = () => {
       const name = `unlocked_${file.name}`;
       setResultBytes(bytes);
       setResultFilename(name);
-      DocumentStorage.saveDocument({ name, size: bytes.byteLength, type: 'application/pdf' });
+      DocumentStorage.saveDocument({ name, size: bytes.byteLength, type: 'application/pdf', data: bytes });
       toast.success('PDF unlocked successfully!');
     } catch (err: any) {
       toast.error(err.message || 'Could not unlock this PDF. Make sure the password is correct.');
@@ -342,7 +342,7 @@ export const FlattenPdfPage: React.FC = () => {
       const name = `flattened_${file.name}`;
       setResultBytes(bytes);
       setResultFilename(name);
-      DocumentStorage.saveDocument({ name, size: bytes.byteLength, type: 'application/pdf' });
+      DocumentStorage.saveDocument({ name, size: bytes.byteLength, type: 'application/pdf', data: bytes });
       toast.success('PDF flattened successfully!');
     } catch (err: any) {
       toast.error(err.message || 'Failed to flatten PDF.');

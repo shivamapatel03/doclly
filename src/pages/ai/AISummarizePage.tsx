@@ -40,11 +40,13 @@ export const AISummarizePage: React.FC = () => {
       const result = await generateDocumentSummary(text);
       setProgress(100);
 
-      setSummaryData(result);
+      const fullText = `EXECUTIVE SUMMARY\n${result.summary}\n\nKEY POINTS\n${result.keyPoints.map((k) => `• ${k}`).join('\n')}\n\nIMPORTANT DATES\n${result.importantDates.map((d) => `• ${d}`).join('\n')}\n\nACTION ITEMS\n${result.actionItems.map((a) => `• ${a}`).join('\n')}`;
+
       DocumentStorage.saveDocument({
-        name: `Summary_${file.name}`,
-        size: file.size,
+        name: `Summary_${file.name.replace(/\.[^/.]+$/, '')}.txt`,
+        size: fullText.length,
         type: 'text/plain',
+        data: fullText,
       });
       toast.success('Executive brief generated successfully!');
     } catch {

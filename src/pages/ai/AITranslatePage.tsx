@@ -52,6 +52,7 @@ export const AITranslatePage: React.FC = () => {
         name: `Translated_${targetLang}_${file.name}`,
         size: file.size,
         type: 'text/plain',
+        data: translated,
       });
       toast.success(`Translated into ${targetLang} successfully!`);
     } catch {

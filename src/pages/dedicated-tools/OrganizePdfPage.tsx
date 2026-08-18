@@ -127,6 +127,7 @@ const handleRotatePage = (index: number) => {
         name: `Organized_${file.name}`,
         size: result.byteLength,
         type: 'application/pdf',
+        data: result,
       });
       toast.success('PDF organized successfully!');
     } catch (err: any) {

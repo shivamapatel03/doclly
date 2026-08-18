@@ -54,13 +54,13 @@ export const OfficeConvertersPage: React.FC<OfficeConvertersPageProps> = ({ mode
         const bytes = await csvToExcel(file);
         const outName = `${file.name.replace(/\.[^/.]+$/, '')}.xlsx`;
         setResultData({ bytes, filename: outName });
-        DocumentStorage.saveDocument({ name: outName, size: bytes.byteLength, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        DocumentStorage.saveDocument({ name: outName, size: bytes.byteLength, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', data: bytes });
         toast.success('Converted to Excel successfully!');
       } else if (mode === 'excel-to-csv') {
         const csv = await excelToCsv(file);
         const outName = `${file.name.replace(/\.[^/.]+$/, '')}.csv`;
         setResultData({ csvText: csv, filename: outName });
-        DocumentStorage.saveDocument({ name: outName, size: csv.length, type: 'text/csv' });
+        DocumentStorage.saveDocument({ name: outName, size: csv.length, type: 'text/csv', data: csv });
         toast.success('Converted to CSV successfully!');
       } else {
         const cleanRes = await cleanSpreadsheetData(file);
@@ -70,7 +70,7 @@ export const OfficeConvertersPage: React.FC<OfficeConvertersPageProps> = ({ mode
           filename: outName,
           duplicatesRemoved: cleanRes.duplicatesRemoved,
         });
-        DocumentStorage.saveDocument({ name: outName, size: cleanRes.data.byteLength, type: file.type });
+        DocumentStorage.saveDocument({ name: outName, size: cleanRes.data.byteLength, type: file.type, data: cleanRes.data });
         toast.success(`Cleaned data! Removed ${cleanRes.duplicatesRemoved} duplicate row(s).`);
       }
       setProgress(100);

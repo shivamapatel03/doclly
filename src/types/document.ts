@@ -6,6 +6,8 @@ export interface DocItem {
   lastModified: number;
   uploadedAt: string;
   url?: string;
+  storagePath?: string;
+  hasBinary?: boolean;
   folderId?: string;
   tags?: string[];
   isFavorite?: boolean;
@@ -13,6 +15,13 @@ export interface DocItem {
   pageCount?: number;
   thumbnailUrl?: string;
   extractedText?: string;
+}
+
+export interface SaveDocOptions extends Partial<DocItem> {
+  name: string;
+  size: number;
+  type: string;
+  data?: Blob | Uint8Array | ArrayBuffer | string;
 }
 
 export interface FolderItem {

@@ -38,6 +38,7 @@ import { CompareDocumentsPage } from './dedicated-tools/CompareDocumentsPage';
 import { ProtectPdfPage, UnlockPdfPage, FlattenPdfPage } from './dedicated-tools/SecurityToolPages';
 import { WatermarkPdfPage } from './dedicated-tools/WatermarkPdfPage';
 import { OfficeConvertersPage } from './dedicated-tools/OfficeConvertersPage';
+import { PdfEditorPage } from './dedicated-tools/PdfEditorPage';
 import { Copy, Check } from 'lucide-react';
 import { ThreeDIcon } from '../components/common/ThreeDIcon';
 
@@ -60,6 +61,7 @@ export const ToolPage: React.FC = () => {
   if (toolId === 'unlock-pdf') return <UnlockPdfPage />;
   if (toolId === 'flatten-pdf') return <FlattenPdfPage />;
   if (toolId === 'watermark-pdf') return <WatermarkPdfPage />;
+  if (toolId === 'edit-pdf') return <PdfEditorPage />;
   if (toolId === 'csv-to-excel') return <OfficeConvertersPage mode="csv-to-excel" />;
   if (toolId === 'excel-to-csv') return <OfficeConvertersPage mode="excel-to-csv" />;
   if (toolId === 'excel-cleanup') return <OfficeConvertersPage mode="excel-cleanup" />;
@@ -168,6 +170,7 @@ const GenericToolPageShell: React.FC<{ tool: any }> = ({ tool }) => {
         name,
         size: output ? output.byteLength : blobOutput?.size || 1024,
         type: 'application/pdf',
+        data: output || blobOutput || undefined,
       });
       toast.success(`${tool.name} completed successfully!`);
     } catch (err: any) {

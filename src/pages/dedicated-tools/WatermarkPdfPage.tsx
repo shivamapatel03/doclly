@@ -118,6 +118,7 @@ const handleApplyWatermark = async () => {
         name: outName,
         size: bytes.byteLength,
         type: 'application/pdf',
+        data: bytes,
       });
       toast.success('Watermark stamped onto all pages successfully!');
     } catch (err: any) {

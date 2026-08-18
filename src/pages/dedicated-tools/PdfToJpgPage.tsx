@@ -158,6 +158,7 @@ export const PdfToJpgPage: React.FC = () => {
           name: `${baseName}_page_${selectedExtracted[0].pageIndex}.${ext}`,
           size: blob.size,
           type: format === 'png' ? 'image/png' : 'image/jpeg',
+          data: blob,
         });
       } else {
         // Multi-page output -> package into ZIP
@@ -175,6 +176,7 @@ export const PdfToJpgPage: React.FC = () => {
           name: `${baseName}_${selectedExtracted.length}_pages.zip`,
           size: zipBlob.size,
           type: 'application/zip',
+          data: zipBlob,
         });
       }
 

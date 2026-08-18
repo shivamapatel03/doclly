@@ -52,6 +52,7 @@ const handleCompress = async () => {
         name: `Compressed_${file.name}`,
         size: res.newSize,
         type: 'application/pdf',
+        data: res.data,
       });
       toast.success(`Reduced file size by ${res.percentageReduced}%!`);
     } catch (err: any) {

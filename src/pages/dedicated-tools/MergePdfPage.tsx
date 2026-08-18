@@ -49,6 +49,7 @@ export const MergePdfPage: React.FC = () => {
         name: `Merged_${files.length}_docs.pdf`,
         size: result.byteLength,
         type: 'application/pdf',
+        data: result,
       });
       toast.success('PDFs merged successfully!');
     } catch (err: any) {

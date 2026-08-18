@@ -162,6 +162,7 @@ export const SignPdfPage: React.FC = () => {
         name: outName,
         size: result.byteLength,
         type: 'application/pdf',
+        data: result,
       });
       toast.success('Document signed successfully!');
     } catch (err: any) {

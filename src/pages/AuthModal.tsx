@@ -49,7 +49,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       if (mode === 'signup') {
         const res = await signUp(email, password, name);
         if (res.error) {
-          toast.error(res.error);
+          // Supabase free plan rate limit — give the user a clear action
+          if (res.error.toLowerCase().includes('rate limit') || res.error.toLowerCase().includes('email rate')) {
+            toast.error('Too many sign-up attempts. Please wait a few minutes and try again, or sign up with Google instead.');
+          } else {
+            toast.error(res.error);
+          }
         } else {
           toast.success(res.message || 'Account created successfully! Welcome to Doclly.');
           setEmail('');

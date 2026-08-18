@@ -129,6 +129,12 @@ const handleSplit = async (format: 'pdf' | 'zip' = 'pdf') => {
         setProgress(100);
         setSplitResultZip(zipBlob);
         setSplitResultBytes(null);
+        DocumentStorage.saveDocument({
+          name: `Split_${file.name.replace(/\.[^/.]+$/, '')}_pages.zip`,
+          size: zipBlob.size,
+          type: 'application/zip',
+          data: zipBlob,
+        });
         toast.success(`Split ${pageIndicesToExtract.length} pages into ZIP archive!`);
       } else {
         const result = await splitPdf(file, pageIndicesToExtract);
@@ -139,6 +145,7 @@ const handleSplit = async (format: 'pdf' | 'zip' = 'pdf') => {
           name: `Split_${file.name}`,
           size: result.byteLength,
           type: 'application/pdf',
+          data: result,
         });
         toast.success(`Extracted ${pageIndicesToExtract.length} pages into new PDF!`);
       }

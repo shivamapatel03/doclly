@@ -6,6 +6,7 @@ import {
   Trash2,
   Sparkles,
   RotateCcw,
+  Download,
 } from 'lucide-react';
 import { DocItem } from '../../types/document';
 import { formatFileSize } from '../../lib/utils';
@@ -17,6 +18,7 @@ interface DocumentTableProps {
   onMoveToTrash: (id: string) => void;
   onRestore: (id: string) => void;
   onPermanentDelete: (id: string) => void;
+  onDownload?: (doc: DocItem) => void;
   isTrashView?: boolean;
 }
 
@@ -26,6 +28,7 @@ export const DocumentTable: React.FC<DocumentTableProps> = ({
   onMoveToTrash,
   onRestore,
   onPermanentDelete,
+  onDownload,
   isTrashView = false,
 }) => {
   if (documents.length === 0) {
@@ -137,6 +140,15 @@ export const DocumentTable: React.FC<DocumentTableProps> = ({
                       </>
                     ) : (
                       <>
+                        {onDownload && (
+                          <button
+                            onClick={() => onDownload(doc)}
+                            className="p-1.5 text-gray-400 hover:text-[#111111] hover:bg-[#FFC800]/30 rounded-lg transition-colors cursor-pointer"
+                            title="Download document"
+                          >
+                            <Download className="w-4 h-4 text-[#111111]" />
+                          </button>
+                        )}
                         <Link
                           to="/ai"
                           className="p-1.5 text-gray-400 hover:text-[#111111] hover:bg-[#FFC800]/20 rounded-lg transition-colors"
@@ -146,7 +158,7 @@ export const DocumentTable: React.FC<DocumentTableProps> = ({
                         </Link>
                         <button
                           onClick={() => onMoveToTrash(doc.id)}
-                          className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                           title="Move to trash"
                         >
                           <Trash2 className="w-4 h-4" />

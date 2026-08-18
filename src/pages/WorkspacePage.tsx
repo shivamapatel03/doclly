@@ -10,12 +10,19 @@ import { useToast } from '../components/common/Toast';
 import { DocumentStorage } from '../lib/storage';
 import { DocItem, FolderItem } from '../types/document';
 import { Search, Upload, FolderPlus } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 export const WorkspacePage: React.FC = () => {
-  const [documents, setDocuments] = useState<DocItem[]>(() => DocumentStorage.getDocuments());
-  const [folders, setFolders] = useState<FolderItem[]>(() => DocumentStorage.getFolders());
+  const { user } = useAuth();
+  const [documents, setDocuments] = useState<DocItem[]>(() => DocumentStorage.getDocuments(user?.id));
+  const [folders, setFolders] = useState<FolderItem[]>(() => DocumentStorage.getFolders(user?.id));
   const [selectedFolderId, setSelectedFolderId] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
+
+  React.useEffect(() => {
+    setDocuments(DocumentStorage.getDocuments(user?.id));
+    setFolders(DocumentStorage.getFolders(user?.id));
+  }, [user]);
   
   // Modal states
   const [isUploadOpen, setIsUploadOpen] = useState(false);
@@ -55,47 +62,62 @@ export const WorkspacePage: React.FC = () => {
   const trashCount = documents.filter((d) => d.isTrash).length;
 
   const handleToggleFavorite = (id: string) => {
-    const updated = DocumentStorage.toggleFavorite(id);
+    const updated = DocumentStorage.toggleFavorite(id, user?.id);
     setDocuments(updated);
   };
 
   const handleMoveToTrash = (id: string) => {
-    const updated = DocumentStorage.moveToTrash(id);
+    const updated = DocumentStorage.moveToTrash(id, user?.id);
     setDocuments(updated);
     toast.info('Document moved to trash.');
   };
 
   const handleRestore = (id: string) => {
-    const updated = DocumentStorage.restoreFromTrash(id);
+    const updated = DocumentStorage.restoreFromTrash(id, user?.id);
     setDocuments(updated);
     toast.success('Document restored.');
   };
 
   const handlePermanentDelete = (id: string) => {
-    const updated = DocumentStorage.deletePermanently(id);
+    const updated = DocumentStorage.deletePermanently(id, user?.id);
     setDocuments(updated);
     toast.info('Document permanently deleted.');
   };
 
   const handleCreateFolder = () => {
     if (!newFolderName.trim()) return;
-    const updated = DocumentStorage.createFolder(newFolderName.trim());
+    const updated = DocumentStorage.createFolder(newFolderName.trim(), '#4F46E5', user?.id);
     setFolders(updated);
     setNewFolderName('');
     setIsCreateFolderOpen(false);
     toast.success('Folder created successfully.');
   };
 
-  const handleUploadFiles = (files: File[]) => {
-    files.forEach((file) => {
-      DocumentStorage.saveDocument({
-        name: file.name,
-        size: file.size,
-        type: file.type || 'application/pdf',
-        folderId: selectedFolderId === 'trash' || selectedFolderId === 'favorites' ? 'all' : selectedFolderId,
-      });
-    });
-    setDocuments(DocumentStorage.getDocuments());
+  const handleDownloadDocument = async (doc: DocItem) => {
+    toast.info(`Preparing download for "${doc.name}"...`);
+    try {
+      await DocumentStorage.downloadDocument(doc, user?.id);
+    } catch (err: any) {
+      toast.error(err?.message || 'Failed to download document.');
+    }
+  };
+
+  const handleUploadFiles = async (files: File[]) => {
+    for (const file of files) {
+      const buffer = await file.arrayBuffer();
+      DocumentStorage.saveDocument(
+        {
+          name: file.name,
+          size: file.size,
+          type: file.type || 'application/pdf',
+          folderId:
+            selectedFolderId === 'trash' || selectedFolderId === 'favorites' ? 'all' : selectedFolderId,
+          data: new Uint8Array(buffer),
+        },
+        user?.id
+      );
+    }
+    setDocuments(DocumentStorage.getDocuments(user?.id));
     setIsUploadOpen(false);
     toast.success(`Uploaded ${files.length} document(s) to workspace.`);
   };
@@ -181,6 +203,7 @@ export const WorkspacePage: React.FC = () => {
             onMoveToTrash={handleMoveToTrash}
             onRestore={handleRestore}
             onPermanentDelete={handlePermanentDelete}
+            onDownload={handleDownloadDocument}
             isTrashView={selectedFolderId === 'trash'}
           />
         </main>

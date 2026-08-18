@@ -17,6 +17,7 @@ import { PrivacyPage } from './pages/PrivacyPage';
 import { BlogPage } from './pages/BlogPage';
 import { BlogPostPage } from './pages/BlogPostPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { AuthCallbackPage } from './pages/AuthCallbackPage';
 
 // Scroll to top on route navigation
 const ScrollToTop: React.FC = () => {
@@ -65,6 +66,9 @@ export const AppContent: React.FC = () => {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           
+          {/* Auth Callback (Google OAuth popup redirect target) */}
+          <Route path="/auth/callback" element={<AuthCallbackPage />} />
+
           {/* 404 Route */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

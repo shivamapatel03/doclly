@@ -1,4 +1,4 @@
-﻿import { ToolDefinition, CategoryInfo } from '../types/tool';
+import { ToolDefinition, CategoryInfo } from '../types/tool';
 
 export const TOOL_CATEGORIES: CategoryInfo[] = [
   {
@@ -408,6 +408,29 @@ export const ALL_TOOLS: ToolDefinition[] = [
       keywords: ['sign pdf', 'electronic signature pdf', 'fill and sign pdf', 'e-sign'],
       faq: [
         { question: 'Is the electronic signature legally binding?', answer: 'Doclly generates standard electronic signatures suitable for commercial agreements.' }
+      ]
+    }
+  },
+  {
+    id: 'edit-pdf',
+    name: 'Edit PDF',
+    category: 'edit-security',
+    description: 'Add text, images, signatures, shapes, highlights, and redactions to any PDF page in your browser.',
+    iconName: 'PenLine',
+    route: '/tools/edit-pdf',
+    popular: true,
+    accepts: ['.pdf', 'application/pdf'],
+    acceptsDescription: 'PDF files',
+    maxFiles: 1,
+    outputFormat: 'PDF',
+    actionButtonText: 'Edit PDF',
+    seo: {
+      title: 'Edit PDF Online — Add Text, Images & Signatures — Doclly',
+      description: 'Free in-browser PDF editor. Add text, images, signatures, shapes, highlights and redactions to any PDF. No upload, 100% private.',
+      keywords: ['edit pdf', 'pdf editor online', 'add text to pdf', 'annotate pdf', 'pdf redact'],
+      faq: [
+        { question: 'Can I add text to an existing PDF?', answer: 'Yes — select the Text tool, click anywhere on the page, and type. Choose font size and color from the properties panel.' },
+        { question: 'How do I remove sensitive text?', answer: 'Use the Redact tool to draw a white rectangle over the text, then download the PDF.' }
       ]
     }
   },

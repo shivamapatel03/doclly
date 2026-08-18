@@ -114,12 +114,21 @@ export const SupabaseAuthService = {
           planTier: 'free',
           createdAt: user.created_at,
         };
+
+        // Sync to active local user key and public users table
+        localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(appUser));
+        supabase.from('users').upsert({
+          id: user.id,
+          email: user.email || email,
+          full_name: name || user.email?.split('@')[0] || 'User',
+        }).then();
+
         // If email confirmation is required by Supabase project settings
         if (data.session === null) {
           return {
             success: true,
             user: appUser,
-            message: 'Sign up successful! Please check your email to confirm your account.',
+            message: 'Sign up successful! Please check your email to confirm your account (or disable email confirmation in Supabase Project Settings).',
           };
         }
         return { success: true, user: appUser };
@@ -176,6 +185,7 @@ export const SupabaseAuthService = {
           planTier: (user.user_metadata?.plan_tier as any) || 'free',
           createdAt: user.created_at,
         };
+        localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(appUser));
         return { success: true, user: appUser };
       }
       return { success: false, error: 'User not found' };
@@ -184,20 +194,20 @@ export const SupabaseAuthService = {
     // Offline / Demo fallback
     const usersRaw = localStorage.getItem(LOCAL_STORAGE_USERS_DB);
     const users: any[] = usersRaw ? JSON.parse(usersRaw) : [];
-    const existing = users.find((u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+    const existing = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
 
     if (!existing) {
-      // If fresh demo, allow instant account creation or return friendly message
-      const demoUser: AppUser = {
-        id: 'usr_' + Date.now(),
-        email,
-        name: email.split('@')[0],
-        provider: 'email',
-        planTier: 'free',
-        createdAt: new Date().toISOString(),
+      return {
+        success: false,
+        error: 'No account found with this email. Please create an account first.',
       };
-      localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(demoUser));
-      return { success: true, user: demoUser };
+    }
+
+    if (existing.password && existing.password !== password) {
+      return {
+        success: false,
+        error: 'Incorrect password. Please check your credentials and try again.',
+      };
     }
 
     const { password: _, ...cleanUser } = existing;
@@ -206,21 +216,74 @@ export const SupabaseAuthService = {
   },
 
   /**
-   * Sign in with Google OAuth (via Supabase or Google Identity Services SDK)
+   * Sign in with Google OAuth — opens a popup so the page never redirects.
+   * After the popup closes, polls Supabase for the new session.
    */
   async signInWithGoogle(): Promise<{ success: boolean; user?: AppUser; error?: string }> {
     if (supabase) {
-      const { error } = await supabase.auth.signInWithOAuth({
+      // Step 1: Get the OAuth URL without redirecting the main window
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/`,
+          redirectTo: `${window.location.origin}/auth/callback`,
+          skipBrowserRedirect: true,
         },
       });
 
-      if (error) {
-        return { success: false, error: error.message };
+      if (error || !data?.url) {
+        return { success: false, error: error?.message || 'Could not initiate Google sign-in.' };
       }
-      return { success: true };
+
+      // Step 2: Open the OAuth URL in a popup window
+      return new Promise((resolve) => {
+        const width = 500;
+        const height = 650;
+        const left = Math.round(window.screenX + (window.outerWidth - width) / 2);
+        const top = Math.round(window.screenY + (window.outerHeight - height) / 2);
+        const popup = window.open(
+          data.url,
+          'doclly_google_auth',
+          `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
+        );
+
+        if (!popup) {
+          resolve({ success: false, error: 'Popup was blocked. Please allow popups for this site and try again.' });
+          return;
+        }
+
+        // Step 3: Poll until the popup closes, then fetch the session
+        const interval = setInterval(async () => {
+          if (popup.closed) {
+            clearInterval(interval);
+            clearTimeout(timeout);
+
+            const { data: sessionData } = await supabase!.auth.getSession();
+            if (sessionData.session?.user) {
+              const u = sessionData.session.user;
+              const appUser: AppUser = {
+                id: u.id,
+                email: u.email || '',
+                name: u.user_metadata?.full_name || u.user_metadata?.name || u.email?.split('@')[0] || 'User',
+                avatarUrl: u.user_metadata?.avatar_url || u.user_metadata?.picture,
+                provider: 'google',
+                planTier: (u.user_metadata?.plan_tier as any) || 'free',
+                createdAt: u.created_at,
+              };
+              localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(appUser));
+              resolve({ success: true, user: appUser });
+            } else {
+              resolve({ success: false, error: 'Google sign-in was cancelled or the session could not be established.' });
+            }
+          }
+        }, 500);
+
+        // Timeout after 5 minutes
+        const timeout = setTimeout(() => {
+          clearInterval(interval);
+          if (!popup.closed) popup.close();
+          resolve({ success: false, error: 'Google sign-in timed out. Please try again.' });
+        }, 300_000);
+      });
     }
 
     // Google Identity Services (GIS) direct popup with Client ID
@@ -320,6 +383,17 @@ export const SupabaseAuthService = {
     if (current) {
       const updated = { ...current, planTier: tier };
       localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(updated));
+
+      // Also persist to registered users DB
+      const usersRaw = localStorage.getItem(LOCAL_STORAGE_USERS_DB);
+      if (usersRaw) {
+        try {
+          const users: any[] = JSON.parse(usersRaw);
+          const updatedUsers = users.map((u) => (u.id === current.id ? { ...u, planTier: tier } : u));
+          localStorage.setItem(LOCAL_STORAGE_USERS_DB, JSON.stringify(updatedUsers));
+        } catch {}
+      }
+
       return updated;
     }
     return null;
@@ -346,6 +420,19 @@ export const SupabaseAuthService = {
         avatarUrl: updates.avatarUrl || current.avatarUrl,
       };
       localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(updated));
+
+      // Also persist to registered users DB
+      const usersRaw = localStorage.getItem(LOCAL_STORAGE_USERS_DB);
+      if (usersRaw) {
+        try {
+          const users: any[] = JSON.parse(usersRaw);
+          const updatedUsers = users.map((u) =>
+            u.id === current.id ? { ...u, name: updated.name, avatarUrl: updated.avatarUrl } : u
+          );
+          localStorage.setItem(LOCAL_STORAGE_USERS_DB, JSON.stringify(updatedUsers));
+        } catch {}
+      }
+
       return updated;
     }
     return null;
@@ -369,7 +456,7 @@ export const SupabaseAuthService = {
       const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
         if (session?.user) {
           const u = session.user;
-          callback({
+          const appUser: AppUser = {
             id: u.id,
             email: u.email || '',
             name: u.user_metadata?.full_name || u.email?.split('@')[0] || 'User',
@@ -377,8 +464,11 @@ export const SupabaseAuthService = {
             provider: u.app_metadata?.provider || 'email',
             planTier: (u.user_metadata?.plan_tier as any) || 'free',
             createdAt: u.created_at,
-          });
+          };
+          localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(appUser));
+          callback(appUser);
         } else {
+          localStorage.removeItem(LOCAL_STORAGE_USER_KEY);
           callback(null);
         }
       });

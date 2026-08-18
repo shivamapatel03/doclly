@@ -131,6 +131,7 @@ const togglePage = (index: number) => {
         name: outName,
         size: result.byteLength,
         type: 'application/pdf',
+        data: result,
       });
       toast.success(`Extracted ${selectedToExtract.size} pages successfully!`);
     } catch (err: any) {

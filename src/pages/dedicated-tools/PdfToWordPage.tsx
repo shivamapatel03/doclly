@@ -58,6 +58,7 @@ const handleConvert = async () => {
         name: filename,
         size: blob.size,
         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        data: blob,
       });
       toast.success('Converted to editable Word (.docx) document!');
     } catch (err: any) {
