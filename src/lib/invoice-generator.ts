@@ -41,22 +41,30 @@ export async function generateInvoicePdf(invoice: Invoice): Promise<Uint8Array> 
   const cBorder = rgb(229 / 255, 231 / 255, 235 / 255); // #E5E7EB
   const cGreen = rgb(16 / 255, 185 / 255, 129 / 255); // #10B981
 
-  // Top Dark Header Banner
+  // Top Clean White Header Banner with Gold Accent Bar
   page.drawRectangle({
     x: 0,
-    y: height - 110,
+    y: height - 115,
     width,
-    height: 110,
-    color: cDark,
+    height: 115,
+    color: rgb(1, 1, 1),
   });
 
   // Top Gold Accent Bar
   page.drawRectangle({
     x: 0,
-    y: height - 114,
+    y: height - 4,
     width,
     height: 4,
     color: cGold,
+  });
+
+  // Bottom Header Border
+  page.drawLine({
+    start: { x: 45, y: height - 115 },
+    end: { x: width - 45, y: height - 115 },
+    color: cBorder,
+    thickness: 1,
   });
 
   // Company Brand Logo & Wordmark
@@ -68,9 +76,9 @@ export async function generateInvoicePdf(invoice: Invoice): Promise<Uint8Array> 
       const docllyIcon = await pdfDoc.embedPng(iconBytes);
       page.drawImage(docllyIcon, {
         x: 45,
-        y: height - 68,
-        width: 32,
-        height: 32,
+        y: height - 66,
+        width: 36,
+        height: 36,
       });
 
       try {
@@ -79,10 +87,10 @@ export async function generateInvoicePdf(invoice: Invoice): Promise<Uint8Array> 
           const textBytes = await textRes.arrayBuffer();
           const docllyText = await pdfDoc.embedPng(textBytes);
           page.drawImage(docllyText, {
-            x: 84,
-            y: height - 64,
-            width: 80,
-            height: 24,
+            x: 88,
+            y: height - 60,
+            width: 86,
+            height: 26,
           });
           logoDrawn = true;
         }
@@ -92,11 +100,11 @@ export async function generateInvoicePdf(invoice: Invoice): Promise<Uint8Array> 
 
       if (!logoDrawn) {
         page.drawText('doclly', {
-          x: 84,
-          y: height - 58,
-          size: 22,
+          x: 88,
+          y: height - 56,
+          size: 24,
           font: fontBold,
-          color: rgb(1, 1, 1),
+          color: cDark,
         });
         logoDrawn = true;
       }
@@ -111,54 +119,54 @@ export async function generateInvoicePdf(invoice: Invoice): Promise<Uint8Array> 
       y: height - 55,
       size: 24,
       font: fontBold,
-      color: cGold,
+      color: cDark,
     });
   }
 
   page.drawText('All-in-One Cloud Document Workspace', {
     x: 45,
-    y: height - 88,
+    y: height - 92,
     size: 9,
     font: fontRegular,
-    color: rgb(203 / 255, 213 / 255, 225 / 255),
+    color: cGray,
   });
 
   // TAX INVOICE Header (Right)
   page.drawText('TAX INVOICE', {
     x: width - 190,
-    y: height - 55,
+    y: height - 48,
     size: 18,
     font: fontBold,
-    color: rgb(1, 1, 1),
+    color: cDark,
   });
 
   page.drawText(`INVOICE #: ${invoice.id}`, {
     x: width - 190,
-    y: height - 72,
+    y: height - 66,
     size: 10,
     font: fontBold,
-    color: cGold,
+    color: cDark,
   });
 
   page.drawText(`DATE: ${invoice.date}`, {
     x: width - 190,
-    y: height - 86,
+    y: height - 80,
     size: 9,
     font: fontRegular,
-    color: rgb(226 / 255, 232 / 255, 240 / 255),
+    color: cGray,
   });
 
   // Status Badge Box
   page.drawRectangle({
     x: width - 190,
-    y: height - 105,
+    y: height - 102,
     width: 65,
     height: 16,
     color: cGreen,
   });
   page.drawText('PAID', {
     x: width - 170,
-    y: height - 101,
+    y: height - 98,
     size: 9,
     font: fontBold,
     color: rgb(1, 1, 1),
