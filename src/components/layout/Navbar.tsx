@@ -251,6 +251,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
             <span className="font-extrabold text-lg sm:text-xl tracking-tight text-[#111111] hidden">
               Doclly
             </span>
+            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#FFC800] text-[#111111] border border-[#DC9F00] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)]">
+              Beta
+            </span>
           </Link>
 
           {/* Desktop Navigation - Single line */}
@@ -496,10 +499,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
                 Sign In
               </button>
 
-              {/* Get Started button */}
+              {/* Get Started button (Desktop & Tablet only to prevent mobile overlap) */}
               <button
                 onClick={() => onOpenAuth('signup')}
-                className="inline-flex items-center justify-center px-5 py-2 text-xs sm:text-sm font-bold text-[#111111] bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent hover:bg-[#F5B800] border border-[#DC9F00] rounded-full shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] transition-all whitespace-nowrap cursor-pointer select-none"
+                className="hidden sm:inline-flex items-center justify-center px-5 py-2 text-xs sm:text-sm font-bold text-[#111111] bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent hover:bg-[#F5B800] border border-[#DC9F00] rounded-full shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] transition-all whitespace-nowrap cursor-pointer select-none"
               >
                 Get Started
               </button>

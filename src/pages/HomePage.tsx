@@ -157,6 +157,18 @@ export const HomePage: React.FC = () => {
               acceptsDescription="Drop any PDF, Word, Excel, PowerPoint, or Image file here to start converting"
               maxFiles={10}
             />
+
+            {/* Public Beta Reassurance Notice */}
+            <p className="text-[11px] sm:text-xs text-[#6B7280] font-medium flex flex-wrap items-center justify-center gap-1.5 pt-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
+              <span>Doclly is currently in <strong>Public Beta</strong>. Encountered an issue or have an idea?</span>
+              <a
+                href="mailto:helpdoclly@zohomail.in?subject=Doclly%20Beta%20Feedback"
+                className="text-[#111111] font-bold underline underline-offset-2 hover:text-[#DC9F00] transition-colors"
+              >
+                Send Feedback ↗
+              </a>
+            </p>
           </div>
         </div>
       </section>
