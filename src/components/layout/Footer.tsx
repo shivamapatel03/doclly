@@ -126,7 +126,7 @@ export const Footer: React.FC = () => {
           </div>
           <div className="flex items-center gap-6">
             <Link to="/privacy" className="hover:text-[#111111] transition-colors">Privacy Policy</Link>
-            <Link to="/privacy" className="hover:text-[#111111] transition-colors">Terms of Service</Link>
+            <Link to="/terms" className="hover:text-[#111111] transition-colors">Terms of Service</Link>
             <Link to="/privacy" className="hover:text-[#111111] transition-colors">Security Overview</Link>
           </div>
         </div>

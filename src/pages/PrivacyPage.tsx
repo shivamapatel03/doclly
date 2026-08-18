@@ -1,7 +1,8 @@
 import React from 'react';
 import { SeoHead } from '../components/layout/SeoHead';
 import { Breadcrumb } from '../components/layout/Breadcrumb';
-import { Shield, Lock, EyeOff, RefreshCw } from 'lucide-react';
+import { Shield, Lock, EyeOff, RefreshCw, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const PrivacyPage: React.FC = () => {
   return (
@@ -97,6 +98,29 @@ export const PrivacyPage: React.FC = () => {
             For questions regarding our privacy architecture, data deletion requests, or compliance inquiries, please contact our security team at <span className="text-[#111111] font-bold">security@doclly.app</span>.
           </p>
         </section>
+      </div>
+
+      {/* Bottom CTA Card */}
+      <div className="p-6 bg-[#0F172A] rounded-3xl text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
+        <div className="space-y-1">
+          <h3 className="text-base font-bold text-white">Review our official Terms of Service</h3>
+          <p className="text-xs text-gray-400">Learn more about user rights, document ownership, and transparent billing.</p>
+        </div>
+        <div className="flex items-center gap-2.5 shrink-0">
+          <Link
+            to="/terms"
+            className="px-4 py-2 bg-white/10 hover:bg-white/15 active:bg-white/20 text-white rounded-full text-xs font-bold border border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_2px_4px_rgba(0,0,0,0.3),0_1px_2px_rgba(0,0,0,0.2)] transition-all flex items-center gap-1.5 cursor-pointer select-none"
+          >
+            Terms of Service
+          </Link>
+          <Link
+            to="/pricing"
+            className="px-4 py-2 bg-[#FFC800] hover:bg-[#F5B800] active:bg-[#E6B400] text-[#111111] rounded-full text-xs font-bold border border-[#DC9F00] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.2),0_1px_2px_rgba(0,0,0,0.15)] transition-all flex items-center gap-1.5 cursor-pointer select-none"
+          >
+            View Pricing
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
       </div>
     </div>
   );

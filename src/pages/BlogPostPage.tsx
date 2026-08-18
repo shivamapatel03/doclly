@@ -74,7 +74,7 @@ export const BlogPostPage: React.FC = () => {
           </div>
           <Link
             to={post.toolLink}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-[#111111] bg-[#FFC800] hover:bg-[#E6B400] rounded-xl transition-colors shrink-0 border border-[#E5E5E5] shadow-2xs"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-[#111111] bg-[#FFC800] hover:bg-[#F5B800] active:bg-[#E6B400] rounded-full border border-[#DC9F00] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] transition-all shrink-0 cursor-pointer select-none"
           >
             <span>Open {post.toolName}</span>
             <ArrowRight className="w-3.5 h-3.5" />
