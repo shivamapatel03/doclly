@@ -1,6 +1,7 @@
 import React from 'react';
-import { FileText, Trash2, ChevronUp, ChevronDown } from 'lucide-react';
+import { Trash2, ChevronUp, ChevronDown } from 'lucide-react';
 import { formatFileSize } from '../../lib/utils';
+import { getFile3DIcon } from '../common/ThreeDIcon';
 
 interface FileListProps {
   files: File[];
@@ -43,8 +44,8 @@ export const FileList: React.FC<FileListProps> = ({
           >
             {/* File Info */}
             <div className="flex items-center gap-3 min-w-0 flex-1">
-              <div className="w-8 h-8 rounded-lg bg-[#F5F5F5] border border-[#E5E5E5] text-[#111111] flex items-center justify-center shrink-0">
-                <FileText className="w-4 h-4" />
+              <div className="shrink-0">
+                {getFile3DIcon(file.name, 'w-8 h-8')}
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-semibold text-[#111111] truncate">{file.name}</p>

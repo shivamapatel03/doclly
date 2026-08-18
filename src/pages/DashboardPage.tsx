@@ -1,252 +1,677 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SeoHead } from '../components/layout/SeoHead';
 import { Breadcrumb } from '../components/layout/Breadcrumb';
 import { Button } from '../components/common/Button';
 import { DocumentStorage } from '../lib/storage';
-import { ALL_TOOLS } from '../lib/constants';
 import {
-  BarChart2,
-  FileText,
-  Sparkles,
-  Clock,
-  HardDrive,
-  CreditCard,
-  User,
-  Settings,
+  Trash2,
+  Download,
+  CheckCircle2,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getFile3DIcon, ThreeDIcon } from '../components/common/ThreeDIcon';
+import { useAuth } from '../context/AuthContext';
+import { useToast } from '../components/common/Toast';
+import {
+  launchRazorpayCheckout,
+  getPaymentHistory,
+  RazorpayTransaction,
+} from '../lib/razorpay';
+import { DocItem } from '../types/document';
 
 export const DashboardPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'recent' | 'saved' | 'ai' | 'billing' | 'account'>('overview');
-  const stats = DocumentStorage.getUserStats();
-  const docs = DocumentStorage.getDocuments();
+  const [activeTab, setActiveTab] = useState<'overview' | 'recent' | 'billing' | 'account'>('overview');
+  const { user, updatePlanTier, updateProfile, signOut } = useAuth();
+  const { showToast } = useToast();
+
+  const [docs, setDocs] = useState<DocItem[]>([]);
+  const [payments, setPayments] = useState<RazorpayTransaction[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [userNameInput, setUserNameInput] = useState(user?.name || '');
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [isUpgrading, setIsUpgrading] = useState(false);
+
+  useEffect(() => {
+    setDocs(DocumentStorage.getDocuments());
+    setPayments(getPaymentHistory());
+    if (user?.name) {
+      setUserNameInput(user.name);
+    }
+  }, [user]);
+
+  const planTier = user?.planTier || 'free';
+  const stats = DocumentStorage.getUserStats(planTier);
+
+  const planDisplayName =
+    planTier === 'business'
+      ? 'Business Plan'
+      : planTier === 'pro'
+      ? 'Pro Plan'
+      : 'Free Starter';
+
+  const handleDeleteDoc = (docId: string, docName: string) => {
+    const updated = DocumentStorage.deletePermanently(docId);
+    setDocs(updated);
+    showToast(`Removed "${docName}" from workspace.`, 'info');
+  };
+
+  const handleDownloadDoc = (doc: DocItem) => {
+    showToast(`Preparing download for "${doc.name}"...`, 'success');
+    // Simulated safe browser download
+    const blob = new Blob([doc.extractedText || 'Doclly Processed Content'], {
+      type: doc.type || 'application/pdf',
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = doc.name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleSaveProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userNameInput.trim()) return;
+    setIsSavingProfile(true);
+    try {
+      await updateProfile({ name: userNameInput.trim() });
+      showToast('Profile updated successfully!', 'success');
+    } catch (err: any) {
+      showToast(err?.message || 'Failed to update profile.', 'error');
+    } finally {
+      setIsSavingProfile(false);
+    }
+  };
+
+  const handleUpgradePlan = (targetPlan: 'pro' | 'business', amountINR: number) => {
+    if (!user) {
+      showToast('Please sign in to upgrade your subscription.', 'info');
+      return;
+    }
+
+    setIsUpgrading(true);
+    const planName = targetPlan === 'pro' ? 'Pro Plan' : 'Business Plan';
+
+    launchRazorpayCheckout({
+      planId: targetPlan,
+      planName,
+      amountINR,
+      billingCycle: 'monthly',
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
+      onSuccess: async (paymentId) => {
+        await updatePlanTier(targetPlan);
+        setPayments(getPaymentHistory());
+        setIsUpgrading(false);
+        showToast(
+          `🎉 Payment successful (${paymentId})! Upgraded to ${planName}.`,
+          'success'
+        );
+      },
+      onFailure: (err) => {
+        setIsUpgrading(false);
+        showToast(err?.message || 'Payment was cancelled.', 'info');
+      },
+    });
+  };
+
+  const handleDowngradeFree = async () => {
+    await updatePlanTier('free');
+    showToast('Plan changed to Free Starter tier.', 'info');
+  };
+
+  const filteredDocs = docs.filter((d) =>
+    d.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const storageUsedMB = (stats.storageUsedBytes / (1024 * 1024)).toFixed(2);
+  const totalStorageGB = (stats.totalStorageBytes / (1024 * 1024 * 1024)).toFixed(0);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-      <SeoHead title="Account Dashboard — Doclly" description="Overview of processed files, AI usage, and subscription tier." />
+      <SeoHead
+        title="Dashboard — Doclly"
+        description="Manage processed documents, cloud storage quotas, billing, and user settings."
+      />
       <Breadcrumb items={[{ label: 'Dashboard' }]} />
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E5E5E5] pb-5">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111111] tracking-tight">User Dashboard</h1>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111111] tracking-tight">
+            {user ? `${user.name}'s Dashboard` : 'Workspace Dashboard'}
+          </h1>
           <p className="text-xs sm:text-sm text-[#6B7280]">
-            Track document processing quotas, recent activity, and account settings.
+            Track document processing quotas, recent files, and subscription billing.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="px-3 py-1 text-xs font-bold text-[#111111] bg-[#FFC800] border border-[#E5E5E5] rounded-full shadow-2xs">
-            Plan: Pro Tier (Active)
-          </span>
-        </div>
+        {planTier !== 'free' && (
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-black rounded-full bg-[#FFC800] text-[#111111] border border-[#E5B200] shadow-2xs">
+              <ThreeDIcon
+                name={planTier === 'business' ? 'diamond' : 'crown'}
+                className="w-4 h-4"
+              />
+              <span>{planTier === 'business' ? 'Business Pro User' : 'Pro User'}</span>
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex items-center gap-1 border-b border-[#E5E5E5] overflow-x-auto pb-1">
+      <div className="flex items-center gap-1.5 border-b border-[#E5E5E5] overflow-x-auto pb-2 scrollbar-none">
         {[
-          { id: 'overview', label: 'Overview', icon: BarChart2 },
-          { id: 'recent', label: 'Recent Files', icon: FileText },
-          { id: 'saved', label: 'Saved Tools', icon: Settings },
-          { id: 'ai', label: 'AI History', icon: Sparkles },
-          { id: 'billing', label: 'Billing & Plan', icon: CreditCard },
-          { id: 'account', label: 'Account Profile', icon: User },
+          { id: 'overview', label: 'Overview', icon3d: 'overview' },
+          { id: 'recent', label: `Recent Files (${docs.length})`, icon3d: 'folder' },
+          { id: 'billing', label: 'Billing & Plans', icon3d: 'billing' },
+          { id: 'account', label: 'Account Profile', icon3d: 'user' },
         ].map((tab) => {
-          const Icon = tab.icon;
           const isSelected = activeTab === tab.id;
           return (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg transition-colors whitespace-nowrap ${
+              className={`group flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 whitespace-nowrap cursor-pointer ${
                 isSelected
-                  ? 'bg-[#FFC800] text-[#111111] border border-[#E5E5E5] shadow-2xs'
+                  ? 'bg-[#FFC800] text-[#111111] border border-[#E5E5E5] shadow-xs'
                   : 'text-[#6B7280] hover:text-[#111111] hover:bg-[#F5F5F5]'
               }`}
             >
-              <Icon className="w-4 h-4" />
+              <div className="shrink-0 transition-transform duration-200 group-hover:scale-110">
+                <ThreeDIcon name={tab.icon3d} className="w-5 h-5" />
+              </div>
               <span>{tab.label}</span>
             </button>
           );
         })}
       </div>
 
-      {/* Tab 1: Overview */}
+      {/* =========================================================================
+          TAB 1: OVERVIEW
+         ========================================================================= */}
       {activeTab === 'overview' && (
         <div className="space-y-6">
-          {/* Top Metric Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Top Real Metrics */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="p-5 bg-white border border-[#E5E5E5] rounded-2xl space-y-2 shadow-2xs">
               <div className="flex items-center justify-between text-xs text-[#6B7280]">
-                <span>Documents Processed</span>
-                <FileText className="w-4 h-4 text-[#111111]" />
+                <span className="font-semibold">Documents Processed</span>
+                <ThreeDIcon name="folder" className="w-6 h-6" />
               </div>
-              <p className="text-2xl font-bold text-[#111111]">{stats.documentsProcessed}</p>
-              <span className="text-[11px] text-emerald-600 font-medium">↑ 12% this week</span>
+              <p className="text-2xl font-bold text-[#111111]">{docs.length}</p>
+              <span className="text-[11px] text-emerald-600 font-medium">Real workspace count</span>
             </div>
 
             <div className="p-5 bg-white border border-[#E5E5E5] rounded-2xl space-y-2 shadow-2xs">
               <div className="flex items-center justify-between text-xs text-[#6B7280]">
-                <span>AI Queries Used</span>
-                <Sparkles className="w-4 h-4 text-[#111111]" />
+                <span className="font-semibold">Time Saved</span>
+                <ThreeDIcon name="clock" className="w-6 h-6" />
+              </div>
+              <p className="text-2xl font-bold text-[#111111]">{docs.length * 3} min</p>
+              <span className="text-[11px] text-[#6B7280]">Based on automated tasks</span>
+            </div>
+
+            <div className="p-5 bg-white border border-[#E5E5E5] rounded-2xl space-y-2 shadow-2xs">
+              <div className="flex items-center justify-between text-xs text-[#6B7280]">
+                <span className="font-semibold">Storage Quota</span>
+                <ThreeDIcon name="storage" className="w-6 h-6" />
               </div>
               <p className="text-2xl font-bold text-[#111111]">
-                {stats.aiQueriesUsed} <span className="text-xs text-gray-400 font-normal">/ {stats.aiQueriesLimit}</span>
+                {storageUsedMB} MB{' '}
+                <span className="text-xs text-gray-400 font-normal">/ {totalStorageGB} GB</span>
               </p>
-              <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-[#FFC800] h-full w-[18%]" />
+              <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden mt-1">
+                <div
+                  className="bg-[#FFC800] h-full"
+                  style={{
+                    width: `${Math.max(
+                      2,
+                      Math.min(100, (stats.storageUsedBytes / stats.totalStorageBytes) * 100)
+                    )}%`,
+                  }}
+                />
               </div>
-            </div>
-
-            <div className="p-5 bg-white border border-[#E5E5E5] rounded-2xl space-y-2 shadow-2xs">
-              <div className="flex items-center justify-between text-xs text-[#6B7280]">
-                <span>Time Saved</span>
-                <Clock className="w-4 h-4 text-emerald-600" />
-              </div>
-              <p className="text-2xl font-bold text-[#111111]">{stats.timeSavedMinutes} min</p>
-              <span className="text-[11px] text-[#6B7280]">Automated conversion time</span>
-            </div>
-
-            <div className="p-5 bg-white border border-[#E5E5E5] rounded-2xl space-y-2 shadow-2xs">
-              <div className="flex items-center justify-between text-xs text-[#6B7280]">
-                <span>Cloud Storage</span>
-                <HardDrive className="w-4 h-4 text-[#111111]" />
-              </div>
-              <p className="text-2xl font-bold text-[#111111]">34 MB <span className="text-xs text-gray-400 font-normal">/ 5 GB</span></p>
-              <span className="text-[11px] text-emerald-600 font-medium">99.3% free capacity</span>
             </div>
           </div>
 
           {/* Recent Files Table Preview */}
           <div className="bg-white border border-[#E5E5E5] rounded-2xl p-5 space-y-4 shadow-2xs">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-[#111111]">Recent Workspace Files</h3>
-              <Link to="/workspace" className="text-xs font-bold text-[#111111] hover:underline">
-                View All Files →
+              <div className="flex items-center gap-2">
+                <ThreeDIcon name="folder" className="w-5 h-5" />
+                <h3 className="text-sm font-bold text-[#111111]">Recent Workspace Documents</h3>
+              </div>
+              {docs.length > 0 && (
+                <button
+                  onClick={() => setActiveTab('recent')}
+                  className="text-xs font-bold text-[#111111] hover:underline cursor-pointer"
+                >
+                  View All ({docs.length}) →
+                </button>
+              )}
+            </div>
+
+            {docs.length === 0 ? (
+              <div className="text-center py-10 px-4 border border-dashed border-[#E5E5E5] rounded-xl space-y-3">
+                <div className="flex justify-center">
+                  <ThreeDIcon name="folder" className="w-14 h-14" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-[#111111]">No files in workspace yet</h4>
+                  <p className="text-xs text-[#6B7280] max-w-sm mx-auto mt-1">
+                    Upload, convert, merge, or compress your PDF documents to see them here.
+                  </p>
+                </div>
+                <Link
+                  to="/"
+                  className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold bg-[#FFC800] hover:bg-[#E6B400] text-[#111111] rounded-lg transition-colors shadow-2xs"
+                >
+                  <ThreeDIcon name="flash" className="w-4 h-4" />
+                  <span>Process a Document</span>
+                </Link>
+              </div>
+            ) : (
+              <div className="divide-y divide-[#E5E5E5]">
+                {docs.slice(0, 5).map((doc) => (
+                  <div
+                    key={doc.id}
+                    className="py-3 flex items-center justify-between text-xs sm:text-sm hover:bg-[#FAFAFA] rounded-lg px-2 transition-colors"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="shrink-0">{getFile3DIcon(doc.name, 'w-6 h-6')}</div>
+                      <div className="min-w-0">
+                        <p className="font-semibold text-[#111111] truncate">{doc.name}</p>
+                        <p className="text-[11px] text-[#6B7280]">
+                          {(doc.size / 1024).toFixed(1)} KB • {doc.uploadedAt}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        onClick={() => handleDownloadDoc(doc)}
+                        className="p-1.5 text-gray-500 hover:text-[#111111] hover:bg-gray-100 rounded-lg cursor-pointer transition-colors"
+                        title="Download"
+                      >
+                        <Download className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteDoc(doc.id, doc.name)}
+                        className="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg cursor-pointer transition-colors"
+                        title="Delete"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          TAB 2: RECENT FILES
+         ========================================================================= */}
+      {activeTab === 'recent' && (
+        <div className="bg-white border border-[#E5E5E5] rounded-2xl p-6 space-y-4 shadow-2xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-amber-50 rounded-xl shrink-0">
+                <ThreeDIcon name="folder" className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-[#111111]">Document History</h3>
+                <p className="text-xs text-[#6B7280]">
+                  All documents generated and processed in this session.
+                </p>
+              </div>
+            </div>
+            {docs.length > 0 && (
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search documents..."
+                className="px-3 py-1.5 text-xs border border-[#E5E5E5] rounded-lg focus:outline-none focus:border-[#111111] w-full sm:w-64"
+              />
+            )}
+          </div>
+
+          {filteredDocs.length === 0 ? (
+            <div className="text-center py-12 px-4 border border-dashed border-[#E5E5E5] rounded-xl space-y-3">
+              <div className="flex justify-center">
+                <ThreeDIcon name="folder" className="w-14 h-14" />
+              </div>
+              <h4 className="text-sm font-bold text-[#111111]">
+                {searchQuery ? 'No documents match your search.' : 'No documents saved yet.'}
+              </h4>
+              <Link
+                to="/"
+                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold bg-[#FFC800] hover:bg-[#E6B400] text-[#111111] rounded-lg transition-colors shadow-2xs"
+              >
+                <ThreeDIcon name="flash" className="w-4 h-4" />
+                <span>Upload Document Now</span>
               </Link>
             </div>
+          ) : (
             <div className="divide-y divide-[#E5E5E5]">
-              {docs.slice(0, 3).map((doc) => (
-                <div key={doc.id} className="py-3 flex items-center justify-between text-xs sm:text-sm">
-                  <div className="flex items-center gap-3">
-                    <FileText className="w-4 h-4 text-[#111111] shrink-0" />
-                    <span className="font-semibold text-[#111111]">{doc.name}</span>
+              {filteredDocs.map((doc) => (
+                <div
+                  key={doc.id}
+                  className="py-3 flex items-center justify-between text-xs sm:text-sm hover:bg-[#FAFAFA] rounded-lg px-2 transition-colors"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="shrink-0">{getFile3DIcon(doc.name, 'w-7 h-7')}</div>
+                    <div className="min-w-0">
+                      <p className="font-semibold text-[#111111] truncate">{doc.name}</p>
+                      <p className="text-xs text-[#6B7280]">
+                        {(doc.size / 1024).toFixed(1)} KB • {doc.uploadedAt}
+                      </p>
+                    </div>
                   </div>
-                  <span className="text-[#6B7280]">{doc.uploadedAt}</span>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      onClick={() => handleDownloadDoc(doc)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold bg-gray-100 hover:bg-gray-200 text-[#111111] rounded-lg transition-colors cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Download</span>
+                    </button>
+                    <button
+                      onClick={() => handleDeleteDoc(doc.id, doc.name)}
+                      className="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg cursor-pointer transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
-          </div>
+          )}
         </div>
       )}
 
-      {/* Tab 2: Recent Files */}
-      {activeTab === 'recent' && (
-        <div className="bg-white border border-[#E5E5E5] rounded-2xl p-6 space-y-4 shadow-2xs">
-          <h3 className="text-base font-bold text-[#111111]">Recently Processed Documents</h3>
-          <div className="divide-y divide-[#E5E5E5]">
-            {docs.map((doc) => (
-              <div key={doc.id} className="py-3 flex items-center justify-between text-xs sm:text-sm">
-                <div className="flex items-center gap-3">
-                  <FileText className="w-4 h-4 text-[#111111] shrink-0" />
+      {/* =========================================================================
+          TAB 3: BILLING & RAZORPAY
+         ========================================================================= */}
+      {activeTab === 'billing' && (
+        <div className="space-y-6">
+          {/* Active Subscription Card: Shown only for Pro / Paid Users */}
+          {planTier !== 'free' && (
+            <div className="bg-[#FFFDF0] border-2 border-[#FFC800] rounded-2xl p-5 sm:p-6 space-y-4 shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3.5">
+                  <div className="p-2.5 bg-[#FFC800] rounded-2xl shrink-0 shadow-2xs border border-[#E5B200]">
+                    <ThreeDIcon
+                      name={planTier === 'business' ? 'diamond' : 'crown'}
+                      className="w-8 h-8"
+                    />
+                  </div>
                   <div>
-                    <p className="font-semibold text-[#111111]">{doc.name}</p>
-                    <p className="text-xs text-[#6B7280]">{(doc.size / 1024).toFixed(1)} KB • {doc.uploadedAt}</p>
+                    <div className="flex items-center gap-2">
+                      <span className="px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider bg-[#FFC800] text-[#111111] rounded-full border border-[#E5B200]">
+                        {planTier === 'business' ? 'Business Pro User' : 'Pro User'}
+                      </span>
+                      <span className="text-xs font-bold text-emerald-600 flex items-center gap-1">
+                        ● Active
+                      </span>
+                    </div>
+                    <p className="text-xs text-[#111111] font-medium mt-1">
+                      {planTier === 'pro'
+                        ? 'Pro membership active with 25 GB cloud storage & unlimited fast processing.'
+                        : 'Enterprise grade plan with 100 GB storage & dedicated support.'}
+                    </p>
                   </div>
                 </div>
-                <Link to="/workspace" className="text-xs text-[#111111] font-bold hover:underline">
-                  Open
-                </Link>
+
+                <button
+                  onClick={handleDowngradeFree}
+                  className="px-3 py-1.5 text-xs font-bold text-gray-600 hover:text-rose-600 hover:bg-rose-50 border border-gray-300 rounded-lg transition-colors cursor-pointer self-start sm:self-center"
+                >
+                  Cancel Plan
+                </button>
               </div>
-            ))}
-          </div>
-        </div>
-      )}
 
-      {/* Tab 3: Saved Tools */}
-      {activeTab === 'saved' && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {ALL_TOOLS.filter((t) => t.popular).map((tool) => (
-            <Link
-              key={tool.id}
-              to={tool.route}
-              className="p-4 bg-white border border-[#E5E5E5] hover:border-[#111111] rounded-xl transition-all shadow-2xs"
-            >
-              <h4 className="text-sm font-bold text-[#111111]">{tool.name}</h4>
-              <p className="text-xs text-[#6B7280] mt-1">{tool.description}</p>
-            </Link>
-          ))}
-        </div>
-      )}
-
-      {/* Tab 4: AI History */}
-      {activeTab === 'ai' && (
-        <div className="bg-white border border-[#E5E5E5] rounded-2xl p-6 space-y-4 shadow-2xs">
-          <h3 className="text-base font-bold text-[#111111]">AI Query History</h3>
-          <div className="space-y-3">
-            {[
-              { q: 'Summarize key clauses and Net 30 payment terms', time: '1 hour ago', doc: 'Master_Services_Agreement_2026.pdf' },
-              { q: 'Extract vendor name, invoice date, and total tax amount', time: '3 hours ago', doc: 'Acme_Invoice_INV-0849.pdf' },
-              { q: 'Translate agreement terms into Gujarati', time: 'Yesterday', doc: 'Contract_Agreement_2026.pdf' },
-            ].map((item, i) => (
-              <div key={i} className="p-3.5 bg-[#F5F5F5] rounded-xl border border-[#E5E5E5] space-y-1">
-                <div className="flex items-center justify-between text-[11px] text-[#6B7280]">
-                  <span className="font-bold text-[#111111]">{item.doc}</span>
-                  <span>{item.time}</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-[#FFC800]/40 text-xs">
+                <div className="p-3 bg-white/90 border border-[#FFC800]/50 rounded-xl flex items-center gap-3">
+                  <ThreeDIcon name="storage" className="w-5 h-5 shrink-0" />
+                  <div>
+                    <span className="text-[#6B7280] font-medium">Cloud Storage Capacity</span>
+                    <p className="text-sm font-bold text-[#111111] mt-0.5">{totalStorageGB} GB Total</p>
+                  </div>
                 </div>
-                <p className="text-xs sm:text-sm font-medium text-[#111111]">{item.q}</p>
+                <div className="p-3 bg-white/90 border border-[#FFC800]/50 rounded-xl flex items-center gap-3">
+                  <ThreeDIcon name="billing" className="w-5 h-5 shrink-0" />
+                  <div>
+                    <span className="text-[#6B7280] font-medium">Payment Method</span>
+                    <p className="text-sm font-bold text-[#111111] mt-0.5">UPI / Cards / NetBanking</p>
+                  </div>
+                </div>
               </div>
-            ))}
+            </div>
+          )}
+
+          {/* Upgrade Options */}
+          {planTier !== 'business' && (
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-base font-bold text-[#111111]">
+                  {planTier === 'free' ? 'Upgrade Plan' : 'Change Plan'}
+                </h3>
+                <p className="text-xs text-[#6B7280]">
+                  Instant secure checkout. Cancel anytime.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Pro Tier Option */}
+                {planTier !== 'pro' && (
+                  <div className="p-6 bg-white border-2 border-[#FFC800] rounded-2xl space-y-4 shadow-sm flex flex-col justify-between">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                          <ThreeDIcon name="crown" className="w-6 h-6" />
+                          <h4 className="text-lg font-bold text-[#111111]">Pro Plan</h4>
+                        </div>
+                        <span className="px-2.5 py-0.5 text-[10px] font-bold text-[#111111] bg-[#FFC800] rounded-full">
+                          Most Popular
+                        </span>
+                      </div>
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-3xl font-extrabold text-[#111111]">₹499</span>
+                        <span className="text-xs text-[#6B7280]">/ month</span>
+                      </div>
+                      <ul className="space-y-2 text-xs text-[#111111] pt-3 border-t border-gray-100">
+                        <li className="flex items-center gap-2">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <span>25 GB Cloud Storage</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <span>Unlimited Document Batch Conversions</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <span>Priority High-Speed Server Processing</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <Button
+                      onClick={() => handleUpgradePlan('pro', 499)}
+                      disabled={isUpgrading}
+                      className="w-full mt-4 flex items-center justify-center bg-[#FFC800] hover:bg-[#E6B400] text-[#111111] font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow-xs cursor-pointer"
+                    >
+                      Upgrade to Pro (₹499)
+                    </Button>
+                  </div>
+                )}
+
+                {/* Business Tier Option */}
+                <div className="p-6 bg-white border border-[#E5E5E5] rounded-2xl space-y-4 shadow-2xs flex flex-col justify-between">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <ThreeDIcon name="diamond" className="w-6 h-6" />
+                        <h4 className="text-lg font-bold text-[#111111]">Business Plan</h4>
+                      </div>
+                      <span className="px-2.5 py-0.5 text-[10px] font-bold text-white bg-[#111111] rounded-full">
+                        Enterprise
+                      </span>
+                    </div>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-3xl font-extrabold text-[#111111]">₹1,999</span>
+                      <span className="text-xs text-[#6B7280]">/ month</span>
+                    </div>
+                    <ul className="space-y-2 text-xs text-[#111111] pt-3 border-t border-gray-100">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span>100 GB High-Capacity Storage</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span>Custom Document Watermarking & APIs</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span>24/7 Dedicated Support & SLA</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <Button
+                    onClick={() => handleUpgradePlan('business', 1999)}
+                    disabled={isUpgrading}
+                    variant="outline"
+                    className="w-full mt-4 flex items-center justify-center font-bold text-xs sm:text-sm py-2.5 rounded-xl border-[#111111] text-[#111111] hover:bg-gray-100 shadow-2xs cursor-pointer"
+                  >
+                    Upgrade to Business (₹1,999)
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Payment & Invoices History */}
+          <div className="bg-white border border-[#E5E5E5] rounded-2xl p-6 space-y-4 shadow-2xs">
+            <div className="flex items-center gap-2.5">
+              <ThreeDIcon name="receipt" className="w-5 h-5" />
+              <h3 className="text-base font-bold text-[#111111]">Billing & Payment History</h3>
+            </div>
+            {payments.length === 0 ? (
+              <div className="text-center py-8 border border-dashed border-[#E5E5E5] rounded-xl space-y-2">
+                <ThreeDIcon name="receipt" className="w-10 h-10 mx-auto opacity-70" />
+                <p className="text-xs text-[#6B7280]">
+                  No past transactions recorded yet.
+                </p>
+              </div>
+            ) : (
+              <div className="divide-y divide-[#E5E5E5]">
+                {payments.map((p) => (
+                  <div
+                    key={p.id}
+                    className="py-3 flex items-center justify-between text-xs sm:text-sm"
+                  >
+                    <div className="flex items-center gap-3">
+                      <ThreeDIcon name="receipt" className="w-6 h-6 shrink-0" />
+                      <div>
+                        <p className="font-semibold text-[#111111]">
+                          {p.planName} Subscription ({p.billingCycle})
+                        </p>
+                        <p className="text-[11px] text-[#6B7280]">
+                          ID: {p.paymentId} • {p.date}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="font-bold text-[#111111]">₹{p.amountINR}</span>
+                      <span className="px-2 py-0.5 text-[10px] font-bold text-emerald-700 bg-emerald-50 rounded-full">
+                        Paid
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
 
-      {/* Tab 5: Billing */}
-      {activeTab === 'billing' && (
-        <div className="bg-white border border-[#E5E5E5] rounded-2xl p-6 space-y-6 max-w-2xl shadow-2xs">
-          <div>
-            <h3 className="text-base font-bold text-[#111111]">Subscription & Quotas</h3>
-            <p className="text-xs text-[#6B7280]">Current plan: Pro Tier (₹499/month)</p>
-          </div>
-          <div className="p-4 bg-[#FFC800]/20 rounded-xl border border-[#FFC800]/50 flex items-center justify-between">
-            <div>
-              <p className="text-sm font-bold text-[#111111]">Pro Membership Active</p>
-              <p className="text-xs text-[#6B7280]">Renews on September 15, 2026</p>
-            </div>
-            <Link to="/pricing" className="text-xs font-bold text-[#111111] hover:underline">
-              Change Plan
-            </Link>
-          </div>
-          <div className="space-y-2 text-xs text-[#6B7280]">
-            <div className="flex justify-between py-1.5 border-b border-[#E5E5E5]">
-              <span>Next billing amount</span>
-              <span className="font-bold text-[#111111]">₹499 + GST</span>
-            </div>
-            <div className="flex justify-between py-1.5 border-b border-[#E5E5E5]">
-              <span>Payment method</span>
-              <span className="font-bold text-[#111111]">UPI / Card ending in 4242</span>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Tab 6: Account */}
+      {/* =========================================================================
+          TAB 4: ACCOUNT PROFILE
+         ========================================================================= */}
       {activeTab === 'account' && (
         <div className="bg-white border border-[#E5E5E5] rounded-2xl p-6 space-y-6 max-w-2xl shadow-2xs">
-          <h3 className="text-base font-bold text-[#111111]">Account Settings</h3>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-[#111111] mb-1">Full Name</label>
-              <input type="text" defaultValue="John Doe" className="w-full px-3 py-2 text-sm border border-[#E5E5E5] rounded-lg focus:outline-none focus:border-[#111111]" />
+          <div className="flex items-center gap-3.5">
+            <div className="p-2.5 bg-indigo-50 rounded-2xl shrink-0 border border-indigo-100">
+              <ThreeDIcon name="user" className="w-8 h-8" />
             </div>
             <div>
-              <label className="block text-xs font-bold text-[#111111] mb-1">Email Address</label>
-              <input type="email" defaultValue="user@doclly.app" className="w-full px-3 py-2 text-sm border border-[#E5E5E5] rounded-lg focus:outline-none focus:border-[#111111]" />
-            </div>
-            <div className="pt-2">
-              <Button size="sm" variant="primary">Save Changes</Button>
+              <h3 className="text-base font-bold text-[#111111]">Account Settings</h3>
+              <p className="text-xs text-[#6B7280]">
+                Manage your personal identity, login method, and profile details.
+              </p>
             </div>
           </div>
+
+          <form onSubmit={handleSaveProfile} className="space-y-4">
+            <div>
+              <label className="block text-xs font-bold text-[#111111] mb-1">Full Name</label>
+              <input
+                type="text"
+                value={userNameInput}
+                onChange={(e) => setUserNameInput(e.target.value)}
+                className="w-full px-3 py-2 text-sm border border-[#E5E5E5] rounded-lg focus:outline-none focus:border-[#111111]"
+                placeholder="Enter your name"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-[#111111] mb-1">
+                Email Address
+              </label>
+              <input
+                type="email"
+                value={user?.email || 'guest@doclly.app'}
+                disabled
+                className="w-full px-3 py-2 text-sm border border-[#E5E5E5] bg-gray-50 text-gray-500 rounded-lg focus:outline-none cursor-not-allowed"
+              />
+              <p className="text-[11px] text-gray-400 mt-1 flex items-center gap-1">
+                <ThreeDIcon name="security" className="w-3.5 h-3.5 inline-block shrink-0" />
+                <span>Authentication provider: <span className="capitalize font-semibold text-gray-600">{user?.provider || 'Email/Password'}</span></span>
+              </p>
+            </div>
+
+            <div className="pt-2 flex items-center justify-between border-t border-[#E5E5E5]">
+              <Button
+                type="submit"
+                size="sm"
+                variant="primary"
+                disabled={isSavingProfile}
+                className="font-bold"
+              >
+                {isSavingProfile ? 'Saving...' : 'Save Profile Changes'}
+              </Button>
+
+              {user && (
+                <button
+                  type="button"
+                  onClick={() => signOut()}
+                  className="text-xs font-bold text-rose-600 hover:underline cursor-pointer"
+                >
+                  Sign Out of Account
+                </button>
+              )}
+            </div>
+          </form>
         </div>
       )}
     </div>

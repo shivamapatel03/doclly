@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Download, RotateCcw, Sparkles, CheckCircle2, FileText, ArrowRight } from 'lucide-react';
+import { Download, RotateCcw } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { Button } from '../common/Button';
 import { formatFileSize } from '../../lib/utils';
+import { DocReady3DIcon, ThreeDIcon, getFile3DIcon } from '../common/ThreeDIcon';
 
 interface ResultDownloadCardProps {
   filename: string;
@@ -29,9 +29,9 @@ export const ResultDownloadCard: React.FC<ResultDownloadCardProps> = ({
   useEffect(() => {
     try {
       confetti({
-        particleCount: 60,
-        spread: 70,
-        origin: { y: 0.7 },
+        particleCount: 45,
+        spread: 60,
+        origin: { y: 0.6 },
         colors: ['#FFC800', '#111111', '#10B981', '#F5F5F5'],
       });
     } catch {
@@ -40,27 +40,27 @@ export const ResultDownloadCard: React.FC<ResultDownloadCardProps> = ({
   }, []);
 
   return (
-    <div className="w-full max-w-xl mx-auto p-6 sm:p-8 bg-white border border-[#E5E5E5] rounded-2xl text-center space-y-6 animate-in zoom-in-95 duration-200 shadow-2xs">
-      {/* Success Badge */}
-      <div className="w-14 h-14 bg-[#FFC800]/20 text-[#111111] rounded-2xl flex items-center justify-center mx-auto border border-[#FFC800]/40">
-        <CheckCircle2 className="w-7 h-7 text-[#111111]" />
+    <div className="w-full max-w-md mx-auto text-center space-y-3.5 py-1 animate-in zoom-in-95 duration-200">
+      {/* 3D Success Document Ready Icon */}
+      <div className="w-12 h-12 flex items-center justify-center mx-auto">
+        <DocReady3DIcon className="w-12 h-12" />
       </div>
 
       {/* Heading & Subtitle */}
-      <div className="space-y-1.5">
-        <h2 className="text-xl sm:text-2xl font-bold text-[#111111] tracking-tight">{title}</h2>
-        <p className="text-xs sm:text-sm text-[#6B7280]">{description}</p>
+      <div className="space-y-1">
+        <h2 className="text-lg sm:text-xl font-extrabold text-[#111111] tracking-tight">{title}</h2>
+        <p className="text-xs text-[#6B7280]">{description}</p>
       </div>
 
-      {/* File Info Box */}
-      <div className="p-4 bg-[#F5F5F5] rounded-xl border border-[#E5E5E5] flex items-center justify-between text-left">
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="w-9 h-9 rounded-lg bg-white border border-[#E5E5E5] text-[#111111] flex items-center justify-center shrink-0">
-            <FileText className="w-5 h-5" />
+      {/* Compact File Info Box */}
+      <div className="p-3 bg-[#F5F5F5] rounded-xl border border-[#E5E5E5] flex items-center justify-between text-left">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="w-8 h-8 flex items-center justify-center shrink-0">
+            {getFile3DIcon(filename, 'w-7 h-7')}
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-[#111111] truncate">{filename}</p>
-            <div className="flex items-center gap-2 text-xs text-[#6B7280]">
+            <p className="text-xs sm:text-sm font-semibold text-[#111111] truncate">{filename}</p>
+            <div className="flex items-center gap-2 text-[11px] text-[#6B7280]">
               {fileSize !== undefined && <span>{formatFileSize(fileSize)}</span>}
               {originalSize !== undefined && (
                 <span className="line-through text-gray-400">
@@ -72,52 +72,33 @@ export const ResultDownloadCard: React.FC<ResultDownloadCardProps> = ({
         </div>
 
         {reductionPercentage !== undefined && reductionPercentage > 0 && (
-          <span className="px-2.5 py-1 text-xs font-bold text-[#111111] bg-[#FFC800] border border-[#E5E5E5] rounded-full shrink-0">
+          <span className="px-2 py-0.5 text-[11px] font-bold text-[#111111] bg-[#FFC800] border border-[#E5E5E5] rounded-full shrink-0">
             -{reductionPercentage}%
           </span>
         )}
       </div>
 
       {/* Primary Action Buttons */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+      <div className="flex items-center justify-center gap-2.5 pt-1">
         <Button
-          size="lg"
+          size="md"
           variant="primary"
-          leftIcon={<Download className="w-5 h-5" />}
+          leftIcon={<Download className="w-4 h-4" />}
           onClick={onDownload}
-          className="w-full sm:w-auto px-8"
+          className="px-6 font-bold cursor-pointer"
         >
           Download File
         </Button>
 
         <Button
-          size="lg"
+          size="md"
           variant="secondary"
-          leftIcon={<RotateCcw className="w-4 h-4" />}
+          leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
           onClick={onStartOver}
-          className="w-full sm:w-auto"
+          className="px-4 cursor-pointer"
         >
           Start Over
         </Button>
-      </div>
-
-      {/* Next Smart Steps: AI Prompt Card */}
-      <div className="pt-4 border-t border-[#E5E5E5] text-left">
-        <div className="p-3.5 bg-[#FFC800]/10 border border-[#FFC800]/30 rounded-xl flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <Sparkles className="w-4 h-4 text-[#111111] shrink-0" />
-            <div>
-              <p className="text-xs font-bold text-[#111111]">Want to ask questions or extract data?</p>
-              <p className="text-[11px] text-[#6B7280]">Open this document directly in Doclly AI Assistant</p>
-            </div>
-          </div>
-          <Link
-            to="/ai"
-            className="inline-flex items-center gap-1 text-xs font-bold text-[#111111] hover:underline whitespace-nowrap"
-          >
-            Chat with AI <ArrowRight className="w-3 h-3" />
-          </Link>
-        </div>
       </div>
     </div>
   );

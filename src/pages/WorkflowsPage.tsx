@@ -1,21 +1,29 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { SeoHead } from '../components/layout/SeoHead';
 import { Breadcrumb } from '../components/layout/Breadcrumb';
 import { WorkflowStepRunner } from '../components/workflows/WorkflowStepRunner';
 import { WORKFLOW_PRESETS } from '../lib/constants';
 import { WorkflowPreset } from '../types/document';
-import { Layers, ArrowRight, Clock, Send, Receipt, Scale, GraduationCap } from 'lucide-react';
-
-const ICON_MAP: Record<string, React.ElementType> = {
-  Send,
-  Receipt,
-  Scale,
-  GraduationCap,
-  Layers,
-};
+import { ArrowRight, Clock } from 'lucide-react';
+import { ThreeDIcon } from '../components/common/ThreeDIcon';
 
 export const WorkflowsPage: React.FC = () => {
   const [selectedPreset, setSelectedPreset] = useState<WorkflowPreset | null>(null);
+
+  const getPreset3DIcon = (iconName: string): string => {
+    switch (iconName) {
+      case 'Receipt':
+        return 'excel';
+      case 'Scale':
+        return 'sign';
+      case 'Send':
+        return 'protect';
+      case 'GraduationCap':
+        return 'word';
+      default:
+        return 'organize';
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
@@ -44,16 +52,18 @@ export const WorkflowsPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {(WORKFLOW_PRESETS as WorkflowPreset[]).map((preset: WorkflowPreset) => {
-              const Icon = ICON_MAP[preset.iconName] || Layers;
               return (
                 <div
                   key={preset.id}
                   onClick={() => setSelectedPreset(preset)}
-                  className="p-6 bg-white border border-[#E5E5E5] hover:border-[#111111] rounded-2xl cursor-pointer transition-all shadow-2xs space-y-4"
+                  className="group p-6 bg-white border border-[#E5E5E5] hover:border-[#111111] rounded-2xl cursor-pointer transition-all shadow-2xs space-y-4"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="w-10 h-10 rounded-xl bg-[#F5F5F5] flex items-center justify-center text-[#111111]">
-                      <Icon className="w-5 h-5" />
+                    <div className="w-10 h-10 flex items-center justify-center shrink-0">
+                      <ThreeDIcon
+                        name={getPreset3DIcon(preset.iconName)}
+                        className="w-10 h-10 drop-shadow-md transition-transform duration-200 group-hover:scale-110"
+                      />
                     </div>
                     <span className="flex items-center gap-1 text-xs text-[#6B7280]">
                       <Clock className="w-3.5 h-3.5" />

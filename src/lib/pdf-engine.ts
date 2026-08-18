@@ -1,4 +1,4 @@
-﻿import { PDFDocument, rgb, degrees, StandardFonts } from 'pdf-lib';
+import { PDFDocument, rgb, degrees, StandardFonts } from 'pdf-lib';
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import * as XLSX from 'xlsx';
@@ -476,16 +476,74 @@ export async function flattenPdf(file: File): Promise<Uint8Array> {
   return await pdfDoc.save({ useObjectStreams: true });
 }
 
-export async function protectPdf(file: File, userPassword = 'password123'): Promise<Uint8Array> {
-  const pdfDoc = await loadPdfDocument(file);
-  pdfDoc.setTitle(toWinAnsi(`${file.name} (Protected)`));
-  pdfDoc.setProducer('Doclly Security Engine');
-  return await pdfDoc.save({ useObjectStreams: true });
+export async function protectPdf(
+  file: File,
+  userPassword = 'password123',
+  ownerPassword = ''
+): Promise<Uint8Array> {
+  const { encryptPdfBuffer } = await import('./pdf-crypto');
+  const buffer = await readFileAsArrayBuffer(file);
+
+  // Load document and prepare clean serialization
+  const pdfDoc = await PDFDocument.load(buffer, { ignoreEncryption: true });
+  pdfDoc.setTitle(toWinAnsi(`${file.name.replace(/\.[^/.]+$/, '')} (Protected)`));
+  pdfDoc.setProducer('Doclly Standard Security Engine');
+
+  const rawBytes = await pdfDoc.save({ useObjectStreams: false });
+  return encryptPdfBuffer(rawBytes, userPassword, ownerPassword);
 }
 
 export async function unlockPdf(file: File, password = ''): Promise<Uint8Array> {
-  const pdfDoc = await loadPdfDocument(file);
-  return await pdfDoc.save({ useObjectStreams: true });
+  const buffer = await readFileAsArrayBuffer(file);
+
+  let pdfDocJs: any;
+  try {
+    const loadingTask = pdfjsLib.getDocument({
+      data: new Uint8Array(buffer),
+      password: password || undefined,
+    });
+    pdfDocJs = await loadingTask.promise;
+  } catch (err: any) {
+    if (err.name === 'PasswordException' || err.message?.toLowerCase().includes('password')) {
+      throw new Error('Incorrect password. Please enter the valid password to unlock this PDF.');
+    }
+    throw new Error('Could not open or decrypt this PDF file.');
+  }
+
+  // Render decrypted pages into a clean, unencrypted PDF
+  const totalPages = pdfDocJs.numPages;
+  const newPdfDoc = await PDFDocument.create();
+
+  for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+    const page = await pdfDocJs.getPage(pageNum);
+    const viewport = page.getViewport({ scale: 2.0 });
+
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    const ctx = canvas.getContext('2d');
+
+    if (ctx) {
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      await page.render({ canvasContext: ctx, viewport }).promise;
+
+      const imgDataUrl = canvas.toDataURL('image/jpeg', 0.95);
+      const imgBytes = await fetch(imgDataUrl).then((r) => r.arrayBuffer());
+      const embeddedImg = await newPdfDoc.embedJpg(imgBytes);
+
+      const origViewport = page.getViewport({ scale: 1.0 });
+      const newPage = newPdfDoc.addPage([origViewport.width, origViewport.height]);
+      newPage.drawImage(embeddedImg, {
+        x: 0,
+        y: 0,
+        width: origViewport.width,
+        height: origViewport.height,
+      });
+    }
+  }
+
+  return await newPdfDoc.save({ useObjectStreams: true });
 }
 
 export async function compressPdf(
@@ -711,11 +769,35 @@ export const organizePdf = async (
   deletedIndices: number[] = [],
   rotations: { [k: number]: number } = {}
 ): Promise<Uint8Array> => {
+  const srcDoc = await loadPdfDocument(file);
+  const totalPages = srcDoc.getPageCount();
   const deletedSet = new Set(deletedIndices);
-  const remainingOrder = pagesOrder.filter((idx) => !deletedSet.has(idx));
-  const reordered = await reorderPdfPages(file, remainingOrder);
-  const tempFile = new File([reordered.buffer as ArrayBuffer], file.name, { type: 'application/pdf' });
-  return await rotatePdfPages(tempFile, rotations);
+
+  // Filter out deleted and out-of-range indices
+  const validRemaining = pagesOrder.filter(
+    (origIdx) => !deletedSet.has(origIdx) && origIdx >= 0 && origIdx < totalPages
+  );
+
+  if (validRemaining.length === 0) {
+    throw new Error('You cannot remove all pages from the PDF. At least one page must remain.');
+  }
+
+  const newDoc = await PDFDocument.create();
+
+  // Copy pages in the specified reordered sequence
+  const copiedPages = await newDoc.copyPages(srcDoc, validRemaining);
+
+  copiedPages.forEach((copiedPage, i) => {
+    const originalIndex = validRemaining[i];
+    const rotationDelta = rotations[originalIndex] || 0;
+    if (rotationDelta !== 0) {
+      const currentRotation = copiedPage.getRotation().angle;
+      copiedPage.setRotation(degrees((currentRotation + rotationDelta) % 360));
+    }
+    newDoc.addPage(copiedPage);
+  });
+
+  return await newDoc.save({ useObjectStreams: true });
 };
 
 export const signPdf = async (

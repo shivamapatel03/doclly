@@ -1,6 +1,6 @@
-﻿import React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Lock } from 'lucide-react';
+import { Shield, Lock, Heart } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
@@ -119,6 +119,11 @@ export const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-[#E5E5E5] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#6B7280]">
           <p>© {new Date().getFullYear()} Doclly. All rights reserved. Documents simplified.</p>
+          <div className="flex items-center gap-1.5 font-medium text-[#4B5563]">
+            <span>Made with</span>
+            <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500 inline-block animate-pulse" />
+            <span>in India</span>
+          </div>
           <div className="flex items-center gap-6">
             <Link to="/privacy" className="hover:text-[#111111] transition-colors">Privacy Policy</Link>
             <Link to="/privacy" className="hover:text-[#111111] transition-colors">Terms of Service</Link>

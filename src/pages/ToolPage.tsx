@@ -1,5 +1,6 @@
-﻿import React, { useState } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useLocation, useParams, Navigate } from 'react-router-dom';
+import { FileSession } from '../lib/file-session';
 import { ALL_TOOLS } from '../lib/constants';
 import { Breadcrumb } from '../components/layout/Breadcrumb';
 import { SeoHead } from '../components/layout/SeoHead';
@@ -19,7 +20,6 @@ import {
   flattenPdf,
   protectPdf,
   unlockPdf,
-  addPageNumbers,
 } from '../lib/pdf-engine';
 import { DocumentStorage } from '../lib/storage';
 
@@ -29,6 +29,7 @@ import { SplitPdfPage } from './dedicated-tools/SplitPdfPage';
 import { CompressPdfPage } from './dedicated-tools/CompressPdfPage';
 import { PdfToWordPage } from './dedicated-tools/PdfToWordPage';
 import { PdfToExcelPage } from './dedicated-tools/PdfToExcelPage';
+import { PdfToJpgPage } from './dedicated-tools/PdfToJpgPage';
 import { SignPdfPage } from './dedicated-tools/SignPdfPage';
 import { OrganizePdfPage } from './dedicated-tools/OrganizePdfPage';
 import { RemovePagesPage } from './dedicated-tools/RemovePagesPage';
@@ -37,7 +38,8 @@ import { CompareDocumentsPage } from './dedicated-tools/CompareDocumentsPage';
 import { ProtectPdfPage, UnlockPdfPage, FlattenPdfPage } from './dedicated-tools/SecurityToolPages';
 import { WatermarkPdfPage } from './dedicated-tools/WatermarkPdfPage';
 import { OfficeConvertersPage } from './dedicated-tools/OfficeConvertersPage';
-import { ArrowRight, Lock, Key, Trash2, Copy, Check, FileText, Image as ImageIcon } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
+import { ThreeDIcon } from '../components/common/ThreeDIcon';
 
 export const ToolPage: React.FC = () => {
   const { toolId } = useParams<{ toolId: string }>();
@@ -48,6 +50,7 @@ export const ToolPage: React.FC = () => {
   if (toolId === 'compress-pdf') return <CompressPdfPage />;
   if (toolId === 'pdf-to-word') return <PdfToWordPage />;
   if (toolId === 'pdf-to-excel') return <PdfToExcelPage />;
+  if (toolId === 'pdf-to-jpg') return <PdfToJpgPage />;
   if (toolId === 'sign-pdf') return <SignPdfPage />;
   if (toolId === 'organize-pdf') return <OrganizePdfPage />;
   if (toolId === 'remove-pages') return <RemovePagesPage />;
@@ -70,7 +73,11 @@ export const ToolPage: React.FC = () => {
 };
 
 const GenericToolPageShell: React.FC<{ tool: any }> = ({ tool }) => {
-  const [files, setFiles] = useState<File[]>([]);
+  const location = useLocation();
+  const [files, setFiles] = useState<File[]>(() => {
+    const f = (location.state as any)?.file || FileSession.getFile();
+    return f ? [f] : [];
+  });
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [resultBytes, setResultBytes] = useState<Uint8Array | null>(null);
@@ -261,24 +268,26 @@ const GenericToolPageShell: React.FC<{ tool: any }> = ({ tool }) => {
         </div>
       ) : (
         <div className="space-y-6">
-          <ResultDownloadCard
-            filename={outFilename}
-            onDownload={handleDownload}
-            onStartOver={() => {
-              setFiles([]);
-              setResultBytes(null);
-              setResultBlob(null);
-              setExtractedTextPreview(null);
-              setExtractedImagesPreview([]);
-            }}
-          />
+          <div className="bg-white border border-[#E5E5E5] rounded-2xl p-6 sm:p-8 shadow-2xs relative z-10">
+            <ResultDownloadCard
+              filename={outFilename}
+              onDownload={handleDownload}
+              onStartOver={() => {
+                setFiles([]);
+                setResultBytes(null);
+                setResultBlob(null);
+                setExtractedTextPreview(null);
+                setExtractedImagesPreview([]);
+              }}
+            />
+          </div>
 
           {/* Extracted Text Preview Box */}
           {extractedTextPreview && (
             <div className="bg-white border border-[#E5E5E5] rounded-2xl p-5 space-y-3 shadow-2xs">
               <div className="flex items-center justify-between border-b border-[#E5E5E5] pb-3">
                 <div className="flex items-center gap-2 font-bold text-xs sm:text-sm text-[#111111]">
-                  <FileText className="w-4 h-4 text-indigo-600" />
+                  <ThreeDIcon name="text" className="w-5 h-5" />
                   <span>Extracted Document Text</span>
                 </div>
                 <button
@@ -303,7 +312,7 @@ const GenericToolPageShell: React.FC<{ tool: any }> = ({ tool }) => {
             <div className="bg-white border border-[#E5E5E5] rounded-2xl p-5 space-y-4 shadow-2xs">
               <div className="flex items-center justify-between border-b border-[#E5E5E5] pb-3">
                 <div className="flex items-center gap-2 font-bold text-xs sm:text-sm text-[#111111]">
-                  <ImageIcon className="w-4 h-4 text-amber-600" />
+                  <ThreeDIcon name="image" className="w-5 h-5" />
                   <span>Extracted Page Images ({extractedImagesPreview.length} pages)</span>
                 </div>
               </div>
@@ -324,4 +333,3 @@ const GenericToolPageShell: React.FC<{ tool: any }> = ({ tool }) => {
     </div>
   );
 };
-

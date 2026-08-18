@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal } from '../components/common/Modal';
 import { Button } from '../components/common/Button';
 import { useToast } from '../components/common/Toast';
 import { Lock, Mail, User } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -21,31 +22,76 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [name, setName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
+  const { signIn, signUp, signInWithGoogle, resetPassword } = useAuth();
+
+  useEffect(() => {
+    if (isOpen) {
+      setMode(initialMode);
+    }
+  }, [isOpen, initialMode]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate authentication
-    await new Promise((r) => setTimeout(r, 600));
-    setIsLoading(false);
+    try {
+      if (mode === 'forgot') {
+        const res = await resetPassword(email);
+        if (res.error) {
+          toast.error(res.error);
+        } else {
+          toast.success('Password reset link sent to your email address!');
+          setMode('signin');
+        }
+        return;
+      }
 
-    if (mode === 'forgot') {
-      toast.success('Password reset link sent to your email address!');
-      setMode('signin');
-      return;
+      if (mode === 'signup') {
+        const res = await signUp(email, password, name);
+        if (res.error) {
+          toast.error(res.error);
+        } else {
+          toast.success(res.message || 'Account created successfully! Welcome to Doclly.');
+          setEmail('');
+          setPassword('');
+          setName('');
+          onClose();
+        }
+        return;
+      }
+
+      // mode === 'signin'
+      const res = await signIn(email, password);
+      if (res.error) {
+        toast.error(res.error);
+      } else {
+        toast.success('Welcome back to Doclly!');
+        setEmail('');
+        setPassword('');
+        onClose();
+      }
+    } catch (err: any) {
+      toast.error(err.message || 'An unexpected error occurred during authentication.');
+    } finally {
+      setIsLoading(false);
     }
-
-    toast.success(mode === 'signin' ? 'Welcome back to Doclly!' : 'Account created successfully!');
-    onClose();
   };
 
   const handleGoogleLogin = async () => {
     setIsLoading(true);
-    await new Promise((r) => setTimeout(r, 500));
-    setIsLoading(false);
-    toast.success('Authenticated with Google successfully!');
-    onClose();
+    try {
+      const res = await signInWithGoogle();
+      if (res.error) {
+        toast.error(res.error);
+      } else {
+        toast.success('Authenticated with Google successfully!');
+        onClose();
+      }
+    } catch (err: any) {
+      toast.error(err.message || 'Google authentication failed.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -75,7 +121,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <button
               type="button"
               onClick={handleGoogleLogin}
-              className="w-full flex items-center justify-center gap-2.5 px-4 py-2.5 bg-white hover:bg-[#F5F5F5] border border-[#E5E5E5] text-xs sm:text-sm font-semibold text-[#111111] rounded-xl transition-colors shadow-2xs"
+              disabled={isLoading}
+              className="w-full flex items-center justify-center gap-2.5 px-4 py-2.5 bg-white hover:bg-[#F5F5F5] border border-[#E5E5E5] text-xs sm:text-sm font-semibold text-[#111111] rounded-xl transition-colors shadow-2xs cursor-pointer disabled:opacity-50"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path
@@ -148,7 +195,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <button
                     type="button"
                     onClick={() => setMode('forgot')}
-                    className="text-[11px] text-[#111111] font-semibold hover:underline"
+                    className="text-[11px] text-[#111111] font-semibold hover:underline cursor-pointer"
                   >
                     Forgot password?
                   </button>
@@ -190,7 +237,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               Don&rsquo;t have an account?{' '}
               <button
                 onClick={() => setMode('signup')}
-                className="text-[#111111] font-bold hover:underline"
+                className="text-[#111111] font-bold hover:underline cursor-pointer"
               >
                 Sign up free
               </button>
@@ -200,7 +247,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               Already have an account?{' '}
               <button
                 onClick={() => setMode('signin')}
-                className="text-[#111111] font-bold hover:underline"
+                className="text-[#111111] font-bold hover:underline cursor-pointer"
               >
                 Sign in
               </button>
@@ -208,7 +255,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           ) : (
             <button
               onClick={() => setMode('signin')}
-              className="text-[#111111] font-bold hover:underline"
+              className="text-[#111111] font-bold hover:underline cursor-pointer"
             >
               Back to Sign In
             </button>

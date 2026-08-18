@@ -1,5 +1,6 @@
-﻿import React, { useState, useRef } from 'react';
-import { Upload, AlertCircle } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { AlertCircle } from 'lucide-react';
+import { ThreeDIcon } from '../common/ThreeDIcon';
 
 interface UploadZoneProps {
   onFilesSelected: (files: File[]) => void;
@@ -89,15 +90,9 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
           className="hidden"
         />
 
-        {/* Clean Upload Icon with Glow */}
-        <div
-          className={`relative z-10 w-13 h-13 rounded-2xl flex items-center justify-center mb-4 transition-all ${
-            isDragging
-              ? 'bg-[#FFC800] text-[#111111] shadow-md scale-110'
-              : 'bg-[#F5F5F5] border border-[#E5E5E5] text-[#111111] shadow-2xs group-hover:scale-105'
-          }`}
-        >
-          <Upload className="w-6 h-6" />
+        {/* 3D Upload Icon without background container box */}
+        <div className="relative z-10 mb-3 transition-transform duration-200 group-hover:scale-105">
+          <ThreeDIcon name="upload" className="w-13 h-13" />
         </div>
 
         {/* Drop Text */}

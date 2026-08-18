@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Breadcrumb } from '../../components/layout/Breadcrumb';
 import { SeoHead } from '../../components/layout/SeoHead';
 import { UploadZone } from '../../components/tools/UploadZone';
@@ -12,8 +12,12 @@ import { ALL_TOOLS } from '../../lib/constants';
 import { Copy, Check, Sparkles } from 'lucide-react';
 import { DocumentStorage } from '../../lib/storage';
 
+import { useLocation } from 'react-router-dom';
+import { FileSession } from '../../lib/file-session';
+
 export const ExtractPagesPage: React.FC = () => {
   const tool = ALL_TOOLS.find((t) => t.id === 'extract-pages')!;
+  const location = useLocation();
   const [file, setFile] = useState<File | null>(null);
   const [pageCount, setPageCount] = useState(0);
   
@@ -26,6 +30,13 @@ export const ExtractPagesPage: React.FC = () => {
   const [extractedBytes, setExtractedBytes] = useState<Uint8Array | null>(null);
   const [rangeInput, setRangeInput] = useState('');
   const toast = useToast();
+
+  useEffect(() => {
+    const f = (location.state as any)?.file || FileSession.getFile();
+    if (f && f.name.toLowerCase().endsWith('.pdf') && !file) {
+      handleFileSelected([f]);
+    }
+  }, []);
 
   const handleFileSelected = async (files: File[]) => {
     if (files.length === 0) return;
@@ -115,7 +126,6 @@ const togglePage = (index: number) => {
 
       setExtractedBytes(result);
       const outName = `extracted_${file.name}`;
-      downloadBytes(result, outName, 'application/pdf');
 
       DocumentStorage.saveDocument({
         name: outName,

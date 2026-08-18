@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Breadcrumb } from '../../components/layout/Breadcrumb';
 import { SeoHead } from '../../components/layout/SeoHead';
 import { UploadZone } from '../../components/tools/UploadZone';
@@ -13,32 +13,33 @@ import {
   Lock, Unlock, Layers, Eye, EyeOff, Check, FileCheck, ShieldCheck, Sparkles,
 } from 'lucide-react';
 import { DocumentStorage } from '../../lib/storage';
+import { useLocation } from 'react-router-dom';
+import { FileSession } from '../../lib/file-session';
 
 /* ======================== SHARED UPLOAD SHELL ======================== */
 interface ToolShellProps {
   toolId: string;
   title: string;
   subtitle: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   children: (file: File, onReset: () => void) => React.ReactNode;
 }
 
-const ToolUploadShell: React.FC<ToolShellProps> = ({ toolId, title, subtitle, icon, children }) => {
-  const [file, setFile] = useState<File | null>(null);
+const ToolUploadShell: React.FC<ToolShellProps> = ({ toolId, title, subtitle, children }) => {
+  const location = useLocation();
+  const [file, setFile] = useState<File | null>(() => {
+    const f = (location.state as any)?.file || FileSession.getFile();
+    return f && f.name.toLowerCase().endsWith('.pdf') ? f : null;
+  });
   const tool = ALL_TOOLS.find((t) => t.id === toolId);
 
   const handleReset = () => setFile(null);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <Breadcrumb items={[{ label: 'Tools', to: '/' }, { label: title }]} />
 
       <div className="text-center max-w-xl mx-auto space-y-2">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <div className="w-12 h-12 rounded-2xl bg-[#F5F5F5] border border-[#E5E5E5] flex items-center justify-center">
-            {icon}
-          </div>
-        </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111111] tracking-tight">{title}</h1>
         <p className="text-sm text-[#6B7280]">{subtitle}</p>
       </div>
@@ -86,8 +87,7 @@ export const ProtectPdfPage: React.FC = () => {
       setResultBytes(bytes);
       setResultFilename(name);
       DocumentStorage.saveDocument({ name, size: bytes.byteLength, type: 'application/pdf' });
-      downloadBytes(bytes, name, 'application/pdf');
-      toast.success('PDF protected and downloaded!');
+      toast.success('PDF protected successfully!');
     } catch (err: any) {
       toast.error(err.message || 'Failed to protect PDF.');
     } finally {
@@ -241,10 +241,9 @@ export const UnlockPdfPage: React.FC = () => {
       setResultBytes(bytes);
       setResultFilename(name);
       DocumentStorage.saveDocument({ name, size: bytes.byteLength, type: 'application/pdf' });
-      downloadBytes(bytes, name, 'application/pdf');
-      toast.success('PDF unlocked and downloaded!');
+      toast.success('PDF unlocked successfully!');
     } catch (err: any) {
-      toast.error('Could not unlock this PDF. Make sure the password is correct.');
+      toast.error(err.message || 'Could not unlock this PDF. Make sure the password is correct.');
     } finally {
       setIsProcessing(false);
     }
@@ -344,8 +343,7 @@ export const FlattenPdfPage: React.FC = () => {
       setResultBytes(bytes);
       setResultFilename(name);
       DocumentStorage.saveDocument({ name, size: bytes.byteLength, type: 'application/pdf' });
-      downloadBytes(bytes, name, 'application/pdf');
-      toast.success('PDF flattened and downloaded!');
+      toast.success('PDF flattened successfully!');
     } catch (err: any) {
       toast.error(err.message || 'Failed to flatten PDF.');
     } finally {

@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { DocItem } from '../../types/document';
 import { formatFileSize } from '../../lib/utils';
+import { getFile3DIcon } from '../common/ThreeDIcon';
 
 interface DocumentTableProps {
   documents: DocItem[];
@@ -88,8 +89,8 @@ export const DocumentTable: React.FC<DocumentTableProps> = ({
                 {/* Name */}
                 <td className="px-4 py-3 font-semibold text-[#111111]">
                   <div className="flex items-center gap-2.5 min-w-0 max-w-xs sm:max-w-md">
-                    <div className="w-7 h-7 rounded-md bg-[#F5F5F5] border border-[#E5E5E5] text-[#111111] flex items-center justify-center shrink-0">
-                      <FileText className="w-4 h-4" />
+                    <div className="shrink-0">
+                      {getFile3DIcon(doc.name, 'w-7 h-7')}
                     </div>
                     <span className="truncate">{doc.name}</span>
                   </div>

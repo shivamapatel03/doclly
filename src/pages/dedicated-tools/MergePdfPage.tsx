@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Breadcrumb } from '../../components/layout/Breadcrumb';
 import { SeoHead } from '../../components/layout/SeoHead';
 import { UploadZone } from '../../components/tools/UploadZone';
@@ -13,9 +13,16 @@ import { ALL_TOOLS } from '../../lib/constants';
 import { ArrowRight, Plus } from 'lucide-react';
 import { DocumentStorage } from '../../lib/storage';
 
+import { useLocation } from 'react-router-dom';
+import { FileSession } from '../../lib/file-session';
+
 export const MergePdfPage: React.FC = () => {
   const tool = ALL_TOOLS.find((t) => t.id === 'merge-pdf')!;
-  const [files, setFiles] = useState<File[]>([]);
+  const location = useLocation();
+  const [files, setFiles] = useState<File[]>(() => {
+    const f = (location.state as any)?.file || FileSession.getFile();
+    return f && f.name.toLowerCase().endsWith('.pdf') ? [f] : [];
+  });
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [mergedBytes, setMergedBytes] = useState<Uint8Array | null>(null);

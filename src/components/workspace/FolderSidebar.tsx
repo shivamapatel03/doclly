@@ -1,5 +1,6 @@
 import React from 'react';
-import { Folder, Star, Trash2, Plus, HardDrive, Files } from 'lucide-react';
+import { Plus } from 'lucide-react';
+import { ThreeDIcon } from '../common/ThreeDIcon';
 import { FolderItem } from '../../types/document';
 
 interface FolderSidebarProps {
@@ -27,47 +28,47 @@ export const FolderSidebar: React.FC<FolderSidebarProps> = ({
       <div className="space-y-1">
         <button
           onClick={() => onSelectFolder('all')}
-          className={`w-full flex items-center justify-between px-3 py-2 text-sm font-semibold rounded-lg transition-colors ${
+          className={`w-full flex items-center justify-between px-3 py-2 text-sm font-semibold rounded-lg transition-colors cursor-pointer ${
             selectedFolderId === 'all'
               ? 'bg-[#FFC800] text-[#111111] border border-[#E5E5E5] shadow-2xs'
               : 'text-[#111111] hover:bg-[#F5F5F5]'
           }`}
         >
           <div className="flex items-center gap-2.5">
-            <Files className="w-4 h-4" />
+            <ThreeDIcon name="folder" className="w-4.5 h-4.5 shrink-0" />
             <span>All Documents</span>
           </div>
-          <span className="text-xs opacity-70">{totalDocsCount}</span>
+          <span className="text-xs opacity-70 font-bold">{totalDocsCount}</span>
         </button>
 
         <button
           onClick={() => onSelectFolder('favorites')}
-          className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+          className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors cursor-pointer ${
             selectedFolderId === 'favorites'
               ? 'bg-[#FFC800] text-[#111111] font-semibold border border-[#E5E5E5] shadow-2xs'
               : 'text-[#111111] hover:bg-[#F5F5F5]'
           }`}
         >
           <div className="flex items-center gap-2.5">
-            <Star className="w-4 h-4 text-amber-500" />
+            <ThreeDIcon name="star" className="w-4.5 h-4.5 shrink-0" />
             <span>Favorites</span>
           </div>
-          <span className="text-xs text-gray-400">{favoritesCount}</span>
+          <span className="text-xs text-gray-400 font-semibold">{favoritesCount}</span>
         </button>
 
         <button
           onClick={() => onSelectFolder('trash')}
-          className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+          className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors cursor-pointer ${
             selectedFolderId === 'trash'
               ? 'bg-red-50 text-red-600 font-semibold border border-red-200'
               : 'text-[#6B7280] hover:bg-[#F5F5F5] hover:text-[#111111]'
           }`}
         >
           <div className="flex items-center gap-2.5">
-            <Trash2 className="w-4 h-4" />
+            <ThreeDIcon name="trash" className="w-4.5 h-4.5 shrink-0" />
             <span>Trash</span>
           </div>
-          <span className="text-xs text-gray-400">{trashCount}</span>
+          <span className="text-xs text-gray-400 font-semibold">{trashCount}</span>
         </button>
       </div>
 
@@ -77,7 +78,7 @@ export const FolderSidebar: React.FC<FolderSidebarProps> = ({
           <span className="text-xs font-bold text-[#6B7280] uppercase tracking-wider">Folders</span>
           <button
             onClick={onCreateFolder}
-            className="p-1 text-gray-400 hover:text-[#111111] hover:bg-gray-100 rounded transition-colors"
+            className="p-1 text-gray-400 hover:text-[#111111] hover:bg-gray-100 rounded transition-colors cursor-pointer"
             title="Create Folder"
           >
             <Plus className="w-3.5 h-3.5" />
@@ -92,14 +93,14 @@ export const FolderSidebar: React.FC<FolderSidebarProps> = ({
               <button
                 key={folder.id}
                 onClick={() => onSelectFolder(folder.id)}
-                className={`w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-colors ${
+                className={`w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-colors cursor-pointer ${
                   isSelected
                     ? 'bg-[#FFC800]/20 text-[#111111] font-semibold border border-[#FFC800]/40'
                     : 'text-[#111111] hover:bg-[#F5F5F5]'
                 }`}
               >
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <Folder className="w-4 h-4 shrink-0 text-[#111111]" />
+                  <ThreeDIcon name="folder" className="w-4 h-4 shrink-0" />
                   <span className="truncate">{folder.name}</span>
                 </div>
                 <span className="text-xs text-gray-400">{folder.itemCount}</span>
@@ -112,7 +113,7 @@ export const FolderSidebar: React.FC<FolderSidebarProps> = ({
       {/* Storage Indicator */}
       <div className="p-3.5 bg-[#F5F5F5] border border-[#E5E5E5] rounded-xl space-y-2 text-xs text-[#6B7280]">
         <div className="flex items-center gap-2 text-[#111111] font-semibold">
-          <HardDrive className="w-4 h-4 text-[#111111]" />
+          <ThreeDIcon name="storage" className="w-4.5 h-4.5 shrink-0" />
           <span>Local Storage</span>
         </div>
         <div className="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">

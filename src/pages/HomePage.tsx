@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ALL_TOOLS, TOOL_CATEGORIES, PRICING_PLANS, FAQ_ITEMS } from '../lib/constants';
 import { ToolCard } from '../components/tools/ToolCard';
@@ -14,19 +14,8 @@ import {
   ArrowRight,
   RefreshCw,
 } from 'lucide-react';
-import { HugeiconsIcon } from '@hugeicons/react';
-import {
-  Pdf02Icon,
-  Doc02Icon,
-  Xls02Icon,
-  Presentation02Icon,
-  Image02Icon,
-  LockPasswordIcon,
-  SignatureIcon,
-  Scissor01Icon,
-  FileZipIcon,
-  Files01Icon,
-} from '@hugeicons/core-free-icons';
+import { ThreeDIcon } from '../components/common/ThreeDIcon';
+import { FileSession } from '../lib/file-session';
 
 export const HomePage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -51,21 +40,8 @@ export const HomePage: React.FC = () => {
   const handleHeroFileSelected = (files: File[]) => {
     if (files.length === 0) return;
     const file = files[0];
-    const ext = file.name.split('.').pop()?.toLowerCase();
-
-    if (ext === 'pdf') {
-      navigate('/tools/merge-pdf');
-    } else if (ext === 'docx' || ext === 'doc') {
-      navigate('/tools/word-to-pdf');
-    } else if (ext === 'xlsx' || ext === 'xls') {
-      navigate('/tools/excel-to-pdf');
-    } else if (ext === 'csv') {
-      navigate('/tools/csv-to-excel');
-    } else if (['jpg', 'jpeg', 'png', 'webp'].includes(ext || '')) {
-      navigate('/tools/jpg-to-pdf');
-    } else {
-      navigate('/tools/merge-pdf');
-    }
+    FileSession.setFile(file);
+    navigate('/document-actions', { state: { file } });
   };
 
   const toggleFaq = (index: number) => {
@@ -89,90 +65,65 @@ export const HomePage: React.FC = () => {
         {/* Subtle Background Dot Pattern */}
         <div className="absolute inset-0 doclly-dot-pattern opacity-35 pointer-events-none doclly-radial-mask" />
 
-        {/* REAL HUGEICONS FLOATING BADGES (NO TEXT) */}
+        {/* REAL 3D FLOATING ICONS (NO BACKGROUND BOXES, NO SHADOWS) */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
-          {/* --- LEFT SIDE FLOATING HUGEICONS --- */}
+          {/* --- LEFT SIDE FLOATING 3D ICONS --- */}
           
-          {/* 1. Hugeicons PDF (Rose) */}
-          <div className="hidden md:flex w-14 h-14 rounded-2xl bg-white/95 backdrop-blur-md border border-rose-200/90 shadow-xl shadow-rose-500/10 items-center justify-center absolute top-10 left-6 lg:left-14 animate-doclly-float-1">
-            <div className="w-10 h-10 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600">
-              <HugeiconsIcon icon={Pdf02Icon} size={24} strokeWidth={2} />
-            </div>
+          {/* 1. 3D PDF Icon */}
+          <div className="hidden md:block absolute top-10 left-6 lg:left-14 animate-doclly-float-1">
+            <ThreeDIcon name="pdf" className="w-14 h-14 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
 
-          {/* 2. Hugeicons Word DOCX (Blue) */}
-          <div className="hidden sm:flex w-14 h-14 rounded-2xl bg-white/95 backdrop-blur-md border border-blue-200/90 shadow-xl shadow-blue-500/10 items-center justify-center absolute top-48 left-3 lg:left-8 animate-doclly-float-2">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">
-              <HugeiconsIcon icon={Doc02Icon} size={24} strokeWidth={2} />
-            </div>
+          {/* 2. 3D Word Icon */}
+          <div className="hidden sm:block absolute top-48 left-3 lg:left-8 animate-doclly-float-2">
+            <ThreeDIcon name="word" className="w-14 h-14 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
 
-          {/* 3. Hugeicons Excel XLSX (Emerald) */}
-          <div className="hidden md:flex w-14 h-14 rounded-2xl bg-white/95 backdrop-blur-md border border-emerald-200/90 shadow-xl shadow-emerald-500/10 items-center justify-center absolute bottom-10 left-8 lg:left-18 animate-doclly-float-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600">
-              <HugeiconsIcon icon={Xls02Icon} size={24} strokeWidth={2} />
-            </div>
+          {/* 3. 3D Excel Icon */}
+          <div className="hidden md:block absolute bottom-10 left-8 lg:left-18 animate-doclly-float-3">
+            <ThreeDIcon name="excel" className="w-14 h-14 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
 
-          {/* 4. Hugeicons Signature (Amber) */}
-          <div className="hidden lg:flex w-11 h-11 rounded-2xl bg-white/95 backdrop-blur-md border border-amber-200/90 shadow-lg shadow-amber-500/10 items-center justify-center absolute top-28 left-[24%] animate-doclly-float-4 opacity-85">
-            <div className="w-8 h-8 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600">
-              <HugeiconsIcon icon={SignatureIcon} size={19} strokeWidth={2} />
-            </div>
+          {/* 4. 3D Signature Icon */}
+          <div className="hidden lg:block absolute top-28 left-[24%] animate-doclly-float-4 opacity-85">
+            <ThreeDIcon name="sign" className="w-11 h-11 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
 
-          {/* 5. Hugeicons Scissors / Split (Purple) */}
-          <div className="hidden lg:flex w-10 h-10 rounded-xl bg-white/95 backdrop-blur-md border border-purple-200/90 shadow-md items-center justify-center absolute bottom-28 left-[20%] animate-doclly-float-1 opacity-75">
-            <div className="w-7 h-7 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600">
-              <HugeiconsIcon icon={Scissor01Icon} size={17} strokeWidth={2} />
-            </div>
+          {/* 5. 3D Split / Scissors Icon */}
+          <div className="hidden lg:block absolute bottom-28 left-[20%] animate-doclly-float-1 opacity-80">
+            <ThreeDIcon name="split" className="w-11 h-11 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
 
+          {/* --- RIGHT SIDE FLOATING 3D ICONS --- */}
 
-          {/* --- RIGHT SIDE FLOATING HUGEICONS --- */}
-
-          {/* 6. Hugeicons PowerPoint PPTX (Orange) */}
-          <div className="hidden md:flex w-14 h-14 rounded-2xl bg-white/95 backdrop-blur-md border border-orange-200/90 shadow-xl shadow-orange-500/10 items-center justify-center absolute top-10 right-6 lg:right-14 animate-doclly-float-2">
-            <div className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-orange-600">
-              <HugeiconsIcon icon={Presentation02Icon} size={24} strokeWidth={2} />
-            </div>
+          {/* 6. 3D PowerPoint Icon */}
+          <div className="hidden md:block absolute top-10 right-6 lg:right-14 animate-doclly-float-2">
+            <ThreeDIcon name="ppt" className="w-14 h-14 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
 
-          {/* 7. Hugeicons JPG / Image (Amber) */}
-          <div className="hidden sm:flex w-14 h-14 rounded-2xl bg-white/95 backdrop-blur-md border border-amber-200/90 shadow-xl shadow-amber-500/10 items-center justify-center absolute top-48 right-3 lg:right-8 animate-doclly-float-1">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600">
-              <HugeiconsIcon icon={Image02Icon} size={24} strokeWidth={2} />
-            </div>
+          {/* 7. 3D JPG / Image Icon */}
+          <div className="hidden sm:block absolute top-48 right-3 lg:right-8 animate-doclly-float-1">
+            <ThreeDIcon name="image" className="w-14 h-14 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
 
-          {/* 8. Hugeicons Lock / Protect (Rose/Red) */}
-          <div className="hidden md:flex w-14 h-14 rounded-2xl bg-white/95 backdrop-blur-md border border-rose-200/90 shadow-xl shadow-rose-500/10 items-center justify-center absolute bottom-10 right-8 lg:right-18 animate-doclly-float-4">
-            <div className="w-10 h-10 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600">
-              <HugeiconsIcon icon={LockPasswordIcon} size={24} strokeWidth={2} />
-            </div>
+          {/* 8. 3D Protect / Lock Icon */}
+          <div className="hidden md:block absolute bottom-10 right-8 lg:right-18 animate-doclly-float-4">
+            <ThreeDIcon name="protect" className="w-14 h-14 opacity-90 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
 
-          {/* 9. Hugeicons Compress / Zip (Teal) */}
-          <div className="hidden lg:flex w-11 h-11 rounded-2xl bg-white/95 backdrop-blur-md border border-teal-200/90 shadow-lg shadow-teal-500/10 items-center justify-center absolute top-28 right-[24%] animate-doclly-float-3 opacity-85">
-            <div className="w-8 h-8 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600">
-              <HugeiconsIcon icon={FileZipIcon} size={19} strokeWidth={2} />
-            </div>
+          {/* 9. 3D Compress / Zip Icon */}
+          <div className="hidden lg:block absolute top-28 right-[24%] animate-doclly-float-3 opacity-85">
+            <ThreeDIcon name="compress" className="w-11 h-11 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
 
-          {/* 10. Hugeicons Merge / Multi-Files (Indigo) */}
-          <div className="hidden lg:flex w-10 h-10 rounded-xl bg-white/95 backdrop-blur-md border border-indigo-200/90 shadow-md items-center justify-center absolute bottom-28 right-[20%] animate-doclly-float-2 opacity-75">
-            <div className="w-7 h-7 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
-              <HugeiconsIcon icon={Files01Icon} size={17} strokeWidth={2} />
-            </div>
+          {/* 10. 3D Merge Icon */}
+          <div className="hidden lg:block absolute bottom-28 right-[20%] animate-doclly-float-2 opacity-80">
+            <ThreeDIcon name="merge" className="w-11 h-11 hover:scale-110 transition-transform duration-300 pointer-events-auto cursor-pointer" />
           </div>
         </div>
 
         {/* Hero Content */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/90 backdrop-blur-md border border-[#E5E5E5] rounded-full text-xs font-semibold text-[#111111] shadow-xs">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>100% Client-Side In-Browser Processing - Zero Server Uploads</span>
-          </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#111111] leading-[1.1]">
             Every tool you need to work with{' '}
@@ -280,8 +231,8 @@ export const HomePage: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="p-6 bg-white border border-[#E5E5E5] rounded-2xl space-y-3 shadow-2xs">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-              <Zap className="w-5 h-5" />
+            <div className="mb-2">
+              <ThreeDIcon name="flash" className="w-10 h-10" />
             </div>
             <h3 className="text-base font-bold text-[#111111]">Zero Latency</h3>
             <p className="text-xs text-[#6B7280] leading-relaxed">
@@ -290,8 +241,8 @@ export const HomePage: React.FC = () => {
           </div>
 
           <div className="p-6 bg-white border border-[#E5E5E5] rounded-2xl space-y-3 shadow-2xs">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <Shield className="w-5 h-5" />
+            <div className="mb-2">
+              <ThreeDIcon name="shield" className="w-10 h-10" />
             </div>
             <h3 className="text-base font-bold text-[#111111]">100% Private</h3>
             <p className="text-xs text-[#6B7280] leading-relaxed">
@@ -300,8 +251,8 @@ export const HomePage: React.FC = () => {
           </div>
 
           <div className="p-6 bg-white border border-[#E5E5E5] rounded-2xl space-y-3 shadow-2xs">
-            <div className="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
-              <MousePointerClick className="w-5 h-5" />
+            <div className="mb-2">
+              <ThreeDIcon name="mouse" className="w-10 h-10" />
             </div>
             <h3 className="text-base font-bold text-[#111111]">No Clutter</h3>
             <p className="text-xs text-[#6B7280] leading-relaxed">
@@ -310,8 +261,8 @@ export const HomePage: React.FC = () => {
           </div>
 
           <div className="p-6 bg-white border border-[#E5E5E5] rounded-2xl space-y-3 shadow-2xs">
-            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
-              <RefreshCw className="w-5 h-5" />
+            <div className="mb-2">
+              <ThreeDIcon name="cycle" className="w-10 h-10" />
             </div>
             <h3 className="text-base font-bold text-[#111111]">Universal Formats</h3>
             <p className="text-xs text-[#6B7280] leading-relaxed">
@@ -332,18 +283,18 @@ export const HomePage: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto pt-4">
           {PRICING_PLANS.map((plan) => (
             <div
               key={plan.id}
               className={`p-6 sm:p-8 rounded-2xl border flex flex-col justify-between transition-all ${
                 plan.isPrimary
-                  ? 'bg-white border-[#111111] ring-2 ring-[#FFC800]/60 shadow-md relative overflow-hidden'
+                  ? 'bg-white border-[#111111] ring-2 ring-[#FFC800]/60 shadow-md relative'
                   : 'bg-white border-[#E5E5E5]'
               }`}
             >
               {plan.badge && (
-                <span className="absolute -top-3 left-1/2 transform -translate-x-1/2 px-3 py-0.5 text-[11px] font-bold text-[#111111] bg-[#FFC800] border border-[#E5E5E5] rounded-full shadow-2xs z-20">
+                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 text-[11px] font-bold text-[#111111] bg-[#FFC800] border border-[#111111]/15 rounded-full shadow-xs z-20 whitespace-nowrap">
                   {plan.badge}
                 </span>
               )}

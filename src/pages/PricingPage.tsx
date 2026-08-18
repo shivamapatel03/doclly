@@ -4,13 +4,70 @@ import { Breadcrumb } from '../components/layout/Breadcrumb';
 import { PRICING_PLANS } from '../lib/constants';
 import { Check, X } from 'lucide-react';
 import { useToast } from '../components/common/Toast';
+import { useAuth } from '../context/AuthContext';
+import { AuthModal } from './AuthModal';
+import { launchRazorpayCheckout } from '../lib/razorpay';
+import { useNavigate } from 'react-router-dom';
 
 export const PricingPage: React.FC = () => {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
-  const toast = useToast();
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signup');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const { showToast } = useToast();
+  const { user, updatePlanTier } = useAuth();
+  const navigate = useNavigate();
 
-  const handlePlanSelect = (planName: string) => {
-    toast.success(`Selected ${planName} plan! Redirecting to secure checkout...`);
+  const handlePlanSelect = (plan: typeof PRICING_PLANS[0]) => {
+    if (!user) {
+      setAuthMode('signup');
+      setIsAuthOpen(true);
+      return;
+    }
+
+    if (plan.id === 'free') {
+      updatePlanTier('free');
+      showToast('You are on the Free Starter plan.', 'info');
+      navigate('/dashboard');
+      return;
+    }
+
+    const targetPlan = plan.id as 'pro' | 'business';
+    const amountINR =
+      targetPlan === 'pro'
+        ? billingCycle === 'annual'
+          ? 399 * 12
+          : 499
+        : billingCycle === 'annual'
+        ? 1599 * 12
+        : 1999;
+
+    setIsProcessing(true);
+
+    launchRazorpayCheckout({
+      planId: targetPlan,
+      planName: plan.name,
+      amountINR,
+      billingCycle,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
+      onSuccess: async (paymentId) => {
+        await updatePlanTier(targetPlan);
+        setIsProcessing(false);
+        showToast(
+          `🎉 Payment successful (${paymentId})! Upgraded to ${plan.name}.`,
+          'success'
+        );
+        navigate('/dashboard');
+      },
+      onFailure: (err) => {
+        setIsProcessing(false);
+        showToast(err?.message || 'Payment cancelled.', 'info');
+      },
+    });
   };
 
   return (
@@ -39,7 +96,7 @@ export const PricingPage: React.FC = () => {
         <div className="inline-flex items-center p-1 bg-[#F5F5F5] border border-[#E5E5E5] rounded-xl text-xs font-semibold shadow-2xs">
           <button
             onClick={() => setBillingCycle('monthly')}
-            className={`px-4 py-1.5 rounded-lg transition-colors ${
+            className={`px-4 py-1.5 rounded-lg transition-colors cursor-pointer ${
               billingCycle === 'monthly'
                 ? 'bg-white text-[#111111] shadow-2xs border border-[#E5E5E5]'
                 : 'text-[#6B7280] hover:text-[#111111]'
@@ -49,7 +106,7 @@ export const PricingPage: React.FC = () => {
           </button>
           <button
             onClick={() => setBillingCycle('annual')}
-            className={`px-4 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 ${
+            className={`px-4 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
               billingCycle === 'annual'
                 ? 'bg-white text-[#111111] shadow-2xs border border-[#E5E5E5]'
                 : 'text-[#6B7280] hover:text-[#111111]'
@@ -64,12 +121,14 @@ export const PricingPage: React.FC = () => {
       </div>
 
       {/* Pricing Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto pt-4">
         {PRICING_PLANS.map((plan) => {
           const price =
             billingCycle === 'annual' && plan.annualPriceINR
               ? plan.annualPriceINR
               : plan.priceINR;
+
+          const isCurrentPlan = user?.planTier === plan.id;
 
           return (
             <div
@@ -81,7 +140,7 @@ export const PricingPage: React.FC = () => {
               }`}
             >
               {plan.badge && (
-                <span className="absolute -top-3 left-1/2 transform -translate-x-1/2 px-3 py-0.5 text-[11px] font-bold text-[#111111] bg-[#FFC800] border border-[#E5E5E5] rounded-full shadow-2xs">
+                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 text-[11px] font-bold text-[#111111] bg-[#FFC800] border border-[#111111]/15 rounded-full shadow-xs z-20 whitespace-nowrap">
                   {plan.badge}
                 </span>
               )}
@@ -121,14 +180,17 @@ export const PricingPage: React.FC = () => {
 
               <div className="pt-8">
                 <button
-                  onClick={() => handlePlanSelect(plan.name)}
-                  className={`w-full py-3 rounded-xl text-sm font-bold transition-colors ${
-                    plan.isPrimary
+                  onClick={() => handlePlanSelect(plan)}
+                  disabled={isProcessing || isCurrentPlan}
+                  className={`w-full py-3 rounded-xl text-sm font-bold transition-colors cursor-pointer ${
+                    isCurrentPlan
+                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default'
+                      : plan.isPrimary
                       ? 'bg-[#FFC800] hover:bg-[#E6B400] text-[#111111] border border-[#E5E5E5]'
                       : 'bg-[#F5F5F5] hover:bg-[#EAEAEA] text-[#111111] border border-[#E5E5E5]'
                   }`}
                 >
-                  {plan.cta}
+                  {isCurrentPlan ? 'Current Active Plan' : plan.cta}
                 </button>
               </div>
             </div>
@@ -160,7 +222,7 @@ export const PricingPage: React.FC = () => {
                 { name: 'Smart Invoice & Receipt OCR (Excel Export)', free: false, pro: true, biz: true },
                 { name: 'Multi-Step Automated Workflows', free: false, pro: true, biz: true },
                 { name: 'Contract Diff & Redline Compare', free: false, pro: true, biz: true },
-                { name: 'Cloud Workspace & Shared Folders', free: false, pro: '5 GB', biz: '50 GB' },
+                { name: 'Cloud Workspace & Storage Quota', free: '1 GB', pro: '25 GB', biz: '100 GB' },
                 { name: 'Developer REST API Access', free: false, pro: false, biz: true },
                 { name: 'Dedicated Priority Support', free: false, pro: true, biz: '24/7 Phone & Email' },
               ].map((row, idx) => (
@@ -193,6 +255,12 @@ export const PricingPage: React.FC = () => {
           </table>
         </div>
       </div>
+
+      <AuthModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+        initialMode={authMode}
+      />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Breadcrumb } from '../../components/layout/Breadcrumb';
 import { SeoHead } from '../../components/layout/SeoHead';
 import { UploadZone } from '../../components/tools/UploadZone';
@@ -10,12 +10,19 @@ import { createDocxFromText } from '../../lib/office-engine';
 import { extractTextAndTablesFromPdf } from '../../lib/pdf-text-extractor';
 import { downloadBlob } from '../../lib/utils';
 import { ALL_TOOLS } from '../../lib/constants';
-import { FileText, ArrowRight, CheckCircle2, Sparkles } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Sparkles } from 'lucide-react';
 import { DocumentStorage } from '../../lib/storage';
+import { ThreeDIcon } from '../../components/common/ThreeDIcon';
+import { FileSession } from '../../lib/file-session';
+import { useLocation } from 'react-router-dom';
 
 export const PdfToWordPage: React.FC = () => {
   const tool = ALL_TOOLS.find((t) => t.id === 'pdf-to-word')!;
-  const [file, setFile] = useState<File | null>(null);
+  const location = useLocation();
+  const [file, setFile] = useState<File | null>(() => {
+    const f = (location.state as any)?.file || FileSession.getFile();
+    return f && f.name.toLowerCase().endsWith('.pdf') ? f : null;
+  });
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [docxBlob, setDocxBlob] = useState<Blob | null>(null);
@@ -115,8 +122,8 @@ const handleConvert = async () => {
               <div className="space-y-6">
                 <div className="p-4 bg-[#F5F5F5] rounded-xl border border-[#E5E5E5] flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-white border border-[#E5E5E5] text-[#111111] flex items-center justify-center">
-                      <FileText className="w-4 h-4" />
+                    <div className="shrink-0">
+                      <ThreeDIcon name="word" className="w-8 h-8" />
                     </div>
                     <div>
                       <h3 className="text-sm font-semibold text-[#111111]">{file.name}</h3>

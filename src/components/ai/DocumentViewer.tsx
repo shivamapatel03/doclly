@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { FileText, Copy, Check } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 import { formatFileSize } from '../../lib/utils';
+import { getFile3DIcon, ThreeDIcon } from '../common/ThreeDIcon';
 
 interface DocumentViewerProps {
   file: File | null;
@@ -21,7 +22,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({ file, text, clas
   if (!file && !text) {
     return (
       <div className={`flex flex-col items-center justify-center p-12 bg-[#F5F5F5] border border-[#E5E5E5] rounded-2xl text-center ${className}`}>
-        <FileText className="w-10 h-10 text-gray-300 mb-3" />
+        <ThreeDIcon name="word" className="w-10 h-10 mb-3 opacity-60" />
         <p className="text-sm font-bold text-[#111111]">No Document Selected</p>
         <p className="text-xs text-[#6B7280] max-w-xs mt-1">
           Upload a PDF, Word, Excel, or Text file to preview its content and start chatting.
@@ -38,8 +39,8 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({ file, text, clas
       {/* Top Header */}
       <div className="flex items-center justify-between px-4 py-3 bg-[#F5F5F5] border-b border-[#E5E5E5]">
         <div className="flex items-center gap-2.5 min-w-0">
-          <div className="w-7 h-7 rounded-md bg-white border border-[#E5E5E5] text-[#111111] flex items-center justify-center shrink-0">
-            <FileText className="w-4 h-4" />
+          <div className="shrink-0">
+            {getFile3DIcon(file?.name || 'document.pdf', 'w-7 h-7')}
           </div>
           <div className="min-w-0">
             <p className="text-xs sm:text-sm font-bold text-[#111111] truncate">{file?.name || 'Document Content'}</p>

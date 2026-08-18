@@ -1,19 +1,8 @@
-﻿import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ALL_TOOLS } from '../../lib/constants';
-import {
-  Search,
-  X,
-  CornerDownLeft,
-  Files,
-  FileText,
-  RefreshCw,
-  Scissors,
-  Minimize2,
-  Lock,
-  PenLine,
-  Table,
-} from 'lucide-react';
+import { Search, X, CornerDownLeft } from 'lucide-react';
+import { ThreeDIcon, getTool3DIcon } from './ThreeDIcon';
 
 interface CommandMenuProps {
   isOpen: boolean;
@@ -133,22 +122,11 @@ export const CommandMenu: React.FC<CommandMenuProps> = ({ isOpen, onClose }) => 
                       }`}
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div
-                          className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
-                            isSelected ? 'bg-[#FFC800] text-[#111111]' : 'bg-[#F5F5F5] text-gray-600'
-                          }`}
-                        >
-                          {tool.category === 'convert' ? (
-                            <RefreshCw className="w-3.5 h-3.5" />
-                          ) : tool.category === 'organize' ? (
-                            <Files className="w-3.5 h-3.5" />
-                          ) : tool.category === 'optimize' ? (
-                            <Minimize2 className="w-3.5 h-3.5" />
-                          ) : tool.category === 'office' ? (
-                            <Table className="w-3.5 h-3.5" />
-                          ) : (
-                            <FileText className="w-3.5 h-3.5" />
-                          )}
+                        <div className="w-6 h-6 flex items-center justify-center shrink-0">
+                          <ThreeDIcon
+                            name={getTool3DIcon(tool.id, tool.iconName)}
+                            className="w-6 h-6 drop-shadow-xs"
+                          />
                         </div>
                         <div className="min-w-0">
                           <div className="text-xs sm:text-sm font-medium truncate">{tool.name}</div>

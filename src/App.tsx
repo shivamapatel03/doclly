@@ -1,13 +1,15 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { ToastProvider } from './components/common/Toast';
+import { AuthProvider } from './context/AuthContext';
 import { CommandMenu } from './components/common/CommandMenu';
 import { AuthModal } from './pages/AuthModal';
 
 // Pages
 import { HomePage } from './pages/HomePage';
+import { DocumentActionsPage } from './pages/DocumentActionsPage';
 import { ToolPage } from './pages/ToolPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { PricingPage } from './pages/PricingPage';
@@ -49,6 +51,7 @@ export const AppContent: React.FC = () => {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/document-actions" element={<DocumentActionsPage />} />
           
           {/* Dedicated & Generic Tool Routes */}
           <Route path="/tools/:toolId" element={<ToolPage />} />
@@ -89,9 +92,11 @@ export const AppContent: React.FC = () => {
 export default function App() {
   return (
     <ToastProvider>
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <AppContent />
+        </BrowserRouter>
+      </AuthProvider>
     </ToastProvider>
   );
 }

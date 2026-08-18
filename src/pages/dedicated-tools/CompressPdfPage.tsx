@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Breadcrumb } from '../../components/layout/Breadcrumb';
 import { SeoHead } from '../../components/layout/SeoHead';
 import { UploadZone } from '../../components/tools/UploadZone';
@@ -12,9 +12,16 @@ import { ALL_TOOLS } from '../../lib/constants';
 import { Minimize2, Sparkles } from 'lucide-react';
 import { DocumentStorage } from '../../lib/storage';
 
+import { FileSession } from '../../lib/file-session';
+import { useLocation } from 'react-router-dom';
+
 export const CompressPdfPage: React.FC = () => {
   const tool = ALL_TOOLS.find((t) => t.id === 'compress-pdf')!;
-  const [file, setFile] = useState<File | null>(null);
+  const location = useLocation();
+  const [file, setFile] = useState<File | null>(() => {
+    const f = (location.state as any)?.file || FileSession.getFile();
+    return f && f.name.toLowerCase().endsWith('.pdf') ? f : null;
+  });
   const [compressionLevel, setCompressionLevel] = useState<'low' | 'balanced' | 'high'>('balanced');
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -41,7 +48,6 @@ const handleCompress = async () => {
       setProgress(100);
 
       setResult(res);
-      downloadBytes(res.data, `compressed_${file.name}`, 'application/pdf');
       DocumentStorage.saveDocument({
         name: `Compressed_${file.name}`,
         size: res.newSize,

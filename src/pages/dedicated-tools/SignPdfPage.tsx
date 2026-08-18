@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Breadcrumb } from '../../components/layout/Breadcrumb';
 import { SeoHead } from '../../components/layout/SeoHead';
 import { UploadZone } from '../../components/tools/UploadZone';
@@ -30,15 +30,25 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import { DocumentStorage } from '../../lib/storage';
+import { useLocation } from 'react-router-dom';
+import { FileSession } from '../../lib/file-session';
 
 export const SignPdfPage: React.FC = () => {
   const tool = ALL_TOOLS.find((t) => t.id === 'sign-pdf')!;
+  const location = useLocation();
   const [file, setFile] = useState<File | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [activePageIndex, setActivePageIndex] = useState(0);
   
   // Page thumbnails cache { [pageIndex: number]: dataUrl }
   const [thumbnails, setThumbnails] = useState<{ [pageIndex: number]: string }>({});
+
+  useEffect(() => {
+    const f = (location.state as any)?.file || FileSession.getFile();
+    if (f && f.name.toLowerCase().endsWith('.pdf') && !file) {
+      handleDocumentSelected([f]);
+    }
+  }, []);
 
   // Active signature library
   const [savedSignatureDataUrl, setSavedSignatureDataUrl] = useState<string | null>(null);
@@ -147,14 +157,13 @@ export const SignPdfPage: React.FC = () => {
 
       setSignedBytes(result);
       const outName = `signed_${file.name}`;
-      downloadBytes(result, outName, 'application/pdf');
 
       DocumentStorage.saveDocument({
         name: outName,
         size: result.byteLength,
         type: 'application/pdf',
       });
-      toast.success('Document signed & downloaded successfully!');
+      toast.success('Document signed successfully!');
     } catch (err: any) {
       toast.error(err.message || 'Failed to sign document.');
     } finally {

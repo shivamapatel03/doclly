@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Breadcrumb } from '../../components/layout/Breadcrumb';
 import { SeoHead } from '../../components/layout/SeoHead';
 import { UploadZone } from '../../components/tools/UploadZone';
@@ -13,8 +13,12 @@ import { ALL_TOOLS } from '../../lib/constants';
 import { FileSpreadsheet, Plus, Sparkles, Trash2, CheckCircle2, FileText } from 'lucide-react';
 import { DocumentStorage } from '../../lib/storage';
 
+import { useLocation } from 'react-router-dom';
+import { FileSession } from '../../lib/file-session';
+
 export const PdfToExcelPage: React.FC = () => {
   const tool = ALL_TOOLS.find((t) => t.id === 'pdf-to-excel')!;
+  const location = useLocation();
   const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -25,6 +29,13 @@ export const PdfToExcelPage: React.FC = () => {
 
   const [excelBytes, setExcelBytes] = useState<Uint8Array | null>(null);
   const toast = useToast();
+
+  useEffect(() => {
+    const f = (location.state as any)?.file || FileSession.getFile();
+    if (f && f.name.toLowerCase().endsWith('.pdf') && !file) {
+      handleFileSelected([f]);
+    }
+  }, []);
 
   const handleFileSelected = async (files: File[]) => {
     if (files.length === 0) return;

@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Breadcrumb } from '../../components/layout/Breadcrumb';
 import { SeoHead } from '../../components/layout/SeoHead';
 import { UploadZone } from '../../components/tools/UploadZone';
@@ -13,8 +13,12 @@ import { ALL_TOOLS } from '../../lib/constants';
 import { RotateCw, Check, Sparkles } from 'lucide-react';
 import { DocumentStorage } from '../../lib/storage';
 
+import { useLocation } from 'react-router-dom';
+import { FileSession } from '../../lib/file-session';
+
 export const OrganizePdfPage: React.FC = () => {
   const tool = ALL_TOOLS.find((t) => t.id === 'organize-pdf')!;
+  const location = useLocation();
   const [file, setFile] = useState<File | null>(null);
   const [pageCount, setPageCount] = useState(0);
   
@@ -28,6 +32,13 @@ export const OrganizePdfPage: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const [organizedBytes, setOrganizedBytes] = useState<Uint8Array | null>(null);
   const toast = useToast();
+
+  useEffect(() => {
+    const f = (location.state as any)?.file || FileSession.getFile();
+    if (f && f.name.toLowerCase().endsWith('.pdf') && !file) {
+      handleFileSelected([f]);
+    }
+  }, []);
 
   const handleFileSelected = async (files: File[]) => {
     if (files.length === 0) return;
@@ -70,11 +81,19 @@ const handleRotatePage = (index: number) => {
   };
 
   const handleMovePage = (fromIndex: number, toIndex: number) => {
-    if (toIndex < 0 || toIndex >= pagesOrder.length) return;
-    const nextOrder = [...pagesOrder];
-    const [moved] = nextOrder.splice(fromIndex, 1);
-    nextOrder.splice(toIndex, 0, moved);
-    setPagesOrder(nextOrder);
+    const visiblePages = pagesOrder.filter((idx) => !deletedIndices.has(idx));
+    if (
+      fromIndex < 0 ||
+      fromIndex >= visiblePages.length ||
+      toIndex < 0 ||
+      toIndex >= visiblePages.length
+    ) {
+      return;
+    }
+    const nextVisible = [...visiblePages];
+    const [moved] = nextVisible.splice(fromIndex, 1);
+    nextVisible.splice(toIndex, 0, moved);
+    setPagesOrder(nextVisible);
   };
 
   const handleRotateAll = () => {
@@ -83,7 +102,7 @@ const handleRotatePage = (index: number) => {
       nextRotations[idx] = ((rotations[idx] || 0) + 90) % 360;
     });
     setRotations(nextRotations);
-    toast.success('Rotated all pages 90Â° clockwise');
+    toast.success('Rotated all pages 90° clockwise');
   };
 
   const handleOrganize = async () => {
@@ -124,13 +143,15 @@ const handleRotatePage = (index: number) => {
     }
   };
 
-  const activePages = pagesOrder.map((pageIdx) => ({
-    index: pageIdx,
-    pageNumber: pageIdx + 1,
-    rotation: rotations[pageIdx] || 0,
-    isDeleted: deletedIndices.has(pageIdx),
-    thumbnail: thumbnails[pageIdx],
-  }));
+  const activePages = pagesOrder
+    .filter((pageIdx) => !deletedIndices.has(pageIdx))
+    .map((pageIdx) => ({
+      index: pageIdx,
+      pageNumber: pageIdx + 1,
+      rotation: rotations[pageIdx] || 0,
+      isDeleted: false,
+      thumbnail: thumbnails[pageIdx],
+    }));
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative">

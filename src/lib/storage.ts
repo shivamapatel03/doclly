@@ -6,73 +6,27 @@ const STORAGE_FOLDERS_KEY = 'doclly_workspace_folders';
 const STORAGE_STATS_KEY = 'doclly_user_stats';
 
 const DEFAULT_FOLDERS: FolderItem[] = [
-  { id: 'all', name: 'All Documents', itemCount: 3, createdAt: '2026-08-01' },
-  { id: 'invoices', name: 'Invoices & Receipts', color: '#4F46E5', itemCount: 2, createdAt: '2026-08-05' },
-  { id: 'contracts', name: 'Contracts & Legal', color: '#059669', itemCount: 1, createdAt: '2026-08-10' },
-  { id: 'study', name: 'Study Notes', color: '#D97706', itemCount: 0, createdAt: '2026-08-12' },
+  { id: 'all', name: 'All Documents', itemCount: 0, createdAt: new Date().toISOString().split('T')[0] },
+  { id: 'invoices', name: 'Invoices & Receipts', color: '#4F46E5', itemCount: 0, createdAt: new Date().toISOString().split('T')[0] },
+  { id: 'contracts', name: 'Contracts & Legal', color: '#059669', itemCount: 0, createdAt: new Date().toISOString().split('T')[0] },
 ];
-
-const DEFAULT_DOCUMENTS: DocItem[] = [
-  {
-    id: 'doc-1',
-    name: 'Sample_Master_Services_Agreement_2026.pdf',
-    size: 245000,
-    type: 'application/pdf',
-    lastModified: Date.now() - 86400000 * 2,
-    uploadedAt: '2 days ago',
-    folderId: 'contracts',
-    tags: ['Legal', 'Contract', 'Active'],
-    isFavorite: true,
-    pageCount: 4,
-    extractedText: 'Master Services Agreement entered into by Doclly Cloud Services and Acme Corp...',
-  },
-  {
-    id: 'doc-2',
-    name: 'Acme_Invoice_INV-0849.pdf',
-    size: 112000,
-    type: 'application/pdf',
-    lastModified: Date.now() - 86400000 * 4,
-    uploadedAt: '4 days ago',
-    folderId: 'invoices',
-    tags: ['Finance', 'Invoice', 'Paid'],
-    isFavorite: true,
-    pageCount: 1,
-    extractedText: 'Invoice INV-2026-0849 Total: ₹50,150 Vendor: Doclly Cloud Services...',
-  },
-  {
-    id: 'doc-3',
-    name: 'Q3_Financial_Projections_Data.xlsx',
-    size: 89000,
-    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    lastModified: Date.now() - 86400000 * 6,
-    uploadedAt: '6 days ago',
-    folderId: 'invoices',
-    tags: ['Excel', 'Spreadsheet'],
-    isFavorite: false,
-    pageCount: 3,
-  },
-];
-
-const DEFAULT_STATS: UserStats = {
-  documentsProcessed: 42,
-  storageUsedBytes: 34 * 1024 * 1024, // 34 MB
-  totalStorageBytes: 1024 * 1024 * 1024 * 5, // 5 GB
-  aiQueriesUsed: 89,
-  aiQueriesLimit: 500,
-  timeSavedMinutes: 180,
-  recentTools: ['merge-pdf', 'compress-pdf', 'ai-extract', 'sign-pdf'],
-};
 
 export class DocumentStorage {
+  /**
+   * Get real stored documents
+   */
   static getDocuments(): DocItem[] {
     try {
       const data = localStorage.getItem(STORAGE_DOCS_KEY);
-      return data ? JSON.parse(data) : DEFAULT_DOCUMENTS;
+      return data ? JSON.parse(data) : [];
     } catch {
-      return DEFAULT_DOCUMENTS;
+      return [];
     }
   }
 
+  /**
+   * Save a newly processed or uploaded document
+   */
   static saveDocument(doc: Partial<DocItem> & { name: string; size: number; type: string }): DocItem {
     const docs = this.getDocuments();
     const newDoc: DocItem = {
@@ -81,9 +35,9 @@ export class DocumentStorage {
       size: doc.size,
       type: doc.type,
       lastModified: Date.now(),
-      uploadedAt: 'Just now',
+      uploadedAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
       folderId: doc.folderId || 'all',
-      tags: doc.tags || ['Recent'],
+      tags: doc.tags || ['Processed'],
       isFavorite: !!doc.isFavorite,
       isTrash: false,
       pageCount: doc.pageCount || 1,
@@ -149,20 +103,47 @@ export class DocumentStorage {
     return updated;
   }
 
-  static getUserStats(): UserStats {
+  /**
+   * Calculate live real stats based on real documents and plan tier
+   */
+  static getUserStats(planTier: 'free' | 'pro' | 'business' = 'free'): UserStats {
+    const docs = this.getDocuments().filter((d) => !d.isTrash);
+    const storageUsed = docs.reduce((acc, d) => acc + (d.size || 0), 0);
+
+    const totalStorageBytes =
+      planTier === 'business'
+        ? 100 * 1024 * 1024 * 1024 // 100 GB
+        : planTier === 'pro'
+        ? 25 * 1024 * 1024 * 1024 // 25 GB
+        : 1024 * 1024 * 1024; // 1 GB Free
+
+    let savedStats: any = {};
     try {
-      const data = localStorage.getItem(STORAGE_STATS_KEY);
-      return data ? JSON.parse(data) : DEFAULT_STATS;
-    } catch {
-      return DEFAULT_STATS;
-    }
+      const raw = localStorage.getItem(STORAGE_STATS_KEY);
+      if (raw) savedStats = JSON.parse(raw);
+    } catch {}
+
+    const processedCount = docs.length;
+
+    return {
+      documentsProcessed: processedCount,
+      storageUsedBytes: storageUsed,
+      totalStorageBytes,
+      aiQueriesUsed: savedStats.aiQueriesUsed || 0,
+      aiQueriesLimit: planTier === 'business' ? 5000 : planTier === 'pro' ? 1000 : 50,
+      timeSavedMinutes: processedCount * 3,
+      recentTools: savedStats.recentTools || ['compress-pdf', 'pdf-to-word', 'organize-pdf'],
+    };
   }
 
   static incrementStats(field: keyof UserStats, amount: number) {
-    const stats = this.getUserStats();
-    if (typeof stats[field] === 'number') {
-      (stats[field] as number) += amount;
-      localStorage.setItem(STORAGE_STATS_KEY, JSON.stringify(stats));
-    }
+    let stats: any = {};
+    try {
+      const raw = localStorage.getItem(STORAGE_STATS_KEY);
+      if (raw) stats = JSON.parse(raw);
+    } catch {}
+
+    stats[field] = (stats[field] || 0) + amount;
+    localStorage.setItem(STORAGE_STATS_KEY, JSON.stringify(stats));
   }
 }

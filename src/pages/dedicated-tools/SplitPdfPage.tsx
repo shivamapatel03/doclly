@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Breadcrumb } from '../../components/layout/Breadcrumb';
 import { SeoHead } from '../../components/layout/SeoHead';
 import { UploadZone } from '../../components/tools/UploadZone';
@@ -9,11 +9,16 @@ import { useToast } from '../../components/common/Toast';
 import { getPdfInfo, splitPdf, splitPdfToZip, generatePdfThumbnails } from '../../lib/pdf-engine';
 import { downloadBytes, downloadBlob, formatFileSize } from '../../lib/utils';
 import { ALL_TOOLS } from '../../lib/constants';
-import { Scissors, Archive, Download, ExternalLink, RefreshCw, Sparkles, CheckCircle2, FileText } from 'lucide-react';
+import { Download, ExternalLink, RefreshCw, Sparkles, CheckCircle2 } from 'lucide-react';
 import { DocumentStorage } from '../../lib/storage';
+import { ThreeDIcon } from '../../components/common/ThreeDIcon';
+
+import { useLocation } from 'react-router-dom';
+import { FileSession } from '../../lib/file-session';
 
 export const SplitPdfPage: React.FC = () => {
   const tool = ALL_TOOLS.find((t) => t.id === 'split-pdf')!;
+  const location = useLocation();
   const [file, setFile] = useState<File | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [splitMode, setSplitMode] = useState<'selected' | 'range' | 'all'>('selected');
@@ -29,6 +34,13 @@ export const SplitPdfPage: React.FC = () => {
   const [extractedPageNumbers, setExtractedPageNumbers] = useState<number[]>([]);
   const [outputType, setOutputType] = useState<'pdf' | 'zip'>('pdf');
   const toast = useToast();
+
+  useEffect(() => {
+    const f = (location.state as any)?.file || FileSession.getFile();
+    if (f && f.name.toLowerCase().endsWith('.pdf') && !file) {
+      handleFileSelected([f]);
+    }
+  }, []);
 
   const handleFileSelected = async (files: File[]) => {
     if (files.length === 0) return;
@@ -117,16 +129,12 @@ const handleSplit = async (format: 'pdf' | 'zip' = 'pdf') => {
         setProgress(100);
         setSplitResultZip(zipBlob);
         setSplitResultBytes(null);
-        const base = file.name.replace(/\.[^/.]+$/, '');
-        downloadBlob(zipBlob, `split_${base}.zip`);
         toast.success(`Split ${pageIndicesToExtract.length} pages into ZIP archive!`);
       } else {
         const result = await splitPdf(file, pageIndicesToExtract);
         setProgress(100);
         setSplitResultBytes(result);
         setSplitResultZip(null);
-        const base = file.name.replace(/\.[^/.]+$/, '');
-        downloadBytes(result, `split_${base}.pdf`, 'application/pdf');
         DocumentStorage.saveDocument({
           name: `Split_${file.name}`,
           size: result.byteLength,
@@ -214,8 +222,8 @@ const handleSplit = async (format: 'pdf' | 'zip' = 'pdf') => {
             {/* Document Details Card */}
             <div className="p-4 bg-[#F5F5F5] rounded-xl border border-[#E5E5E5] max-w-md mx-auto flex items-center justify-between text-left">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-white border border-[#E5E5E5] flex items-center justify-center text-[#111111] shrink-0">
-                  {outputType === 'zip' ? <Archive className="w-5 h-5" /> : <FileText className="w-5 h-5" />}
+                <div className="shrink-0">
+                  <ThreeDIcon name={outputType === 'zip' ? 'compress' : 'pdf'} className="w-10 h-10" />
                 </div>
                 <div className="overflow-hidden">
                   <h4 className="text-xs font-bold text-[#111111] truncate max-w-[220px]">
@@ -395,7 +403,7 @@ const handleSplit = async (format: 'pdf' | 'zip' = 'pdf') => {
                       disabled={isProcessing}
                       isLoading={isProcessing && outputType === 'zip'}
                       onClick={() => handleSplit('zip')}
-                      leftIcon={<Archive className="w-4 h-4" />}
+                      leftIcon={<ThreeDIcon name="compress" className="w-4 h-4" />}
                     >
                       Extract to ZIP
                     </Button>
@@ -406,9 +414,9 @@ const handleSplit = async (format: 'pdf' | 'zip' = 'pdf') => {
                       disabled={isProcessing}
                       isLoading={isProcessing && outputType === 'pdf'}
                       onClick={() => handleSplit('pdf')}
-                      leftIcon={<Scissors className="w-4 h-4" />}
+                      leftIcon={<ThreeDIcon name="split" className="w-4 h-4" />}
                     >
-                      Split & Download PDF ({selectedPages.size} {selectedPages.size === 1 ? 'page' : 'pages'})
+                      Extract Selected PDF ({selectedPages.size} {selectedPages.size === 1 ? 'page' : 'pages'})
                     </Button>
                   </div>
                 </div>

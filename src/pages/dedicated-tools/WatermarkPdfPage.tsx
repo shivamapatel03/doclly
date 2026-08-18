@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Breadcrumb } from '../../components/layout/Breadcrumb';
 import { SeoHead } from '../../components/layout/SeoHead';
 import { UploadZone } from '../../components/tools/UploadZone';
@@ -26,6 +26,8 @@ import {
   Type,
 } from 'lucide-react';
 import { DocumentStorage } from '../../lib/storage';
+import { useLocation } from 'react-router-dom';
+import { FileSession } from '../../lib/file-session';
 
 const WATERMARK_PRESETS = [
   'CONFIDENTIAL',
@@ -47,12 +49,20 @@ const COLOR_OPTIONS = [
 
 export const WatermarkPdfPage: React.FC = () => {
   const tool = ALL_TOOLS.find((t) => t.id === 'watermark-pdf')!;
+  const location = useLocation();
   const [file, setFile] = useState<File | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [activePageIndex, setActivePageIndex] = useState(0);
 
   // Real page thumbnails cache
   const [thumbnails, setThumbnails] = useState<{ [pageIndex: number]: string }>({});
+
+  useEffect(() => {
+    const f = (location.state as any)?.file || FileSession.getFile();
+    if (f && f.name.toLowerCase().endsWith('.pdf') && !file) {
+      handleDocumentSelected([f]);
+    }
+  }, []);
 
   // Watermark parameters
   const [watermarkText, setWatermarkText] = useState('CONFIDENTIAL');
@@ -103,7 +113,6 @@ const handleApplyWatermark = async () => {
 
       setWatermarkedBytes(bytes);
       const outName = `watermarked_${file.name}`;
-      downloadBytes(bytes, outName, 'application/pdf');
 
       DocumentStorage.saveDocument({
         name: outName,
