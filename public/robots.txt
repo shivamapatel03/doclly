@@ -1,0 +1,8 @@
+# User-agent rules for Doclly (https://www.doclly.online)
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /auth/callback
+
+# Sitemap URL for Google and all search engines
+Sitemap: https://www.doclly.online/sitemap.xml

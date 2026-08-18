@@ -48,30 +48,32 @@ import { ThreeDIcon } from '../components/common/ThreeDIcon';
 export const ToolPage: React.FC = () => {
   const { toolId } = useParams<{ toolId: string }>();
 
-  // Route to specialized dedicated tool views if applicable
-  if (toolId === 'merge-pdf') return <MergePdfPage />;
-  if (toolId === 'split-pdf') return <SplitPdfPage />;
-  if (toolId === 'compress-pdf') return <CompressPdfPage />;
-  if (toolId === 'pdf-to-word') return <PdfToWordPage />;
-  if (toolId === 'pdf-to-excel') return <PdfToExcelPage />;
-  if (toolId === 'pdf-to-jpg') return <PdfToJpgPage />;
-  if (toolId === 'sign-pdf') return <SignPdfPage />;
-  if (toolId === 'organize-pdf') return <OrganizePdfPage />;
-  if (toolId === 'remove-pages') return <RemovePagesPage />;
-  if (toolId === 'extract-pages') return <ExtractPagesPage />;
+  // Route to specialized dedicated tool views with search keyword aliases
+  if (toolId === 'merge-pdf' || toolId === 'combine-pdf') return <MergePdfPage />;
+  if (toolId === 'split-pdf' || toolId === 'separate-pdf') return <SplitPdfPage />;
+  if (toolId === 'compress-pdf' || toolId === 'reduce-pdf-size') return <CompressPdfPage />;
+  if (toolId === 'pdf-to-word' || toolId === 'pdf-to-docx') return <PdfToWordPage />;
+  if (toolId === 'pdf-to-excel' || toolId === 'pdf-to-xlsx') return <PdfToExcelPage />;
+  if (toolId === 'pdf-to-jpg' || toolId === 'pdf-to-png' || toolId === 'pdf-to-image' || toolId === 'pdf-to-img') return <PdfToJpgPage />;
+  if (toolId === 'sign-pdf' || toolId === 'electronic-signature') return <SignPdfPage />;
+  if (toolId === 'organize-pdf' || toolId === 'reorder-pdf') return <OrganizePdfPage />;
+  if (toolId === 'remove-pages' || toolId === 'delete-pdf-pages') return <RemovePagesPage />;
+  if (toolId === 'extract-pages' || toolId === 'pdf-page-extractor') return <ExtractPagesPage />;
   if (toolId === 'compare-documents') return <CompareDocumentsPage />;
-  if (toolId === 'protect-pdf') return <ProtectPdfPage />;
-  if (toolId === 'unlock-pdf') return <UnlockPdfPage />;
+  if (toolId === 'protect-pdf' || toolId === 'lock-pdf') return <ProtectPdfPage />;
+  if (toolId === 'unlock-pdf' || toolId === 'remove-pdf-password') return <UnlockPdfPage />;
   if (toolId === 'flatten-pdf') return <FlattenPdfPage />;
-  if (toolId === 'watermark-pdf') return <WatermarkPdfPage />;
-  if (toolId === 'edit-pdf') return <PdfEditorPage />;
+  if (toolId === 'watermark-pdf' || toolId === 'stamp-watermark') return <WatermarkPdfPage />;
+  if (toolId === 'edit-pdf' || toolId === 'pdf-editor') return <PdfEditorPage />;
   if (toolId === 'csv-to-excel') return <OfficeConvertersPage mode="csv-to-excel" />;
   if (toolId === 'excel-to-csv') return <OfficeConvertersPage mode="excel-to-csv" />;
   if (toolId === 'excel-cleanup') return <ExcelCleanupPage />;
-  if (toolId === 'qr-code-generator') return <QrCodeGeneratorPage />;
+  if (toolId === 'qr-code-generator' || toolId === 'upi-qr-generator' || toolId === 'barcode-generator') return <QrCodeGeneratorPage />;
   if (toolId === 'stamp-qr-barcode' || toolId === 'qr-barcode-stamper') return <StampQrBarcodePage />;
 
-  const tool = ALL_TOOLS.find((t) => t.id === toolId);
+  // Support Image to PDF aliases
+  const targetId = (toolId === 'img-to-pdf' || toolId === 'image-to-pdf' || toolId === 'png-to-pdf') ? 'jpg-to-pdf' : toolId;
+  const tool = ALL_TOOLS.find((t) => t.id === targetId);
   if (!tool) {
     return <Navigate to="/" replace />;
   }

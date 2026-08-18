@@ -55,12 +55,12 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Merge PDFs',
     seo: {
-      title: 'Merge PDF Files Online — Free & Private — Doclly',
-      description: 'Combine multiple PDF files into a single document. Reorder pages and merge with 100% privacy.',
-      keywords: ['merge pdf', 'combine pdf', 'join pdfs online', 'merge documents'],
+      title: 'Merge PDF Files Online Free & Secure — Best PDF Combiner — Doclly',
+      description: 'Combine multiple PDF files into one single document in seconds. 100% free, secure client-side zero-retention architecture with drag-and-drop page reordering.',
+      keywords: ['merge pdf free', 'combine pdf files online', 'join pdf documents', 'best pdf merger', 'merge pdf without limit', 'merge pdf secure', 'doclly online'],
       faq: [
-        { question: 'How do I merge multiple PDF files?', answer: 'Upload your PDF files, drag them into your preferred order, and click "Merge PDFs".' },
-        { question: 'Is my data secure?', answer: 'Yes, all processing happens locally in your browser. No files are uploaded to third-party servers.' }
+        { question: 'How do I merge multiple PDF files for free?', answer: 'Upload your PDF files, drag them into your preferred order, and click "Merge PDFs". Your combined file is created instantly.' },
+        { question: 'Is my data secure when merging PDFs?', answer: 'Yes! All processing happens directly inside your browser memory with zero file uploads to external servers.' }
       ]
     }
   },
@@ -78,9 +78,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF / ZIP',
     actionButtonText: 'Split PDF',
     seo: {
-      title: 'Split PDF Online — Extract Pages Easily — Doclly',
-      description: 'Split PDF files by page ranges or extract single pages instantly with our free split tool.',
-      keywords: ['split pdf', 'extract pdf pages', 'separate pdf', 'pdf splitter'],
+      title: 'Split PDF Online Free — Extract & Separate PDF Pages — Doclly',
+      description: 'Split PDF files by custom page ranges or extract individual pages instantly with our 100% free and private PDF splitter.',
+      keywords: ['split pdf free', 'extract pdf pages', 'separate pdf files', 'pdf splitter online', 'cut pdf pages free', 'split pdf secure'],
       faq: [
         { question: 'Can I extract a custom page range like 1-3, 5?', answer: 'Yes! Simply enter your desired ranges or select pages visually.' }
       ]
@@ -99,10 +99,10 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Remove Selected Pages',
     seo: {
-      title: 'Remove Pages from PDF Online — Doclly',
-      description: 'Delete specific pages from your PDF file. Fast, free, and completely client-side.',
-      keywords: ['remove pdf pages', 'delete pages from pdf', 'cut pdf pages'],
-      faq: [{ question: 'How do I delete pages?', answer: 'Upload your PDF, click on the thumbnails you want to remove, and download the trimmed file.' }]
+      title: 'Remove Pages from PDF Online Free & Secure — Doclly',
+      description: 'Delete unwanted pages from your PDF file. 100% free, fast, and completely client-side in-memory processing.',
+      keywords: ['remove pdf pages free', 'delete pages from pdf', 'cut pdf pages', 'trim pdf online'],
+      faq: [{ question: 'How do I delete pages from a PDF?', answer: 'Upload your PDF, click on the thumbnails you want to remove, and download the trimmed file.' }]
     }
   },
   {
@@ -118,9 +118,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Extract Pages',
     seo: {
-      title: 'Extract Pages from PDF Online — Doclly',
-      description: 'Select exact pages from a PDF and download a new document containing only those pages.',
-      keywords: ['extract pdf pages', 'select pdf pages', 'pdf page extractor'],
+      title: 'Extract Pages from PDF Online Free — Doclly',
+      description: 'Select exact pages from a PDF and download a new document containing only those pages with zero quality loss.',
+      keywords: ['extract pdf pages free', 'select pdf pages', 'pdf page extractor online', 'save specific pdf pages'],
       faq: [{ question: 'Can I extract multiple non-consecutive pages?', answer: 'Yes, pick any combination of pages to create a custom PDF.' }]
     }
   },
@@ -137,9 +137,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Save Organized PDF',
     seo: {
-      title: 'Organize PDF Pages Online — Doclly',
-      description: 'Drag and drop to rearrange PDF pages, rotate upside-down pages, and delete unwanted pages.',
-      keywords: ['organize pdf', 'reorder pdf pages', 'sort pdf pages'],
+      title: 'Organize PDF Pages Online Free — Reorder & Rotate — Doclly',
+      description: 'Drag and drop to rearrange PDF pages, rotate upside-down pages, and delete unwanted pages with zero data retention.',
+      keywords: ['organize pdf free', 'reorder pdf pages', 'sort pdf pages', 'rotate pdf pages online'],
       faq: [{ question: 'How do I reorder pages?', answer: 'Drag and drop page thumbnail cards to reposition them.' }]
     }
   },
@@ -159,9 +159,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'DOCX',
     actionButtonText: 'Convert to Word',
     seo: {
-      title: 'PDF to Word Converter — Convert PDF to DOCX Free — Doclly',
-      description: 'Convert PDF files to editable Microsoft Word (.docx) documents with layout and text fidelity.',
-      keywords: ['pdf to word', 'convert pdf to docx', 'pdf to doc', 'pdf to word editable'],
+      title: 'PDF to Word Converter Free & Editable (.docx) — Best PDF to DOCX — Doclly',
+      description: 'Convert PDF files to editable Microsoft Word (.docx) documents with layout, fonts, and text fidelity preserved. 100% free and private.',
+      keywords: ['pdf to word converter free', 'convert pdf to docx', 'pdf to doc editable online', 'best pdf to word', 'convert pdf to word without losing formatting'],
       faq: [
         { question: 'Will the converted Word document be fully editable?', answer: 'Yes! Text, paragraphs, and headings are extracted into native Word document format.' }
       ]
@@ -181,9 +181,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'XLSX',
     actionButtonText: 'Convert to Excel',
     seo: {
-      title: 'PDF to Excel Converter — Extract Tables to XLSX — Doclly',
-      description: 'Convert bank statements, invoices, and table data from PDF into Microsoft Excel (.xlsx) spreadsheets.',
-      keywords: ['pdf to excel', 'pdf to xlsx', 'convert pdf table to excel', 'extract table from pdf'],
+      title: 'PDF to Excel Converter Free (.xlsx) — Extract Tables & Statements — Doclly',
+      description: 'Convert bank statements, invoices, and table data from PDF into Microsoft Excel (.xlsx) spreadsheets with spatial layout recognition.',
+      keywords: ['pdf to excel converter free', 'pdf to xlsx', 'convert pdf table to excel', 'extract bank statement pdf to excel', 'pdf to spreadsheet'],
       faq: [
         { question: 'Does it support scanned tables?', answer: 'Yes, our spatial extractor maps text columns and allows you to edit before downloading.' }
       ]
@@ -202,9 +202,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PPTX',
     actionButtonText: 'Convert to PowerPoint',
     seo: {
-      title: 'PDF to PowerPoint Converter — PDF to PPTX — Doclly',
-      description: 'Turn your PDF pages into presentation slides in Microsoft PowerPoint format.',
-      keywords: ['pdf to ppt', 'pdf to pptx', 'convert pdf to powerpoint'],
+      title: 'PDF to PowerPoint Converter Free — Convert PDF to PPTX — Doclly',
+      description: 'Turn your PDF pages into presentation slides in Microsoft PowerPoint format for free.',
+      keywords: ['pdf to ppt free', 'pdf to pptx', 'convert pdf to powerpoint online', 'pdf presentation to ppt'],
       faq: [{ question: 'Can I edit slides after conversion?', answer: 'Yes, each slide corresponds directly to your PDF page.' }]
     }
   },
@@ -222,10 +222,10 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'JPG / ZIP',
     actionButtonText: 'Convert to Images',
     seo: {
-      title: 'PDF to JPG Converter — High Quality Image Export — Doclly',
-      description: 'Extract all pages of a PDF to high-resolution JPG images in seconds.',
-      keywords: ['pdf to jpg', 'pdf to image', 'convert pdf to picture', 'pdf to png'],
-      faq: [{ question: 'What image resolution is generated?', answer: 'Pages are rendered at 2x crisp retina resolution.' }]
+      title: 'PDF to JPG & Image Converter Free — High Resolution 300 DPI Export — Doclly',
+      description: 'Extract and convert PDF pages into high-resolution JPG or PNG images. 100% free, fast, and completely secure.',
+      keywords: ['pdf to jpg converter free', 'pdf to image', 'pdf to png', 'convert pdf to jpeg high resolution', 'pdf to picture online', '300 dpi pdf to image'],
+      faq: [{ question: 'What image resolution is generated?', answer: 'Pages are rendered at 2x crisp retina resolution (up to 300 DPI).' }]
     }
   },
   {
@@ -241,9 +241,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'TXT',
     actionButtonText: 'Extract Plain Text',
     seo: {
-      title: 'PDF to Text Converter — Extract Text from PDF — Doclly',
-      description: 'Extract text streams from PDF files into UTF-8 text files.',
-      keywords: ['pdf to text', 'extract text from pdf', 'pdf to txt'],
+      title: 'PDF to Text Converter Free — Extract Plain Text from PDF — Doclly',
+      description: 'Extract text streams and copyable characters from PDF files into UTF-8 text files instantly.',
+      keywords: ['pdf to text free', 'extract text from pdf', 'pdf to txt online', 'copy text from pdf'],
       faq: [{ question: 'Does this work on all pages?', answer: 'Yes, extracts all text across all document pages.' }]
     }
   },
@@ -263,9 +263,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Convert to PDF',
     seo: {
-      title: 'Word to PDF Converter — Convert DOCX to PDF — Doclly',
-      description: 'Convert Microsoft Word (.docx) files to standardized PDF documents with universal formatting.',
-      keywords: ['word to pdf', 'docx to pdf', 'convert doc to pdf', 'word converter'],
+      title: 'Word to PDF Converter Free — Convert DOCX to PDF Online — Doclly',
+      description: 'Convert Microsoft Word (.docx) files to standardized PDF documents with universal formatting and font preservation.',
+      keywords: ['word to pdf free', 'docx to pdf online', 'convert doc to pdf', 'best word to pdf converter'],
       faq: [{ question: 'Are fonts preserved?', answer: 'Yes, formatting and typography are standardized into portable PDF format.' }]
     }
   },
@@ -282,9 +282,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Convert to PDF',
     seo: {
-      title: 'Excel to PDF Converter — Convert XLSX to PDF — Doclly',
-      description: 'Convert Microsoft Excel spreadsheets into clean, printable landscape PDF tables.',
-      keywords: ['excel to pdf', 'xlsx to pdf', 'csv to pdf'],
+      title: 'Excel to PDF Converter Free — Convert XLSX to PDF Online — Doclly',
+      description: 'Convert Microsoft Excel spreadsheets into clean, printable landscape PDF tables for free.',
+      keywords: ['excel to pdf free', 'xlsx to pdf online', 'csv to pdf', 'convert spreadsheet to pdf'],
       faq: [{ question: 'How are broad sheets handled?', answer: 'Spreadsheets are rendered in high-width landscape mode.' }]
     }
   },
@@ -301,9 +301,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Convert to PDF',
     seo: {
-      title: 'PowerPoint to PDF Converter — PPTX to PDF — Doclly',
-      description: 'Convert PowerPoint slide presentations into shareable PDF documents.',
-      keywords: ['ppt to pdf', 'pptx to pdf', 'powerpoint converter'],
+      title: 'PowerPoint to PDF Converter Free — PPTX to PDF — Doclly',
+      description: 'Convert PowerPoint slide presentations into shareable PDF documents online for free.',
+      keywords: ['ppt to pdf free', 'pptx to pdf online', 'powerpoint to pdf converter'],
       faq: [{ question: 'Does each slide become a page?', answer: 'Yes, each slide matches one page in the PDF.' }]
     }
   },
@@ -321,9 +321,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Convert Images to PDF',
     seo: {
-      title: 'JPG to PDF Converter — Convert Images to PDF — Doclly',
-      description: 'Convert and combine JPG, PNG, and WebP pictures into a unified multi-page PDF document.',
-      keywords: ['jpg to pdf', 'image to pdf', 'png to pdf', 'photos to pdf'],
+      title: 'JPG to PDF & Image to PDF Converter Free — Convert Photos to PDF — Doclly',
+      description: 'Convert and combine JPG, PNG, and WebP images into a single high quality PDF document. 100% free, secure, and private.',
+      keywords: ['jpg to pdf free', 'image to pdf', 'img to pdf', 'png to pdf', 'photos to pdf', 'convert pictures to pdf free', 'best image to pdf converter'],
       faq: [{ question: 'Can I reorder images before converting?', answer: 'Yes, drag and drop images to set their order in the PDF.' }]
     }
   },
@@ -340,9 +340,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Convert HTML to PDF',
     seo: {
-      title: 'HTML to PDF Converter Online — Doclly',
-      description: 'Convert web code and HTML files into standard PDF documents.',
-      keywords: ['html to pdf', 'webpage to pdf', 'code to pdf'],
+      title: 'HTML to PDF Converter Online Free — Doclly',
+      description: 'Convert web code and HTML files into standard PDF documents with zero data retention.',
+      keywords: ['html to pdf free', 'webpage to pdf', 'code to pdf', 'convert html to pdf online'],
       faq: [{ question: 'Are styles rendered?', answer: 'Yes, clean standard typography and tags are converted to PDF format.' }]
     }
   },
@@ -362,11 +362,11 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Compress PDF',
     seo: {
-      title: 'Compress PDF Online — Reduce File Size — Doclly',
-      description: 'Compress PDF documents with Balanced, Low, or High compression with instant size comparison.',
-      keywords: ['compress pdf', 'reduce pdf size', 'shrink pdf', 'pdf optimizer'],
+      title: 'Compress PDF Online Free & Secure — Reduce PDF Size (Up to 90%) — Doclly',
+      description: 'Compress PDF documents with Balanced, Low, or Extreme 90% compression with instant before/after file size comparison. 100% free and private.',
+      keywords: ['compress pdf free', 'reduce pdf size online', 'shrink pdf file', 'compress pdf under 200kb', 'best pdf compressor', 'compress pdf secure', 'pdf optimizer online'],
       faq: [
-        { question: 'How much can Doclly compress my PDF?', answer: 'Depending on embedded images, size is typically reduced by 40% to 85%.' }
+        { question: 'How much can Doclly compress my PDF?', answer: 'Depending on embedded images, size is typically reduced by 40% to 90% while maintaining font sharpness.' }
       ]
     }
   },
@@ -383,9 +383,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Flatten PDF',
     seo: {
-      title: 'Flatten PDF Online — Lock Form Fields & Layers — Doclly',
-      description: 'Flatten fillable PDF forms and annotations into read-only static PDF pages.',
-      keywords: ['flatten pdf', 'lock pdf form', 'make pdf read only'],
+      title: 'Flatten PDF Online Free — Lock Form Fields & Layers — Doclly',
+      description: 'Flatten fillable PDF forms, signatures, and annotations into permanent read-only static PDF pages.',
+      keywords: ['flatten pdf free', 'lock pdf form', 'make pdf read only', 'flatten fillable pdf online'],
       faq: [{ question: 'What does flattening do?', answer: 'It converts fillable form inputs into permanent text so they cannot be edited.' }]
     }
   },
@@ -403,9 +403,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Sign & Download',
     seo: {
-      title: 'Sign PDF Online — Free Electronic Signature — Doclly',
-      description: 'Sign contracts, NDAs, and agreements. Draw, type, or upload transparent PNG signatures.',
-      keywords: ['sign pdf', 'electronic signature pdf', 'fill and sign pdf', 'e-sign'],
+      title: 'Sign PDF Online Free — Legally Binding Electronic Signature Maker — Doclly',
+      description: 'Sign contracts, NDAs, and agreements for free. Draw, type, or upload transparent PNG signatures with ISO 32000-1 compliance.',
+      keywords: ['sign pdf free', 'electronic signature pdf', 'draw signature online', 'fill and sign pdf', 'e-sign pdf free', 'sign contract online'],
       faq: [
         { question: 'Is the electronic signature legally binding?', answer: 'Doclly generates standard electronic signatures suitable for commercial agreements.' }
       ]
@@ -425,11 +425,11 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Edit PDF',
     seo: {
-      title: 'Edit PDF Online — Add Text, Images & Signatures — Doclly',
-      description: 'Free in-browser PDF editor. Add text, images, signatures, shapes, highlights and redactions to any PDF. No upload, 100% private.',
-      keywords: ['edit pdf', 'pdf editor online', 'add text to pdf', 'annotate pdf', 'pdf redact'],
+      title: 'Free PDF Editor Online — Edit PDF Text, Annotate & Sign Documents — Doclly',
+      description: '100% free in-browser PDF editor. Add and edit text, insert images, add signatures, shapes, highlights, and redactions. No upload required, 100% private.',
+      keywords: ['edit pdf free', 'free pdf editor online', 'edit pdf text', 'add text to pdf free', 'annotate pdf', 'redact pdf online', 'best free pdf editor'],
       faq: [
-        { question: 'Can I add text to an existing PDF?', answer: 'Yes — select the Text tool, click anywhere on the page, and type. Choose font size and color from the properties panel.' },
+        { question: 'Can I edit text in an existing PDF?', answer: 'Yes — select the Text tool, click anywhere on the page, and type. Choose font size and color from the properties panel.' },
         { question: 'How do I remove sensitive text?', answer: 'Use the Redact tool to draw a white rectangle over the text, then download the PDF.' }
       ]
     }
@@ -447,9 +447,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Add Watermark',
     seo: {
-      title: 'Add Watermark to PDF Online — Doclly',
-      description: 'Stamp custom text or confidential watermarks with custom rotation and opacity.',
-      keywords: ['watermark pdf', 'add watermark to pdf', 'stamp pdf'],
+      title: 'Watermark PDF Online Free — Add Custom Text & Stamps — Doclly',
+      description: 'Stamp customized text or confidential watermarks across all PDF pages with custom rotation and opacity.',
+      keywords: ['watermark pdf free', 'add watermark to pdf', 'stamp pdf online', 'confidential watermark pdf'],
       faq: [{ question: 'Can I change opacity?', answer: 'Yes, customize transparency from light ghost watermark to bold stamp.' }]
     }
   },
@@ -461,17 +461,17 @@ export const ALL_TOOLS: ToolDefinition[] = [
     iconName: 'QrCode',
     route: '/tools/qr-code-generator',
     popular: true,
-    accepts: ['.pdf', 'application/pdf'],
-    acceptsDescription: 'Generates standalone codes or PDF stamps',
-    maxFiles: 1,
-    outputFormat: 'PNG / SVG',
-    actionButtonText: 'Generate QR Code',
+    accepts: [],
+    acceptsDescription: 'Custom Text & URLs',
+    maxFiles: 0,
+    outputFormat: 'PNG / PDF',
+    actionButtonText: 'Generate Code',
     seo: {
-      title: 'Free QR Code & Barcode Generator Online — Doclly',
-      description: 'Create custom UPI payment QR codes, URL barcodes, and download as high-res PNG.',
-      keywords: ['qr code generator', 'upi qr code', 'barcode maker', 'free qr code online'],
+      title: 'Free QR Code & Barcode Generator — UPI Payment QR & 600 DPI Download — Doclly',
+      description: 'Generate custom UPI payment QR codes, website URLs, and retail barcodes with 600 DPI vector clarity. 100% free and instant.',
+      keywords: ['qr code generator free', 'upi qr code generator', 'barcode generator online', 'generate custom qr code', 'free payment qr code', 'high resolution qr code'],
       faq: [
-        { question: 'What types of QR codes can I create?', answer: 'You can generate UPI payment links, website URLs, plain text, Wi-Fi credentials, and retail barcodes (Code128, EAN13, UPC).' }
+        { question: 'Can I generate a UPI scan-to-pay QR code?', answer: 'Yes! Enter your UPI ID, receiver name, and optional amount to generate an instant payment QR.' }
       ]
     }
   },
