@@ -21,6 +21,7 @@ import { BlogPage } from './pages/BlogPage';
 import { BlogPostPage } from './pages/BlogPostPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { AuthCallbackPage } from './pages/AuthCallbackPage';
+import { StudentOfferPage } from './pages/StudentOfferPage';
 
 // Scroll to top on route navigation
 const ScrollToTop: React.FC = () => {
@@ -35,6 +36,7 @@ export const AppContent: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
+  const isStudentSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('student.');
 
   const handleOpenAuth = (mode: 'signin' | 'signup' = 'signin') => {
     setAuthMode(mode);
@@ -57,9 +59,14 @@ export const AppContent: React.FC = () => {
       {/* Main Content Area */}
       <main className="flex-1">
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={isStudentSubdomain ? <StudentOfferPage /> : <HomePage />} />
           <Route path="/document-actions" element={<DocumentActionsPage />} />
           
+          {/* Student 1-Year Pro for ₹19 Offer */}
+          <Route path="/student" element={<StudentOfferPage />} />
+          <Route path="/student-offer" element={<StudentOfferPage />} />
+          <Route path="/students" element={<StudentOfferPage />} />
+
           {/* Dedicated & Generic Tool Routes */}
           <Route path="/tools/:toolId" element={<ToolPage />} />
           

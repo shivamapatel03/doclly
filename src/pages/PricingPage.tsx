@@ -7,7 +7,7 @@ import { useToast } from '../components/common/Toast';
 import { useAuth } from '../context/AuthContext';
 import { AuthModal } from './AuthModal';
 import { launchRazorpayCheckout } from '../lib/razorpay';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export const PricingPage: React.FC = () => {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
@@ -26,20 +26,18 @@ export const PricingPage: React.FC = () => {
     }
 
     if (plan.id === 'free') {
-      updatePlanTier('free');
-      showToast('You are on the Free Starter plan.', 'info');
-      navigate('/dashboard');
+      showToast('You are already on the Free Starter tier.', 'info');
       return;
     }
 
     const targetPlan = plan.id as 'pro' | 'business';
     const amountINR =
-      targetPlan === 'pro'
-        ? billingCycle === 'annual'
+      billingCycle === 'annual'
+        ? plan.id === 'pro'
           ? 799
-          : 99
-        : billingCycle === 'annual'
-        ? 7999
+          : 7999
+        : plan.id === 'pro'
+        ? 99
         : 999;
 
     setIsProcessing(true);
@@ -91,6 +89,23 @@ export const PricingPage: React.FC = () => {
         <p className="text-sm sm:text-base text-[#6B7280] max-w-2xl mx-auto">
           Process documents for free forever, or unlock unlimited in-place scanned PDF text editing, UPI invoice stamping, and 100+ batch files for less than a cup of coffee.
         </p>
+
+        {/* Student Special Banner */}
+        <div className="max-w-xl mx-auto p-3 bg-gradient-to-r from-amber-500/10 via-amber-500/15 to-amber-500/10 border border-amber-300 rounded-2xl flex items-center justify-between gap-3 text-left shadow-2xs">
+          <div className="flex items-center gap-2.5">
+            <span className="text-2xl shrink-0">🎓</span>
+            <div className="text-xs">
+              <div className="font-extrabold text-amber-950">Are you a Student? (₹19 / Year)</div>
+              <div className="text-[#6B7280]">Verify your College ID &amp; get 1 Full Year Pro for just ₹19</div>
+            </div>
+          </div>
+          <Link
+            to="/student"
+            className="px-3.5 py-1.5 rounded-full bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent hover:bg-[#F5B800] active:bg-[#E6B400] text-[#111111] border border-[#DC9F00] font-black text-xs shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] shrink-0 transition-all select-none"
+          >
+            Claim Offer →
+          </Link>
+        </div>
 
         {/* Billing Toggle */}
         <div className="inline-flex flex-wrap items-center justify-center p-1 bg-[#F5F5F5] border border-[#E5E5E5] rounded-xl text-xs font-semibold shadow-2xs max-w-full gap-1">
