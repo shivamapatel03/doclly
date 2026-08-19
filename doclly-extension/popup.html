@@ -9,74 +9,159 @@
 <body>
   <div class="popup-container">
     
-    <!-- Top Header -->
-    <header class="header">
-      <div class="header-left">
-        <img src="icons/logo.png" alt="Doclly" class="brand-logo" id="logoLink">
+    <!-- ============================================================= -->
+    <!-- VIEW 1: TOOL CATALOG & SEARCH VIEW (DEFAULT)                  -->
+    <!-- ============================================================= -->
+    <div id="catalogView" class="view active">
+      <!-- Top Header -->
+      <header class="header">
+        <div class="header-left">
+          <img src="icons/logo.png" alt="Doclly" class="brand-logo" id="logoHomeBtn">
+        </div>
+        <a href="https://student.doclly.online" target="_blank" class="badge-student">
+          🎓 ₹19 Student Pass
+        </a>
+      </header>
+
+      <!-- Search Bar -->
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Search 25+ PDF tools (compress, merge, sign)..." autocomplete="off" autofocus>
+        <span class="search-clear" id="searchClear" style="display: none;">&times;</span>
       </div>
-      <a href="https://student.doclly.online" target="_blank" class="badge-student" id="studentOfferBadge">
-        🎓 ₹19 Student Pass
-      </a>
-    </header>
 
-    <!-- Search Bar -->
-    <div class="search-box">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"></circle>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-      </svg>
-      <input type="text" id="searchInput" placeholder="Search 25+ PDF tools (e.g. compress, edit, word)..." autocomplete="off" autofocus>
-      <span class="search-clear" id="searchClear" style="display: none;">&times;</span>
-    </div>
+      <!-- Category Filter Tabs -->
+      <div class="category-tabs">
+        <button class="tab-btn active" data-category="all">All</button>
+        <button class="tab-btn" data-category="optimize">Compress</button>
+        <button class="tab-btn" data-category="organize">Merge & Split</button>
+        <button class="tab-btn" data-category="edit">Sign & Protect</button>
+        <button class="tab-btn" data-category="convert">Convert</button>
+      </div>
 
-    <!-- Category Filter Tabs -->
-    <div class="category-tabs">
-      <button class="tab-btn active" data-category="all">All</button>
-      <button class="tab-btn" data-category="edit">Edit & Sign</button>
-      <button class="tab-btn" data-category="convert">Convert</button>
-      <button class="tab-btn" data-category="optimize">Compress</button>
-      <button class="tab-btn" data-category="organize">Organize</button>
-    </div>
+      <!-- Quick Action Banner -->
+      <div class="offline-badge-banner">
+        <span>⚡ 100% In-Extension Offline Engine • Zero Redirects</span>
+      </div>
 
-    <!-- Quick Dropzone -->
-    <div class="dropzone" id="dropzone">
-      <div class="dropzone-inner">
-        <img src="icons/3d/upload.png" alt="Upload" class="dropzone-icon">
-        <div class="dropzone-text">
-          <strong>Drop any PDF here</strong> or click to browse
+      <!-- Tools Grid Container -->
+      <div class="tools-scroll-area">
+        <div class="tools-grid" id="toolsGrid">
+          <!-- Populated by popup.js -->
+        </div>
+        
+        <div class="no-results" id="noResults" style="display: none;">
+          <p>No tools matching "<span id="noResultsQuery"></span>"</p>
         </div>
       </div>
-      <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.png" style="display: none;">
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-privacy">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span>100% Client-Side Privacy</span>
+        </div>
+        <a href="https://www.doclly.online" target="_blank" class="footer-link">
+          doclly.online &rarr;
+        </a>
+      </footer>
     </div>
 
-    <!-- Tools Grid Container -->
-    <div class="tools-scroll-area">
-      <div class="tools-grid" id="toolsGrid">
-        <!-- Tools will be rendered dynamically by popup.js -->
-      </div>
-      
-      <!-- No Results State -->
-      <div class="no-results" id="noResults" style="display: none;">
-        <p>No tools matching "<span id="noResultsQuery"></span>"</p>
-        <a href="https://www.doclly.online" target="_blank" class="btn-home">Browse All Tools on Doclly &rarr;</a>
+    <!-- ============================================================= -->
+    <!-- VIEW 2: IN-POPUP PROCESSING VIEW (NO REDIRECT)                -->
+    <!-- ============================================================= -->
+    <div id="processorView" class="view">
+      <!-- Tool View Header -->
+      <header class="header">
+        <button type="button" class="btn-back" id="backToCatalogBtn">
+          &larr; Back
+        </button>
+        <div class="header-tool-title" id="activeToolTitle">
+          Tool Name
+        </div>
+        <div style="width: 45px;"></div>
+      </header>
+
+      <div class="processor-body">
+        
+        <!-- File Drop Zone -->
+        <div class="drop-card" id="toolDropzone">
+          <img src="icons/3d/upload.png" alt="Upload" class="drop-card-icon" id="toolDropIcon">
+          <div class="drop-card-title" id="toolDropTitle">Click to choose PDF file</div>
+          <div class="drop-card-sub" id="toolDropSub">or drag and drop your file here</div>
+          <input type="file" id="toolFileInput" style="display: none;">
+        </div>
+
+        <!-- Selected Files Preview List -->
+        <div class="selected-files-list" id="selectedFilesList" style="display: none;">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Tool Specific Option Controls -->
+        <div class="tool-options-box" id="toolOptionsBox">
+          <!-- Populated dynamically (e.g. rotation degrees, watermark text, page ranges) -->
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container" id="progressContainer" style="display: none;">
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
+          </div>
+          <div class="progress-status-text" id="progressStatusText">Processing...</div>
+        </div>
+
+        <!-- Action Button (Button 20 Tactile Pill) -->
+        <div class="action-btn-container">
+          <button type="button" class="btn-process-main" id="btnExecuteProcess" disabled>
+            Process PDF Now
+          </button>
+        </div>
+
       </div>
     </div>
 
-    <!-- Bottom Footer -->
-    <footer class="footer">
-      <div class="footer-privacy">
-        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-        </svg>
-        <span>100% Client-Side Privacy</span>
+    <!-- ============================================================= -->
+    <!-- VIEW 3: SUCCESS & DOWNLOAD VIEW (NO REDIRECT)                 -->
+    <!-- ============================================================= -->
+    <div id="successView" class="view">
+      <div class="success-body">
+        <div class="success-icon-wrap">
+          <img src="icons/3d/doc-ready.png" alt="Success" class="success-3d-icon">
+        </div>
+
+        <h2 class="success-title">Your File is Ready!</h2>
+        <p class="success-desc" id="successDesc">Processed offline in 0.8s with 100% privacy.</p>
+
+        <div class="result-card" id="resultCard">
+          <div class="result-filename" id="resultFilename">processed-document.pdf</div>
+          <div class="result-size" id="resultSize">File size: 340 KB</div>
+        </div>
+
+        <div class="success-actions">
+          <button type="button" class="btn-download-main" id="btnDownloadResult">
+            ⬇️ Download File
+          </button>
+          
+          <button type="button" class="btn-another" id="btnProcessAnother">
+            Process Another File
+          </button>
+        </div>
       </div>
-      <a href="https://www.doclly.online" target="_blank" class="footer-link">
-        doclly.online &rarr;
-      </a>
-    </footer>
+    </div>
 
   </div>
 
+  <!-- Standalone Libraries -->
+  <script src="lib/pdf-lib.min.js"></script>
+  <script src="lib/jszip.min.js"></script>
+  <script src="lib/doclly-engine.js"></script>
+  
+  <!-- Popup App Controller -->
   <script src="popup.js"></script>
 </body>
 </html>
