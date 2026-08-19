@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { X } from "lucide-react";
 
 interface EditorPropertiesPanelProps {
@@ -77,7 +77,7 @@ export const EditorPropertiesPanel: React.FC<EditorPropertiesPanelProps> = ({
           </div>
           <button
             onClick={onApplyProperties}
-            className="bg-[#FFC800] text-[#111111] text-xs font-bold py-1.5 rounded-lg hover:bg-[#f0b800] transition-colors cursor-pointer"
+            className="w-full bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent hover:bg-[#F5B800] active:bg-[#E6B400] text-[#111111] border border-[#DC9F00] text-xs font-bold py-1.5 px-3 rounded-full shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] transition-all cursor-pointer select-none"
           >
             Apply
           </button>
@@ -112,7 +112,7 @@ export const EditorPropertiesPanel: React.FC<EditorPropertiesPanelProps> = ({
           </div>
           <button
             onClick={onApplyProperties}
-            className="bg-[#FFC800] text-[#111111] text-xs font-bold py-1.5 rounded-lg hover:bg-[#f0b800] transition-colors cursor-pointer"
+            className="w-full bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent hover:bg-[#F5B800] active:bg-[#E6B400] text-[#111111] border border-[#DC9F00] text-xs font-bold py-1.5 px-3 rounded-full shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] transition-all cursor-pointer select-none"
           >
             Apply
           </button>

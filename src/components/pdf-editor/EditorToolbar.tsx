@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import type { EditorTool } from "../../lib/pdf-editor/fabricCanvas";
 import {
   MousePointer2, Type, Image, PenLine, Square, Circle, Minus,
@@ -64,10 +64,10 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
                 key={tool.id}
                 title={tool.label}
                 onClick={() => onToolChange(tool.id)}
-                className={`w-9 h-9 flex items-center justify-center rounded-lg transition-colors cursor-pointer ${
+                className={`w-9 h-9 flex items-center justify-center rounded-xl transition-all cursor-pointer select-none ${
                   activeTool === tool.id
-                    ? "bg-[#FFC800] text-[#111111] shadow-xs"
-                    : "text-[#6B7280] hover:bg-[#F3F4F6] hover:text-[#111111]"
+                    ? "bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent text-[#111111] border border-[#DC9F00] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)]"
+                    : "text-[#6B7280] hover:text-[#111111] hover:bg-[#F3F4F6] active:bg-[#E5E7EB]"
                 }`}
               >
                 {tool.icon}

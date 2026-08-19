@@ -479,7 +479,7 @@ export const PdfEditorPage: React.FC = () => {
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleConvertAllText}
-                  className="bg-[#111111] text-[#FFC800] hover:bg-black px-2.5 py-1 rounded-md text-xs font-bold transition-colors cursor-pointer"
+                  className="bg-[#111111] bg-gradient-to-b from-white/10 to-transparent text-[#FFC800] hover:bg-black active:bg-neutral-900 border border-black px-3.5 py-1 rounded-full text-xs font-bold shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_2px_4px_rgba(0,0,0,0.2)] transition-all cursor-pointer select-none"
                 >
                   Convert All Text ({detectedBlocks.length})
                 </button>

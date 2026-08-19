@@ -1,4 +1,4 @@
-﻿import { Canvas, FabricImage, Rect, Circle, Line, Textbox } from "fabric";
+import { Canvas, FabricImage, Rect, Circle, Line, Textbox } from "fabric";
 import type { DetectedTextBlock } from "./textDetector";
 
 export type EditorTool =
@@ -32,6 +32,24 @@ export function initFabricCanvas(
     selection: true,
     preserveObjectStacking: true,
     enableRetinaScaling: false, // Ensures 1:1 pixel mapping across all DPI scaling
+  });
+
+  // Fix for HTML5 Fullscreen mode: ensure hiddenTextarea is ALWAYS inside canvas wrapper
+  canvas.on("text:editing:entered" as any, (opt: any) => {
+    const target = opt.target;
+    if (target && target.hiddenTextarea) {
+      const wrapper = canvas.wrapperEl;
+      if (wrapper && target.hiddenTextarea.parentElement !== wrapper) {
+        wrapper.appendChild(target.hiddenTextarea);
+      }
+      target.hiddenTextarea.style.position = "absolute";
+      target.hiddenTextarea.style.opacity = "0.001";
+      target.hiddenTextarea.style.pointerEvents = "auto";
+      target.hiddenTextarea.style.zIndex = "99999";
+      setTimeout(() => {
+        target.hiddenTextarea?.focus();
+      }, 20);
+    }
   });
 
   if (bgDataUrl) {
@@ -125,6 +143,27 @@ export function addText(
   (text as any).objectType = "text";
   canvas.add(text);
   canvas.setActiveObject(text);
+  
+  // Auto-enter editing mode and anchor hiddenTextarea inside canvas wrapper
+  setTimeout(() => {
+    try {
+      text.enterEditing();
+      text.selectAll();
+      const wrapper = canvas.wrapperEl;
+      if (wrapper && text.hiddenTextarea && text.hiddenTextarea.parentElement !== wrapper) {
+        wrapper.appendChild(text.hiddenTextarea);
+      }
+      if (text.hiddenTextarea) {
+        text.hiddenTextarea.style.position = "absolute";
+        text.hiddenTextarea.style.opacity = "0.001";
+        text.hiddenTextarea.style.pointerEvents = "auto";
+        text.hiddenTextarea.style.zIndex = "99999";
+        text.hiddenTextarea.focus();
+      }
+      canvas.requestRenderAll();
+    } catch {}
+  }, 30);
+
   canvas.requestRenderAll();
   return text;
 }
@@ -167,6 +206,27 @@ export function convertDetectedTextToEditable(
   (textbox as any).objectType = "text";
   canvas.add(textbox);
   canvas.setActiveObject(textbox);
+
+  // Auto-enter editing mode and anchor hiddenTextarea inside canvas wrapper
+  setTimeout(() => {
+    try {
+      textbox.enterEditing();
+      textbox.selectAll();
+      const wrapper = canvas.wrapperEl;
+      if (wrapper && textbox.hiddenTextarea && textbox.hiddenTextarea.parentElement !== wrapper) {
+        wrapper.appendChild(textbox.hiddenTextarea);
+      }
+      if (textbox.hiddenTextarea) {
+        textbox.hiddenTextarea.style.position = "absolute";
+        textbox.hiddenTextarea.style.opacity = "0.001";
+        textbox.hiddenTextarea.style.pointerEvents = "auto";
+        textbox.hiddenTextarea.style.zIndex = "99999";
+        textbox.hiddenTextarea.focus();
+      }
+      canvas.requestRenderAll();
+    } catch {}
+  }, 30);
+
   canvas.requestRenderAll();
   return textbox;
 }
