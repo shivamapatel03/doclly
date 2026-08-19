@@ -466,7 +466,9 @@ export const StudentOfferPage: React.FC = () => {
         {/* Clean Feature List with 3D Icons */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
           <div className="border border-gray-200 rounded-2xl p-4 bg-white flex items-start gap-3.5">
-            <ThreeDIcon name="edit" className="w-9 h-9 shrink-0 mt-0.5" />
+            <div className="w-10 h-10 min-w-10 min-h-10 rounded-xl bg-amber-50/50 flex items-center justify-center shrink-0 mt-0.5">
+              <ThreeDIcon name="sign" className="w-7 h-7 shrink-0" />
+            </div>
             <div className="space-y-1">
               <div className="font-bold text-xs sm:text-sm text-[#111111]">
                 In-Place Scanned Text Edit
@@ -478,7 +480,9 @@ export const StudentOfferPage: React.FC = () => {
           </div>
 
           <div className="border border-gray-200 rounded-2xl p-4 bg-white flex items-start gap-3.5">
-            <ThreeDIcon name="compress" className="w-9 h-9 shrink-0 mt-0.5" />
+            <div className="w-10 h-10 min-w-10 min-h-10 rounded-xl bg-emerald-50/50 flex items-center justify-center shrink-0 mt-0.5">
+              <ThreeDIcon name="compress" className="w-7 h-7 shrink-0" />
+            </div>
             <div className="space-y-1">
               <div className="font-bold text-xs sm:text-sm text-[#111111]">
                 Extreme &lt;200 KB Compression
@@ -490,7 +494,9 @@ export const StudentOfferPage: React.FC = () => {
           </div>
 
           <div className="border border-gray-200 rounded-2xl p-4 bg-white flex items-start gap-3.5">
-            <ThreeDIcon name="pdf" className="w-9 h-9 shrink-0 mt-0.5" />
+            <div className="w-10 h-10 min-w-10 min-h-10 rounded-xl bg-red-50/50 flex items-center justify-center shrink-0 mt-0.5">
+              <ThreeDIcon name="pdf" className="w-7 h-7 shrink-0" />
+            </div>
             <div className="space-y-1">
               <div className="font-bold text-xs sm:text-sm text-[#111111]">
                 PDF to Word &amp; Excel
@@ -502,7 +508,9 @@ export const StudentOfferPage: React.FC = () => {
           </div>
 
           <div className="border border-gray-200 rounded-2xl p-4 bg-white flex items-start gap-3.5">
-            <ThreeDIcon name="merge" className="w-9 h-9 shrink-0 mt-0.5" />
+            <div className="w-10 h-10 min-w-10 min-h-10 rounded-xl bg-blue-50/50 flex items-center justify-center shrink-0 mt-0.5">
+              <ThreeDIcon name="merge" className="w-7 h-7 shrink-0" />
+            </div>
             <div className="space-y-1">
               <div className="font-bold text-xs sm:text-sm text-[#111111]">
                 100+ Batch Conversions
