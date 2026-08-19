@@ -8,6 +8,8 @@ import { CommandMenu } from './components/common/CommandMenu';
 import { AuthModal } from './pages/AuthModal';
 import { PwaInstallPrompt } from './components/common/PwaInstallPrompt';
 import { AnnouncementBar } from './components/layout/AnnouncementBar';
+import { SpeedInsights } from '@vercel/speed-insights/react';
+import { Analytics } from '@vercel/analytics/react';
 
 // Pages
 import { HomePage } from './pages/HomePage';
@@ -107,6 +109,10 @@ export const AppContent: React.FC = () => {
 
       {/* PWA Install Banner */}
       <PwaInstallPrompt />
+
+      {/* Vercel Speed Insights & Web Analytics */}
+      <SpeedInsights />
+      <Analytics />
     </div>
   );
 };
