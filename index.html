@@ -2,9 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logo/image.png" />
-    <link rel="shortcut icon" type="image/png" href="/logo/image.png" />
-    <link rel="apple-touch-icon" href="/logo/image.png" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -37,27 +40,36 @@
 
     <!-- Schema.org JSON-LD Structured Data for Google -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Doclly",
-      "url": "https://www.doclly.online",
-      "description": "Free, secure, privacy-first online document utilities: Image to PDF, PDF to Word/Excel, Extreme Compression, PDF Editor, Signatures, and QR Code Generator.",
-      "applicationCategory": "ProductivityApplication",
-      "operatingSystem": "All (Web Browser)",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "INR"
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Doclly",
+        "url": "https://www.doclly.online",
+        "logo": "https://www.doclly.online/logo/image.png"
       },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "14250",
-        "bestRating": "5",
-        "worstRating": "1"
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Doclly",
+        "url": "https://www.doclly.online",
+        "description": "Free, secure, privacy-first online document utilities: Image to PDF, PDF to Word/Excel, Extreme Compression, PDF Editor, Signatures, and QR Code Generator.",
+        "applicationCategory": "ProductivityApplication",
+        "operatingSystem": "All (Web Browser)",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "INR"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "14250",
+          "bestRating": "5",
+          "worstRating": "1"
+        }
       }
-    }
+    ]
     </script>
     
     <!-- Google tag (gtag.js) - Google Analytics 4 -->
