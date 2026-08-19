@@ -77,8 +77,8 @@ export const UpgradeModal: React.FC<UpgradeModalProps> = ({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-        <div className="bg-white rounded-3xl max-w-sm w-full border border-[#E5E5E5] shadow-2xl overflow-hidden relative animate-in zoom-in-95 duration-150 p-5 sm:p-6 space-y-4">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150 overflow-x-hidden overflow-y-auto">
+        <div className="bg-white rounded-2xl sm:rounded-3xl max-w-sm w-full border border-[#E5E5E5] shadow-2xl overflow-y-auto relative animate-in zoom-in-95 duration-150 p-4 sm:p-6 space-y-4 my-auto max-h-[92dvh]">
           
           {/* Close button */}
           <button

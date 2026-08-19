@@ -71,10 +71,10 @@ export const PricingPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16 relative">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16 relative overflow-x-hidden">
       {/* Ambient background glow and pattern */}
-      <div className="doclly-ambient-glow opacity-60" />
-      <div className="absolute inset-0 doclly-dot-pattern opacity-35 pointer-events-none doclly-radial-mask" />
+      <div className="doclly-ambient-glow opacity-60 pointer-events-none" />
+      <div className="absolute inset-0 doclly-dot-pattern opacity-35 pointer-events-none doclly-radial-mask overflow-hidden" />
 
       <SeoHead
         title="Simple, Transparent Pricing — Doclly Pro (₹99/mo)"
@@ -93,28 +93,28 @@ export const PricingPage: React.FC = () => {
         </p>
 
         {/* Billing Toggle */}
-        <div className="inline-flex items-center p-1 bg-[#F5F5F5] border border-[#E5E5E5] rounded-xl text-xs font-semibold shadow-2xs">
+        <div className="inline-flex flex-wrap items-center justify-center p-1 bg-[#F5F5F5] border border-[#E5E5E5] rounded-xl text-xs font-semibold shadow-2xs max-w-full gap-1">
           <button
             onClick={() => setBillingCycle('monthly')}
-            className={`px-4 py-1.5 rounded-lg transition-colors cursor-pointer ${
+            className={`px-3 sm:px-4 py-1.5 rounded-lg transition-colors cursor-pointer text-xs ${
               billingCycle === 'monthly'
                 ? 'bg-white text-[#111111] shadow-2xs border border-[#E5E5E5]'
                 : 'text-[#6B7280] hover:text-[#111111]'
             }`}
           >
-            Monthly Billing (₹99)
+            Monthly (₹99)
           </button>
           <button
             onClick={() => setBillingCycle('annual')}
-            className={`px-4 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 sm:px-4 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer text-xs ${
               billingCycle === 'annual'
                 ? 'bg-white text-[#111111] shadow-2xs border border-[#E5E5E5]'
                 : 'text-[#6B7280] hover:text-[#111111]'
             }`}
           >
-            <span>Annual Billing (₹799/yr)</span>
-            <span className="text-[10px] font-bold text-[#111111] bg-[#FFC800] px-1.5 py-0.2 rounded-full border border-[#E5E5E5]">
-              Save 33% (₹66/mo)
+            <span>Annual (₹799)</span>
+            <span className="text-[9px] sm:text-[10px] font-bold text-[#111111] bg-[#FFC800] px-1.5 py-0.2 rounded-full border border-[#E5E5E5]">
+              Save 33%
             </span>
           </button>
         </div>
@@ -199,13 +199,13 @@ export const PricingPage: React.FC = () => {
       </div>
 
       {/* Feature Comparison Table */}
-      <div className="max-w-5xl mx-auto space-y-6 pt-8">
+      <div className="max-w-5xl mx-auto space-y-6 pt-8 w-full overflow-hidden">
         <h2 className="text-xl sm:text-2xl font-bold text-[#111111] text-center">
           Compare All Features
         </h2>
 
-        <div className="border border-[#E5E5E5] rounded-2xl bg-white overflow-hidden shadow-2xs">
-          <table className="w-full text-left text-xs sm:text-sm">
+        <div className="border border-[#E5E5E5] rounded-2xl bg-white overflow-x-auto shadow-2xs w-full max-w-full">
+          <table className="w-full min-w-[500px] text-left text-xs sm:text-sm">
             <thead className="bg-[#F5F5F5] text-[#6B7280] border-b border-[#E5E5E5]">
               <tr>
                 <th className="px-5 py-3 font-semibold">Feature</th>

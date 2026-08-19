@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
@@ -21,6 +22,12 @@ export const Modal: React.FC<ModalProps> = ({
   maxWidth = 'lg',
   showCloseButton = true,
 }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -39,56 +46,57 @@ export const Modal: React.FC<ModalProps> = ({
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
   const maxWidths = {
-    sm: 'max-w-sm',
-    md: 'max-w-md',
-    lg: 'max-w-lg',
-    xl: 'max-w-xl',
-    '2xl': 'max-w-2xl',
-    '4xl': 'max-w-4xl',
+    sm: 'max-w-[calc(100vw-1.5rem)] sm:max-w-sm',
+    md: 'max-w-[calc(100vw-1.5rem)] sm:max-w-md',
+    lg: 'max-w-[calc(100vw-1.5rem)] sm:max-w-lg',
+    xl: 'max-w-[calc(100vw-1.5rem)] sm:max-w-xl',
+    '2xl': 'max-w-[calc(100vw-1.5rem)] sm:max-w-2xl',
+    '4xl': 'max-w-[calc(100vw-1.5rem)] sm:max-w-4xl',
   };
 
-  return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
-      {/* Backdrop */}
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] overflow-x-hidden overflow-y-auto flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-xs">
+      {/* Backdrop click listener */}
       <div
-        className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity animate-in fade-in duration-150"
+        className="fixed inset-0"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      <div className="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
-        <div
-          className={cn(
-            'relative transform overflow-hidden rounded-xl bg-white text-left shadow-xl border border-[#E5E7EB] transition-all my-8 w-full animate-in zoom-in-95 duration-150',
-            maxWidths[maxWidth]
-          )}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Header */}
-          {(title || showCloseButton) && (
-            <div className="flex items-start justify-between px-6 pt-5 pb-4 border-b border-[#E5E7EB]">
-              <div>
-                {title && <h3 className="text-lg font-semibold text-[#111111]">{title}</h3>}
-                {description && <p className="text-xs text-[#6B7280] mt-1">{description}</p>}
-              </div>
-              {showCloseButton && (
-                <button
-                  onClick={onClose}
-                  className="rounded-lg p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors ml-auto"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              )}
+      {/* Modal Dialog Card */}
+      <div
+        className={cn(
+          'relative z-10 w-full rounded-2xl bg-white text-left shadow-2xl border border-[#E5E7EB] transition-all my-auto max-h-[92dvh] flex flex-col animate-in zoom-in-95 duration-150 overflow-hidden box-border',
+          maxWidths[maxWidth]
+        )}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        {(title || showCloseButton) && (
+          <div className="flex items-start justify-between px-3.5 sm:px-6 pt-3.5 sm:pt-5 pb-2.5 sm:pb-4 border-b border-[#E5E7EB] shrink-0">
+            <div className="min-w-0 pr-2">
+              {title && <h3 className="text-sm sm:text-lg font-bold text-[#111111] leading-snug">{title}</h3>}
+              {description && <p className="text-[11px] sm:text-xs text-[#6B7280] mt-0.5 leading-tight sm:leading-relaxed">{description}</p>}
             </div>
-          )}
+            {showCloseButton && (
+              <button
+                onClick={onClose}
+                className="rounded-lg p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors shrink-0 -mr-1 -mt-1 cursor-pointer"
+                aria-label="Close modal"
+              >
+                <X className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
+              </button>
+            )}
+          </div>
+        )}
 
-          {/* Body */}
-          <div className="px-6 py-5">{children}</div>
-        </div>
+        {/* Body */}
+        <div className="px-3.5 py-3 sm:px-6 sm:py-5 overflow-y-auto flex-1">{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
