@@ -10,6 +10,7 @@ import { getPdfInfo, removePagesFromPdf, generatePdfThumbnails } from '../../lib
 import { downloadBytes } from '../../lib/utils';
 import { ALL_TOOLS } from '../../lib/constants';
 import { Trash2, Check, Sparkles } from 'lucide-react';
+import { RemovePages3DIcon } from '../../components/common/ThreeDIcon';
 import { DocumentStorage } from '../../lib/storage';
 
 import { useLocation } from 'react-router-dom';
@@ -329,11 +330,9 @@ const togglePage = (index: number) => {
               </div>
 
               {/* Bottom Sticky Action Bar */}
-              <div className="sticky bottom-4 z-30 bg-white border border-[#E5E5E5] rounded-2xl p-4 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="sticky bottom-4 z-30 bg-white border border-[#E5E5E5] rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
-                    <Trash2 className="w-5 h-5" />
-                  </div>
+                  <RemovePages3DIcon className="w-10 h-10 shrink-0" />
                   <div>
                     <div className="font-bold text-sm text-[#111111]">
                       {selectedForRemoval.size === 0
@@ -346,14 +345,21 @@ const togglePage = (index: number) => {
                   </div>
                 </div>
 
-                <Button
+                <button
+                  type="button"
                   onClick={handleRemovePages}
                   disabled={isProcessing || selectedForRemoval.size === 0 || selectedForRemoval.size >= pageCount}
-                  size="lg"
-                  className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-bold cursor-pointer"
+                  className="w-full sm:w-auto py-3 px-6 rounded-full text-xs sm:text-sm font-bold flex items-center justify-center bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent hover:bg-[#F5B800] active:bg-[#E6B400] text-[#111111] border border-[#DC9F00] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] transition-all cursor-pointer disabled:opacity-50 disabled:pointer-events-none select-none"
                 >
-                  {isProcessing ? 'Removing Pages...' : `Remove ${selectedForRemoval.size} Pages & Download`}
-                </Button>
+                  {isProcessing ? (
+                    <span className="flex items-center gap-2">
+                      <span className="w-3.5 h-3.5 border-2 border-[#111111] border-t-transparent rounded-full animate-spin" />
+                      <span>Removing Pages...</span>
+                    </span>
+                  ) : (
+                    `Remove ${selectedForRemoval.size} ${selectedForRemoval.size === 1 ? 'Page' : 'Pages'} & Download`
+                  )}
+                </button>
               </div>
 
               {isProcessing && (

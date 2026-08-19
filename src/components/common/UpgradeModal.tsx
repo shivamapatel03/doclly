@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Check, ArrowRight, Lock } from 'lucide-react';
+import { X, Check, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from './Toast';
 import { launchRazorpayCheckout } from '../../lib/razorpay';
@@ -153,7 +153,7 @@ export const UpgradeModal: React.FC<UpgradeModalProps> = ({
             <button
               onClick={handleUpgrade}
               disabled={isProcessing}
-              className="w-full py-3 px-5 rounded-xl bg-[#FFC800] hover:bg-[#E5B200] text-[#111111] font-extrabold text-sm transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 select-none"
+              className="w-full py-3.5 px-5 rounded-full bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent hover:bg-[#F5B800] active:bg-[#E6B400] text-[#111111] border border-[#DC9F00] font-extrabold text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 select-none"
             >
               {isProcessing ? (
                 <span>Opening Checkout...</span>
@@ -164,11 +164,6 @@ export const UpgradeModal: React.FC<UpgradeModalProps> = ({
                 </>
               )}
             </button>
-
-            <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#6B7280]">
-              <Lock className="w-3 h-3 text-[#111111]" />
-              <span>1-Click UPI (GPay, PhonePe, Paytm) • Cancel anytime</span>
-            </div>
           </div>
         </div>
       </div>

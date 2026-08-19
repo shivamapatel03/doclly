@@ -222,16 +222,28 @@ export const Split3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7
 export const RemovePages3DIcon: React.FC<{ className?: string }> = ({ className = 'w-7 h-7' }) => (
   <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <defs>
-      <linearGradient id="rm3d_base" x1="6" y1="4" x2="28" y2="32" gradientUnits="userSpaceOnUse">
+      <linearGradient id="rm3d_base" x1="6" y1="4" x2="26" y2="32" gradientUnits="userSpaceOnUse">
         <stop offset="0%" stopColor="#EF4444" />
-        <stop offset="100%" stopColor="#B91C1C" />
+        <stop offset="100%" stopColor="#DC2626" />
       </linearGradient>
-      </defs>
+      <linearGradient id="rm3d_fold" x1="20" y1="4" x2="28" y2="12" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FCA5A5" />
+        <stop offset="100%" stopColor="#F87171" />
+      </linearGradient>
+      <linearGradient id="rm3d_badge" x1="12" y1="14" x2="24" y2="28" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#991B1B" />
+        <stop offset="100%" stopColor="#7F1D1D" />
+      </linearGradient>
+    </defs>
     <g>
-      <rect x="7" y="5" width="22" height="26" rx="4" fill="url(#rm3d_base)" />
-      <rect x="7.5" y="5.5" width="21" height="25" rx="3.5" stroke="white" strokeOpacity="0.3" />
-      <circle cx="18" cy="18" r="6" fill="#7F1D1D" fillOpacity="0.45" />
-      <path d="M15 15L21 21M21 15L15 21" stroke="white" strokeWidth="2" strokeLinecap="round" />
+      <path d="M7 6C7 4.89543 7.89543 4 9 4H21L29 12V30C29 31.1046 28.1046 32 27 32H9C7.89543 32 7 31.1046 7 30V6Z" fill="url(#rm3d_base)" />
+      <path d="M21 4V10C21 11.1046 21.8954 12 23 12H29L21 4Z" fill="url(#rm3d_fold)" />
+      <path d="M9 4.5H20.5L28.5 12.5V30C28.5 30.8284 27.8284 31.5 27 31.5H9C8.17157 31.5 7.5 30.8284 7.5 30V6C7.5 5.17157 8.17157 4.5 9 4.5Z" stroke="white" strokeOpacity="0.25" strokeWidth="1" />
+      <circle cx="18" cy="20" r="7" fill="url(#rm3d_badge)" />
+      <circle cx="18" cy="20" r="6.5" stroke="#FCA5A5" strokeOpacity="0.5" strokeWidth="1" />
+      <path d="M14.5 17.5H21.5M16 17.5V16.5C16 16.2239 16.2239 16 16.5 16H19.5C19.7761 16 20 16.2239 20 16.5V17.5M15.5 17.5L16 23.5C16 23.7761 16.2239 24 16.5 24H19.5C19.7761 24 20 23.7761 20 23.5L20.5 17.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="17.2" y1="19" x2="17.2" y2="22.5" stroke="white" strokeWidth="1" strokeLinecap="round" />
+      <line x1="18.8" y1="19" x2="18.8" y2="22.5" stroke="white" strokeWidth="1" strokeLinecap="round" />
     </g>
   </svg>
 );
