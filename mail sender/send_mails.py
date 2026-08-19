@@ -97,7 +97,7 @@ def load_students_from_csv(csv_path):
     return students
 
 def generate_email_content(name):
-    """Generates modern, high-converting HTML email with Button 20 CSS and official Doclly logo."""
+    """Generates high-converting SaaS email featuring official Doclly 3D icons & Button 20 CSS."""
     display_name = name.strip() if name and name.lower() != "student" else "Student"
     
     subject = f"🎓 {display_name}, your 1-Year Doclly Pro pass for ₹19 (98% Off)"
@@ -109,16 +109,16 @@ def generate_email_content(name):
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Doclly Student Offer</title>
 </head>
-<body style="margin:0; padding:24px 10px; background-color:#F8FAFC; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#0F172A;">
+<body style="margin:0; padding:28px 12px; background-color:#F4F4F5; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#0F172A; -webkit-font-smoothing:antialiased;">
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td align="center">
         <!-- Main Email Container -->
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width:540px; background-color:#FFFFFF; border:1px solid #E2E8F0; border-radius:18px; box-shadow:0 4px 20px rgba(0,0,0,0.04); overflow:hidden;">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width:550px; background-color:#FFFFFF; border:1px solid #E4E4E7; border-radius:20px; box-shadow:0 8px 30px rgba(0,0,0,0.04); overflow:hidden;">
           
-          <!-- Top Header with Official Logo & Button 20 Styled Badge -->
+          <!-- Top Header with Official Logo & Button 20 Badge -->
           <tr>
-            <td style="padding:22px 28px; background-color:#FFFFFF; border-bottom:1px solid #F1F5F9;">
+            <td style="padding:22px 28px; background-color:#FFFFFF; border-bottom:1px solid #F4F4F5;">
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td align="left" valign="middle">
@@ -128,7 +128,7 @@ def generate_email_content(name):
                   </td>
                   <td align="right" valign="middle">
                     <!-- Button 20 Tactile Badge -->
-                    <span style="display:inline-block; font-size:11.5px; font-weight:800; background-color:#FFC800; background-image:linear-gradient(180deg, #FFD84D 0%, #FFC800 100%); color:#111111; padding:6px 14px; border-radius:9999px; text-transform:uppercase; letter-spacing:0.4px; border:1px solid #DC9F00; box-shadow:inset 0 1px 0 rgba(255,255,255,0.45), 0 2px 4px rgba(0,0,0,0.08);">
+                    <span style="display:inline-block; font-size:11px; font-weight:800; background-color:#FFC800; background-image:linear-gradient(180deg, #FFD84D 0%, #FFC800 100%); color:#111111; padding:5px 14px; border-radius:9999px; text-transform:uppercase; letter-spacing:0.4px; border:1px solid #DC9F00; box-shadow:inset 0 1px 0 rgba(255,255,255,0.45), 0 2px 4px rgba(0,0,0,0.08);">
                       🎓 Student Pass
                     </span>
                   </td>
@@ -141,83 +141,133 @@ def generate_email_content(name):
           <tr>
             <td style="padding:32px 28px 24px 28px;">
               <!-- Headline -->
-              <h1 style="font-size:22px; font-weight:900; color:#0F172A; margin:0 0 6px 0; line-height:1.3; letter-spacing:-0.5px;">
-                Get 1 Year of Doclly Pro for Just ₹19
+              <h1 style="font-size:23px; font-weight:900; color:#18181B; margin:0 0 6px 0; line-height:1.25; letter-spacing:-0.5px;">
+                1 Year of Doclly Pro for Just ₹19
               </h1>
               
               <div style="font-size:12.5px; font-weight:700; color:#D97706; margin-bottom:18px;">
-                ⚡ Limited 2-Month Promotional Offer • Save 98% (Regular ₹799/yr)
+                ⚡ Exclusive 2-Month Student Benefit • Save 98% (Regular ₹799/yr)
               </div>
 
               <!-- Greeting & Intro -->
-              <p style="font-size:14px; line-height:1.6; color:#475569; margin:0 0 20px 0;">
+              <p style="font-size:14px; line-height:1.6; color:#52525B; margin:0 0 24px 0;">
                 Hi <strong>{display_name}</strong>,<br />
-                We know how expensive PDF software is during college semesters. For the next 2 months, all verified students can unlock <strong>365 days of full Doclly Pro features</strong> for a one-time ₹19 pass.
+                We know how expensive PDF tools are during college semesters. For the next 2 months, all verified students can unlock <strong>365 days of full Doclly Pro access</strong> for a one-time ₹19 pass.
               </p>
 
-              <!-- Feature Highlights Box -->
-              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; margin-bottom:24px;">
+              <!-- 4 Feature Highlights with Real 3D Icons -->
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#FAFAFA; border:1px solid #F4F4F5; border-radius:16px; margin-bottom:24px; padding:6px 0;">
+                
+                <!-- Feature 1: Edit Scanned PDF -->
                 <tr>
-                  <td style="padding:16px 18px;">
-                    <div style="font-size:11px; font-weight:800; color:#64748B; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:10px;">
-                      What's Included in your 1-Year Pass:
-                    </div>
-                    
+                  <td style="padding:12px 18px; border-bottom:1px solid #F4F4F5;">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                       <tr>
-                        <td style="padding:6px 0; font-size:13.5px; color:#1E293B; line-height:1.4;">
-                          ✍️ <strong>Edit Scanned PDFs</strong> — In-place text editing directly on the page like MS Word
+                        <td width="44" valign="top" style="padding-right:12px;">
+                          <img src="https://www.doclly.online/3d-icons-png/sign.png" width="40" height="40" alt="Edit" style="display:block; width:40px; height:40px; border:0;" />
                         </td>
-                      </tr>
-                      <tr>
-                        <td style="padding:6px 0; font-size:13.5px; color:#1E293B; line-height:1.4;">
-                          📉 <strong>Extreme &lt;200 KB Compression</strong> — Shrink large PDFs for university &amp; exam portals
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding:6px 0; font-size:13.5px; color:#1E293B; line-height:1.4;">
-                          🔄 <strong>Universal Conversions</strong> — PDF &harr; Word (.docx), Excel (.xlsx), PPT, &amp; JPG
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding:6px 0; font-size:13.5px; color:#1E293B; line-height:1.4;">
-                          ⚡ <strong>100+ Batch Queue</strong> — Convert or merge all lecture notes simultaneously in 1 click
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding:6px 0; font-size:13.5px; color:#1E293B; line-height:1.4;">
-                          🔒 <strong>100% Client-Side Privacy</strong> — Files never leave your browser memory
+                        <td valign="middle">
+                          <div style="font-size:13.5px; font-weight:800; color:#18181B; margin-bottom:2px;">
+                            In-Place Scanned Text Edit
+                          </div>
+                          <div style="font-size:12px; color:#71717A; line-height:1.4;">
+                            Edit text inside scanned documents and assignments directly on the page.
+                          </div>
                         </td>
                       </tr>
                     </table>
                   </td>
                 </tr>
+
+                <!-- Feature 2: Compress PDF -->
+                <tr>
+                  <td style="padding:12px 18px; border-bottom:1px solid #F4F4F5;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td width="44" valign="top" style="padding-right:12px;">
+                          <img src="https://www.doclly.online/3d-icons-png/compress.png" width="40" height="40" alt="Compress" style="display:block; width:40px; height:40px; border:0;" />
+                        </td>
+                        <td valign="middle">
+                          <div style="font-size:13.5px; font-weight:800; color:#18181B; margin-bottom:2px;">
+                            Extreme &lt;200 KB Compression
+                          </div>
+                          <div style="font-size:12px; color:#71717A; line-height:1.4;">
+                            Shrink heavy PDFs to fit college &amp; exam portal upload limits.
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Feature 3: PDF to Word / Excel -->
+                <tr>
+                  <td style="padding:12px 18px; border-bottom:1px solid #F4F4F5;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td width="44" valign="top" style="padding-right:12px;">
+                          <img src="https://www.doclly.online/3d-icons-png/pdf.png" width="40" height="40" alt="Convert" style="display:block; width:40px; height:40px; border:0;" />
+                        </td>
+                        <td valign="middle">
+                          <div style="font-size:13.5px; font-weight:800; color:#18181B; margin-bottom:2px;">
+                            PDF &harr; Word, Excel &amp; PPT
+                          </div>
+                          <div style="font-size:12px; color:#71717A; line-height:1.4;">
+                            Convert documents with 100% typography and formatting preserved.
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Feature 4: Batch Merge & Privacy -->
+                <tr>
+                  <td style="padding:12px 18px;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td width="44" valign="top" style="padding-right:12px;">
+                          <img src="https://www.doclly.online/3d-icons-png/merge.png" width="40" height="40" alt="Batch" style="display:block; width:40px; height:40px; border:0;" />
+                        </td>
+                        <td valign="middle">
+                          <div style="font-size:13.5px; font-weight:800; color:#18181B; margin-bottom:2px;">
+                            100+ Batch Queue &amp; 100% Privacy
+                          </div>
+                          <div style="font-size:12px; color:#71717A; line-height:1.4;">
+                            Convert dozens of notes at once. Files never leave your browser memory.
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
               </table>
 
               <!-- Call To Action Button (Button 20 Tactile CSS) -->
-              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:26px 0 16px 0;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:26px 0 14px 0;">
                 <tr>
                   <td align="center">
-                    <a href="https://student.doclly.online" target="_blank" style="background-color:#FFC800; background-image:linear-gradient(180deg, #FFD84D 0%, #FFC800 100%); color:#111111; font-size:15px; font-weight:900; text-decoration:none; padding:14px 42px; border-radius:9999px; border:1.5px solid #DC9F00; display:inline-block; box-shadow:inset 0 1px 0 rgba(255,255,255,0.45), 0 3px 8px rgba(0,0,0,0.12); letter-spacing:-0.2px;">
+                    <a href="https://student.doclly.online" target="_blank" style="background-color:#FFC800; background-image:linear-gradient(180deg, #FFD84D 0%, #FFC800 100%); color:#111111; font-size:15px; font-weight:900; text-decoration:none; padding:14px 44px; border-radius:9999px; border:1.5px solid #DC9F00; display:inline-block; box-shadow:inset 0 1px 0 rgba(255,255,255,0.45), 0 3px 8px rgba(0,0,0,0.12); letter-spacing:-0.2px;">
                       Claim 1-Year Pro for ₹19 &rarr;
                     </a>
                   </td>
                 </tr>
               </table>
 
-              <p style="font-size:12px; text-align:center; color:#64748B; margin:0;">
-                Instant UPI Payment (GPay, PhonePe, Paytm) &bull; 1-Click ID Verification
+              <p style="font-size:12px; text-align:center; color:#71717A; margin:0;">
+                Instant UPI Payment (GPay, PhonePe, Paytm) &bull; Verified with College ID
               </p>
             </td>
           </tr>
 
           <!-- Footer -->
           <tr>
-            <td style="background-color:#F8FAFC; padding:20px 28px; text-align:center; border-top:1px solid #F1F5F9; font-size:11.5px; color:#94A3B8; line-height:1.6;">
+            <td style="background-color:#FAFAFA; padding:20px 28px; text-align:center; border-top:1px solid #F4F4F5; font-size:11.5px; color:#A1A1AA; line-height:1.6;">
               &copy; {time.strftime('%Y')} Doclly Document Suite &bull; Made with ❤️ in India<br />
-              <a href="https://student.doclly.online" style="color:#64748B; text-decoration:underline;">student.doclly.online</a> &bull; 
-              <a href="https://www.doclly.online/terms" style="color:#64748B; text-decoration:underline;">Terms</a> &bull; 
-              <a href="https://www.doclly.online/privacy" style="color:#64748B; text-decoration:underline;">Privacy</a>
+              <a href="https://student.doclly.online" style="color:#71717A; text-decoration:underline;">student.doclly.online</a> &bull; 
+              <a href="https://www.doclly.online/terms" style="color:#71717A; text-decoration:underline;">Terms of Service</a> &bull; 
+              <a href="https://www.doclly.online/privacy" style="color:#71717A; text-decoration:underline;">Privacy Policy</a>
             </td>
           </tr>
 

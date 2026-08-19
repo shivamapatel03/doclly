@@ -25,4 +25,4 @@ USE_SSL = True  # Set to False if using Port 587 (STARTTLS)
 DELAY_SECONDS = 1.5
 
 # CSV Filename to read students from (searches in current directory)
-CSV_FILENAME = "students.csv"
+CSV_FILENAME = "student.csv"
