@@ -1,0 +1,21 @@
+<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" >
+    <defs>
+      <linearGradient id="rcp3d_paper" x1="7" y1="4" x2="29" y2="32" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FFFFFF" />
+        <stop offset="100%" stop-color="#F1F5F9" />
+      </linearGradient>
+      </defs>
+    <g>
+      <path d="M8 5L10 4L12 5L14 4L16 5L18 4L20 5L22 4L24 5L26 4L28 5V30L26 31L24 30L22 31L20 30L18 31L16 30L14 31L12 30L10 31L8 30V5Z" fill="url(#rcp3d_paper)" stroke="#CBD5E1" stroke-width="1" />
+      <rect x="11" y="8" width="14" height="2.5" rx="1.25" fill="#1E293B" />
+      <line x1="11" y1="13.5" x2="20" y2="13.5" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round" />
+      <line x1="23" y1="13.5" x2="25" y2="13.5" stroke="#64748B" stroke-width="1.2" stroke-linecap="round" />
+      <line x1="11" y1="17" x2="18" y2="17" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round" />
+      <line x1="22" y1="17" x2="25" y2="17" stroke="#64748B" stroke-width="1.2" stroke-linecap="round" />
+      <line x1="11" y1="20.5" x2="25" y2="20.5" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="1.5 1.5" />
+      <rect x="11" y="23" width="8" height="2" rx="1" fill="#10B981" />
+      <rect x="21" y="23" width="4" height="2" rx="1" fill="#10B981" />
+      <circle cx="24" cy="22" r="5" fill="#10B981" />
+      <path d="M22 22L23.5 23.5L26 21" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+  </svg>

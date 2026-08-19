@@ -20,6 +20,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [acceptTerms, setAcceptTerms] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const { signIn, signUp, signInWithGoogle, resetPassword } = useAuth();
@@ -32,6 +33,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if ((mode === 'signin' || mode === 'signup') && !acceptTerms) {
+      toast.error('Please agree to the Terms of Service to continue.');
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -83,6 +90,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   };
 
   const handleGoogleLogin = async () => {
+    if (!acceptTerms) {
+      toast.error('Please agree to the Terms of Service to continue.');
+      return;
+    }
     setIsLoading(true);
     try {
       const res = await signInWithGoogle();
@@ -220,9 +231,43 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </div>
           )}
 
+          {/* Terms and conditions agreement checkbox */}
+          {mode !== 'forgot' && (
+            <div className="flex items-start gap-2 pt-1 select-none">
+              <input
+                type="checkbox"
+                id="modalTermsCheckbox"
+                checked={acceptTerms}
+                onChange={(e) => setAcceptTerms(e.target.checked)}
+                className="mt-0.5 w-3.5 h-3.5 rounded border-[#D1D5DB] text-[#FFC800] focus:ring-[#FFC800] accent-[#FFC800] cursor-pointer shrink-0"
+              />
+              <label htmlFor="modalTermsCheckbox" className="text-[11px] sm:text-xs text-[#4B5563] leading-tight cursor-pointer">
+                I agree to the{' '}
+                <a
+                  href="/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#111111] font-bold underline hover:text-black"
+                >
+                  Terms of Service
+                </a>{' '}
+                and{' '}
+                <a
+                  href="/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#111111] font-bold underline hover:text-black"
+                >
+                  Privacy Policy
+                </a>
+                .
+              </label>
+            </div>
+          )}
+
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || ((mode === 'signin' || mode === 'signup') && !acceptTerms)}
             className="w-full mt-2 py-2 sm:py-2.5 px-4 rounded-full text-xs sm:text-sm font-bold flex items-center justify-center bg-[#FFC800] bg-gradient-to-b from-white/30 to-transparent hover:bg-[#F5B800] text-[#111111] border border-[#DC9F00] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_2px_4px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_4px_8px_rgba(0,0,0,0.12)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] transition-all cursor-pointer disabled:opacity-50 select-none"
           >
             {isLoading ? (

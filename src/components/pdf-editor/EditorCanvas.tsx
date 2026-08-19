@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import { Canvas } from "fabric";
 import type { EditorTool } from "../../lib/pdf-editor/fabricCanvas";
 import type { DetectedTextBlock } from "../../lib/pdf-editor/textDetector";
@@ -129,10 +129,18 @@ export const EditorCanvas: React.FC<EditorCanvasProps> = ({
         return;
       }
 
-      // Read exact coordinates inside the Fabric canvas
-      const pointer = fc.getViewportPoint(opt.e);
-      const x = pointer.x;
-      const y = pointer.y;
+      // Read exact coordinates inside the Fabric canvas (accounting for zoom & DPI)
+      const rect = fc.upperCanvasEl?.getBoundingClientRect() || fc.lowerCanvasEl?.getBoundingClientRect();
+      let x = 0;
+      let y = 0;
+      if (rect && rect.width > 0 && rect.height > 0) {
+        x = Math.max(0, Math.min(canvasWidth, ((opt.e.clientX - rect.left) / rect.width) * canvasWidth));
+        y = Math.max(0, Math.min(canvasHeight, ((opt.e.clientY - rect.top) / rect.height) * canvasHeight));
+      } else {
+        const pointer = (fc as any).getScenePoint ? (fc as any).getScenePoint(opt.e) : fc.getViewportPoint(opt.e);
+        x = pointer.x;
+        y = pointer.y;
+      }
 
       switch (tool) {
         case "text":

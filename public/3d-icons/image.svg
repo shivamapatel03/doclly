@@ -1,0 +1,29 @@
+<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" >
+    <defs>
+      <linearGradient id="img3d_base" x1="5" y1="5" x2="31" y2="31" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#F59E0B" />
+        <stop offset="100%" stop-color="#D97706" />
+      </linearGradient>
+      <linearGradient id="img3d_sky" x1="7" y1="7" x2="29" y2="29" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FEF3C7" />
+        <stop offset="100%" stop-color="#FDE68A" />
+      </linearGradient>
+      <linearGradient id="img3d_mnt1" x1="14" y1="18" x2="25" y2="29" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#B45309" />
+        <stop offset="100%" stop-color="#78350F" />
+      </linearGradient>
+      <linearGradient id="img3d_mnt2" x1="7" y1="21" x2="19" y2="29" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#D97706" />
+        <stop offset="100%" stop-color="#92400E" />
+      </linearGradient>
+      </defs>
+    <g>
+      <rect x="5" y="5" width="26" height="26" rx="6" fill="url(#img3d_base)" />
+      <rect x="5.5" y="5.5" width="25" height="25" rx="5.5" stroke="white" stroke-opacity="0.3" />
+      <rect x="7" y="7" width="22" height="22" rx="4.5" fill="url(#img3d_sky)" />
+      <circle cx="13" cy="13" r="3" fill="#F59E0B" />
+      <circle cx="13" cy="13" r="3" stroke="#FDE68A" stroke-width="0.8" />
+      <path d="M15 17L27 29H13L15 17Z" fill="url(#img3d_mnt1)" />
+      <path d="M9 20L19 29H7L9 20Z" fill="url(#img3d_mnt2)" />
+    </g>
+  </svg>

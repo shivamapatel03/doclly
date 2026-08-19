@@ -1,0 +1,20 @@
+<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" >
+    <defs>
+      <linearGradient id="sgn3d_base" x1="6" y1="4" x2="26" y2="32" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#F59E0B" />
+        <stop offset="100%" stop-color="#D97706" />
+      </linearGradient>
+      <linearGradient id="sgn3d_pen" x1="14" y1="8" x2="29" y2="23" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#1E293B" />
+        <stop offset="100%" stop-color="#0F172A" />
+      </linearGradient>
+      </defs>
+    <g>
+      <rect x="6" y="5" width="20" height="26" rx="4" fill="url(#sgn3d_base)" />
+      <rect x="6.5" y="5.5" width="19" height="25" rx="3.5" stroke="white" stroke-opacity="0.3" />
+      <path d="M10 24C12 21 14 25 16 23C18 21 19 24 21 24" stroke="white" stroke-width="1.8" stroke-linecap="round" />
+      <path d="M26 6L29 9L19 19L16 20L17 17L26 6Z" fill="url(#sgn3d_pen)" />
+      <circle cx="28" cy="8" r="1.5" fill="#FCD34D" />
+      <path d="M16 20L18 18" stroke="#FCD34D" stroke-width="1" />
+    </g>
+  </svg>

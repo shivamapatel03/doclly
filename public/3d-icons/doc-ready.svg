@@ -1,0 +1,29 @@
+<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" >
+    <defs>
+      <linearGradient id="dr3d_sheet" x1="8" y1="4" x2="36" y2="44" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FFFFFF" />
+        <stop offset="100%" stop-color="#F8FAFC" />
+      </linearGradient>
+      <linearGradient id="dr3d_border" x1="8" y1="4" x2="36" y2="44" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#E2E8F0" />
+        <stop offset="100%" stop-color="#CBD5E1" />
+      </linearGradient>
+      <linearGradient id="dr3d_fold" x1="28" y1="4" x2="38" y2="14" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#E2E8F0" />
+        <stop offset="100%" stop-color="#94A3B8" />
+      </linearGradient>
+      <linearGradient id="dr3d_check_bg" x1="20" y1="20" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#10B981" />
+        <stop offset="100%" stop-color="#047857" />
+      </linearGradient>
+    </defs>
+    <path d="M10 7C10 5.34315 11.3431 4 13 4H28L38 14V41C38 42.6569 36.6569 44 35 44H13C11.3431 44 10 42.6569 10 41V7Z" fill="url(#dr3d_sheet)" stroke="url(#dr3d_border)" stroke-width="1.5" />
+    <path d="M28 4V12C28 13.1046 28.8954 14 30 14H38L28 4Z" fill="url(#dr3d_fold)" />
+    <rect x="15" y="16" width="10" height="2.5" rx="1.25" fill="#CBD5E1" />
+    <rect x="15" y="21" width="16" height="2.5" rx="1.25" fill="#E2E8F0" />
+    <rect x="15" y="26" width="12" height="2.5" rx="1.25" fill="#E2E8F0" />
+    <circle cx="32" cy="32" r="11" fill="url(#dr3d_check_bg)" />
+    <circle cx="32" cy="32" r="10" stroke="white" stroke-width="1.5" stroke-opacity="0.4" />
+    <path d="M24 28C26 23 38 23 40 28" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-opacity="0.5" />
+    <path d="M26.5 32L30.5 36L37.5 28.5" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>

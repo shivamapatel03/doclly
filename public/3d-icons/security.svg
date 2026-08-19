@@ -1,0 +1,15 @@
+<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" >
+    <defs>
+      <linearGradient id="sec3d_shield" x1="6" y1="4" x2="30" y2="32" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#10B981" />
+        <stop offset="100%" stop-color="#047857" />
+      </linearGradient>
+      </defs>
+    <g>
+      <path d="M18 4L29 8.5V17C29 24.2 24.2 30 18 32C11.8 30 7 24.2 7 17V8.5L18 4Z" fill="url(#sec3d_shield)" />
+      <path d="M18 6.2L26.8 9.8V16.6C26.8 22.4 23 27 18 29.8V6.2Z" fill="white" fill-opacity="0.2" />
+      <path d="M18 4L29 8.5V17C29 24.2 24.2 30 18 32C11.8 30 7 24.2 7 17V8.5L18 4Z" stroke="white" stroke-opacity="0.3" stroke-width="1" />
+      <circle cx="18" cy="16" r="3" fill="#FDE047" />
+      <polygon points="16.5,17 19.5,17 19,22 17,22" fill="#FDE047" />
+    </g>
+  </svg>

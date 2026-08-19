@@ -1,0 +1,27 @@
+<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" >
+    <defs>
+      <linearGradient id="w3d_base" x1="6" y1="4" x2="26" y2="32" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#3B82F6" />
+        <stop offset="100%" stop-color="#1D4ED8" />
+      </linearGradient>
+      <linearGradient id="w3d_fold" x1="20" y1="4" x2="28" y2="12" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#93C5FD" />
+        <stop offset="100%" stop-color="#60A5FA" />
+      </linearGradient>
+      <linearGradient id="w3d_badge" x1="10" y1="14" x2="22" y2="28" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#1E40AF" />
+        <stop offset="100%" stop-color="#172554" />
+      </linearGradient>
+      </defs>
+    <g>
+      <path d="M7 6C7 4.89543 7.89543 4 9 4H21L29 12V30C29 31.1046 28.1046 32 27 32H9C7.89543 32 7 31.1046 7 30V6Z" fill="url(#w3d_base)" />
+      <path d="M21 4V10C21 11.1046 21.8954 12 23 12H29L21 4Z" fill="url(#w3d_fold)" />
+      <path d="M9 4.5H20.5L28.5 12.5V30C28.5 30.8284 27.8284 31.5 27 31.5H9C8.17157 31.5 7.5 30.8284 7.5 30V6C7.5 5.17157 8.17157 4.5 9 4.5Z" stroke="white" stroke-opacity="0.25" stroke-width="1" />
+      <rect x="5" y="14" width="16" height="14" rx="3.5" fill="url(#w3d_badge)" />
+      <rect x="5.5" y="14.5" width="15" height="13" rx="3" stroke="#60A5FA" stroke-opacity="0.4" />
+      <path d="M8.5 18L10.2 24.5H11.8L13 20L14.2 24.5H15.8L17.5 18H16L14.9 22.3L13.7 18H12.3L11.1 22.3L10 18H8.5Z" fill="white" />
+      <rect x="23" y="17" width="3.5" height="1.5" rx="0.75" fill="white" fill-opacity="0.7" />
+      <rect x="23" y="21" width="3.5" height="1.5" rx="0.75" fill="white" fill-opacity="0.7" />
+      <rect x="23" y="25" width="3.5" height="1.5" rx="0.75" fill="white" fill-opacity="0.7" />
+    </g>
+  </svg>

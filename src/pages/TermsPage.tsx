@@ -104,7 +104,7 @@ export const TermsPage: React.FC = () => {
 
         <section className="space-y-3">
           <h2 className="text-base sm:text-lg font-bold text-[#111111] border-b border-gray-100 pb-1">
-            4. Subscriptions, Payments & Invoicing
+            4. Subscriptions, Payments & Strict No-Refund Policy
           </h2>
           <p>
             Subscription fees are billed in Indian Rupees (INR) or localized currencies via authorized payment gateways (including Razorpay).
@@ -112,9 +112,14 @@ export const TermsPage: React.FC = () => {
           <ul className="list-disc pl-5 space-y-1.5 text-xs">
             <li><strong>Billing Cycle:</strong> Subscriptions renew automatically on a monthly or annual basis unless cancelled prior to the renewal date.</li>
             <li><strong>Tax & GST Compliance:</strong> Invoices include statutory GST and applicable taxes. Downloadable PDF invoices are automatically generated and delivered to your registered email upon checkout.</li>
-            <li><strong>Cancellation:</strong> You may cancel your subscription at any time directly from the Account Dashboard. Your Pro access will remain active until the end of the current paid billing period.</li>
-            <li><strong>Refunds:</strong> Because digital utilities and quota allowances are provisioned immediately upon purchase, subscription fees are generally non-refundable except where required by applicable consumer law.</li>
+            <li><strong>Cancellation:</strong> You may cancel your recurring subscription at any time directly from the Account Dashboard. Your Pro access will remain active until the end of your current paid billing period without future renewal charges.</li>
+            <li>
+              <strong>Non-Refundable Payments (Strict No-Refund Policy):</strong> All payments made for Doclly Pro or Business subscriptions are <strong>strictly non-refundable</strong>. Once a transaction is successfully completed, the paid amount cannot be refunded, returned, or credited under any circumstances. This policy applies because full access to digital Pro utilities, instant OCR computing capacity, extreme compression engines, and batch conversion features is provisioned immediately upon purchase.
+            </li>
           </ul>
+          <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 font-medium leading-relaxed">
+            <strong>Important Notice:</strong> By proceeding with checkout or entering your payment details, you expressly acknowledge and agree that all fees paid are final and non-refundable.
+          </div>
         </section>
 
         <section className="space-y-3">

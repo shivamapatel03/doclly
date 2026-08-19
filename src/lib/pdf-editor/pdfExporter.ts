@@ -1,4 +1,4 @@
-﻿import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
+import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 
 interface FabricObject {
   type: string;
@@ -128,7 +128,7 @@ export async function exportToPdf(
           try {
             page.drawText(lineText, {
               x: pdfX,
-              y: pdfY - fontSize - (li * fontSize * 1.2),
+              y: pdfY - (fontSize * 0.82) - (li * fontSize * 1.16),
               size: fontSize,
               font: helvetica,
               color: rgb(r, g, b),

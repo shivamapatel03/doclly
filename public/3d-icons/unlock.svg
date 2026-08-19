@@ -1,0 +1,48 @@
+<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" >
+    <defs>
+      <linearGradient id="unl3d_base" x1="6" y1="4" x2="30" y2="32" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#34D399" />
+        <stop offset="50%" stop-color="#10B981" />
+        <stop offset="100%" stop-color="#047857" />
+      </linearGradient>
+      <linearGradient id="unl3d_gold" x1="8" y1="14" x2="24" y2="28" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FEF08A" />
+        <stop offset="50%" stop-color="#F59E0B" />
+        <stop offset="100%" stop-color="#B45309" />
+      </linearGradient>
+      <linearGradient id="unl3d_shackle" x1="10" y1="5" x2="26" y2="15" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FFFFFF" />
+        <stop offset="60%" stop-color="#E2E8F0" />
+        <stop offset="100%" stop-color="#94A3B8" />
+      </linearGradient>
+      <linearGradient id="unl3d_key" x1="20" y1="16" x2="30" y2="26" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FFFFFF" />
+        <stop offset="100%" stop-color="#FEF08A" />
+      </linearGradient>
+    </defs>
+    <g>
+      {/* 3D Vibrant Emerald Card Plate */}
+      <rect x="5" y="5" width="26" height="26" rx="6" fill="url(#unl3d_base)" />
+      <rect x="5.5" y="5.5" width="25" height="25" rx="5.5" stroke="white" stroke-opacity="0.35" stroke-width="1" />
+      
+      {/* Swung-Open & Lifted Shackle */}
+      <path
+        d="M12 15V10C12 7.23858 14.2386 5 17 5C19.7614 5 22 7.23858 22 10V11"
+        stroke="url(#unl3d_shackle)"
+        stroke-width="2.8"
+        stroke-linecap="round"
+      />
+      
+      {/* 3D Padlock Body Shifted Left */}
+      <rect x="9" y="15" width="14" height="12" rx="3" fill="url(#unl3d_gold)" />
+      <rect x="9.5" y="15.5" width="13" height="11" rx="2.5" stroke="#FEF08A" stroke-opacity="0.6" stroke-width="0.8" />
+      
+      {/* Keyhole */}
+      <circle cx="16" cy="20" r="1.3" fill="#713F12" />
+      <path d="M16 21.3V23" stroke="#713F12" stroke-width="1.1" stroke-linecap="round" />
+      
+      {/* 3D Floating Unlock Key */}
+      <circle cx="26" cy="18" r="2.2" stroke="url(#unl3d_key)" stroke-width="1.2" fill="none" />
+      <path d="M26 20.2V26M26 23.5H28M26 25.5H27.5" stroke="url(#unl3d_key)" stroke-width="1.2" stroke-linecap="round" />
+    </g>
+  </svg>

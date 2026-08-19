@@ -1,0 +1,41 @@
+<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" >
+    <defs>
+      <linearGradient id="prt3d_base" x1="6" y1="4" x2="30" y2="32" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FB7185" />
+        <stop offset="50%" stop-color="#E11D48" />
+        <stop offset="100%" stop-color="#9F1239" />
+      </linearGradient>
+      <linearGradient id="prt3d_gold" x1="10" y1="14" x2="26" y2="28" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FEF08A" />
+        <stop offset="50%" stop-color="#F59E0B" />
+        <stop offset="100%" stop-color="#B45309" />
+      </linearGradient>
+      <linearGradient id="prt3d_shackle" x1="12" y1="7" x2="24" y2="17" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FFFFFF" />
+        <stop offset="60%" stop-color="#E2E8F0" />
+        <stop offset="100%" stop-color="#94A3B8" />
+      </linearGradient>
+    </defs>
+    <g>
+      {/* 3D Ruby Card Plate */}
+      <rect x="5" y="5" width="26" height="26" rx="6" fill="url(#prt3d_base)" />
+      <rect x="5.5" y="5.5" width="25" height="25" rx="5.5" stroke="white" stroke-opacity="0.35" stroke-width="1" />
+      
+      {/* Heavy Steel Closed Shackle */}
+      <path
+        d="M13 16V12C13 9.23858 15.2386 7 18 7C20.7614 7 23 9.23858 23 12V16"
+        stroke="url(#prt3d_shackle)"
+        stroke-width="2.8"
+        stroke-linecap="round"
+      />
+      
+      {/* 3D Solid Gold Padlock Body */}
+      <rect x="10" y="15" width="16" height="12" rx="3" fill="url(#prt3d_gold)" />
+      <rect x="10.5" y="15.5" width="15" height="11" rx="2.5" stroke="#FEF08A" stroke-opacity="0.6" stroke-width="0.8" />
+      
+      {/* Keyhole & Cyan Status Dot */}
+      <circle cx="18" cy="20" r="1.5" fill="#713F12" />
+      <path d="M18 21.5V23.5" stroke="#713F12" stroke-width="1.2" stroke-linecap="round" />
+      <circle cx="23" cy="18" r="1" fill="#38BDF8" />
+    </g>
+  </svg>

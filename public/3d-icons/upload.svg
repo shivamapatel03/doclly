@@ -1,0 +1,19 @@
+<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" >
+    <defs>
+      <linearGradient id="up3d_folder" x1="6" y1="12" x2="42" y2="44" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FFD84D" />
+        <stop offset="100%" stop-color="#E6B400" />
+      </linearGradient>
+      <linearGradient id="up3d_arrow" x1="24" y1="14" x2="24" y2="34" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FFFFFF" />
+        <stop offset="100%" stop-color="#F5F5F5" />
+      </linearGradient>
+      </defs>
+    <g>
+      <path d="M6 14C6 11.7909 7.79086 10 10 10H19.5L24 14H38C40.2091 14 42 15.7909 42 18V38C42 40.2091 40.2091 42 38 42H10C7.79086 42 6 40.2091 6 38V14Z" fill="url(#up3d_folder)" />
+      <path d="M6 16H42V38C42 40.2091 40.2091 42 38 42H10C7.79086 42 6 40.2091 6 38V16Z" fill="#FFC800" />
+      <rect x="6.5" y="14.5" width="35" height="27" rx="3.5" stroke="white" stroke-opacity="0.35" />
+      <circle cx="24" cy="27" r="8.5" fill="#111111" />
+      <path d="M24 21L20 25.5H22.5V31.5H25.5V25.5H28L24 21Z" fill="url(#up3d_arrow)" />
+    </g>
+  </svg>

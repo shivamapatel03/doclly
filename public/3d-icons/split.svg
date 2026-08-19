@@ -1,0 +1,30 @@
+<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" >
+    <defs>
+      <linearGradient id="splt3d_card" x1="5" y1="5" x2="31" y2="31" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#A855F7" />
+        <stop offset="100%" stop-color="#7E22CE" />
+      </linearGradient>
+      <linearGradient id="splt3d_split" x1="14" y1="8" x2="22" y2="28" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FFFFFF" />
+        <stop offset="100%" stop-color="#F3E8FF" />
+      </linearGradient>
+      </defs>
+    <g>
+      {/* 3D Purple Card Base */}
+      <rect x="6" y="5" width="24" height="26" rx="5" fill="url(#splt3d_card)" />
+      <rect x="6.5" y="5.5" width="23" height="25" rx="4.5" stroke="white" stroke-opacity="0.3" stroke-width="1" />
+      
+      {/* Center Dashed Separation Line */}
+      <line x1="18" y1="8" x2="18" y2="28" stroke="white" stroke-opacity="0.4" stroke-width="1.5" stroke-dasharray="2 2" />
+      
+      {/* Left Sheet Segment */}
+      <rect x="9" y="9" width="6.5" height="18" rx="2" fill="url(#splt3d_split)" />
+      {/* Right Sheet Segment */}
+      <rect x="20.5" y="9" width="6.5" height="18" rx="2" fill="url(#splt3d_split)" />
+      
+      {/* Scissor / Cut Icon in center */}
+      <circle cx="15.5" cy="18" r="2" fill="#7E22CE" />
+      <circle cx="20.5" cy="18" r="2" fill="#7E22CE" />
+      <path d="M16 16.5L20 19.5M20 16.5L16 19.5" stroke="white" stroke-width="1.2" stroke-linecap="round" />
+    </g>
+  </svg>
