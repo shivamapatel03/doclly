@@ -40,6 +40,30 @@ export const TOOL_CATEGORIES: CategoryInfo[] = [
 ];
 
 export const ALL_TOOLS: ToolDefinition[] = [
+  // --- 0. GOVT & EXAM TOOLS ---
+  {
+    id: 'govt-exam-resizer',
+    name: 'Govt Exam Photo Resizer',
+    category: 'optimize',
+    description: '1-Click photo & signature resizer for UPSC, SSC, GATE, NEET, JEE & Banking (<50 KB).',
+    iconName: 'Crop',
+    route: '/govt-exam-resizer',
+    popular: true,
+    accepts: ['.jpg', '.jpeg', '.png', '.webp'],
+    acceptsDescription: 'Image files',
+    maxFiles: 1,
+    outputFormat: 'JPG',
+    actionButtonText: 'Resize Exam Photo',
+    seo: {
+      title: 'Govt Exam Photo & Signature Resizer (<50 KB) — UPSC, SSC, GATE, NEET, JEE — Doclly',
+      description: 'Free online Photo and Signature Resizer for Indian government exams (UPSC, SSC CGL/CHSL, GATE, NEET, JEE, IBPS). Automatically resize to exact cm dimensions and 20KB-50KB limits.',
+      keywords: ['govt exam photo resizer', 'upsc photo resizer 20kb to 50kb', 'ssc photo and signature resizer', 'gate photo size converter', 'neet photo resizer with name and date', 'passport size photo maker online free', 'signature resizer 10 to 20 kb', 'ibps photo signature resizer', 'reduce photo size under 50kb online', 'doclly'],
+      faq: [
+        { question: 'Why do government portals reject photos and signatures?', answer: 'Indian exam portals (UPSC, SSC, NTA NEET/JEE, IBPS) use automated scripts that strictly reject photos exceeding 50 KB or signatures exceeding 20 KB, or files with incorrect aspect ratios.' },
+        { question: 'How does Doclly guarantee the file size is between 20 KB and 50 KB?', answer: 'Doclly uses an intelligent binary search compression engine running directly on your computer to calibrate the exact image density until the final JPEG lands safely in the valid KB bracket.' }
+      ]
+    }
+  },
   // --- 1. ORGANIZE PDF ---
   {
     id: 'merge-pdf',

@@ -42,6 +42,7 @@ import { PdfEditorPage } from './dedicated-tools/PdfEditorPage';
 import { ExcelCleanupPage } from './dedicated-tools/ExcelCleanupPage';
 import { StampQrBarcodePage } from './dedicated-tools/StampQrBarcodePage';
 import { QrCodeGeneratorPage } from './dedicated-tools/QrCodeGeneratorPage';
+import { GovtExamResizerPage } from './dedicated-tools/GovtExamResizerPage';
 import { Copy, Check } from 'lucide-react';
 import { ThreeDIcon } from '../components/common/ThreeDIcon';
 
@@ -75,6 +76,18 @@ export const ToolPage: React.FC = () => {
   if (toolId === 'excel-cleanup') return <ExcelCleanupPage />;
   if (toolId === 'qr-code-generator' || toolId === 'upi-qr-generator' || toolId === 'barcode-generator') return <QrCodeGeneratorPage />;
   if (toolId === 'stamp-qr-barcode' || toolId === 'qr-barcode-stamper') return <StampQrBarcodePage />;
+  if (
+    toolId === 'govt-exam-resizer' ||
+    toolId === 'exam-photo-resizer' ||
+    toolId === 'photo-resizer' ||
+    toolId === 'signature-resizer' ||
+    toolId === 'upsc-photo-resizer' ||
+    toolId === 'ssc-photo-resizer' ||
+    toolId === 'gate-photo-resizer' ||
+    toolId === 'passport-photo-maker'
+  ) {
+    return <GovtExamResizerPage />;
+  }
 
   // Support Image to PDF aliases
   const targetId = (toolId === 'img-to-pdf' || toolId === 'image-to-pdf' || toolId === 'png-to-pdf') ? 'jpg-to-pdf' : toolId;

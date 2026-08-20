@@ -101,6 +101,16 @@ export const AppContent: React.FC = () => {
           <Route path="/extract-pages" element={<ToolPage />} />
           <Route path="/compare-pdf" element={<ToolPage />} />
           
+          {/* Govt & Entrance Exam Photo/Signature Resizer Routes */}
+          <Route path="/govt-exam-resizer" element={<ToolPage />} />
+          <Route path="/photo-resizer" element={<ToolPage />} />
+          <Route path="/signature-resizer" element={<ToolPage />} />
+          <Route path="/exam-photo-resizer" element={<ToolPage />} />
+          <Route path="/upsc-photo-resizer" element={<ToolPage />} />
+          <Route path="/ssc-photo-resizer" element={<ToolPage />} />
+          <Route path="/gate-photo-resizer" element={<ToolPage />} />
+          <Route path="/passport-photo-maker" element={<ToolPage />} />
+          
           {/* Dashboard, Pricing & Legal */}
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/pricing" element={<PricingPage />} />
