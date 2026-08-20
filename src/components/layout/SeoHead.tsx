@@ -7,6 +7,11 @@ interface FaqItem {
   answer: string;
 }
 
+interface HowToStep {
+  name: string;
+  text: string;
+}
+
 interface SeoHeadProps {
   title: string;
   description: string;
@@ -14,6 +19,11 @@ interface SeoHeadProps {
   canonicalUrl?: string;
   ogImage?: string;
   faq?: FaqItem[];
+  howTo?: {
+    name: string;
+    description: string;
+    steps: HowToStep[];
+  };
 }
 
 export const SeoHead: React.FC<SeoHeadProps> = ({
@@ -23,6 +33,7 @@ export const SeoHead: React.FC<SeoHeadProps> = ({
   canonicalUrl,
   ogImage = 'https://www.doclly.online/logo/image.png',
   faq,
+  howTo,
 }) => {
   const location = useLocation();
   const currentUrl = canonicalUrl || `https://www.doclly.online${location.pathname}`;
@@ -99,41 +110,81 @@ export const SeoHead: React.FC<SeoHeadProps> = ({
       document.head.appendChild(schemaScript);
     }
 
-    const schemaData: any = {
-      '@context': 'https://schema.org',
-      '@type': 'WebApplication',
-      name: formattedTitle,
-      url: currentUrl,
-      description,
-      applicationCategory: 'ProductivityApplication',
-      operatingSystem: 'All Web Browsers (Windows, Mac, iOS, Android, Linux)',
-      offers: {
-        '@type': 'Offer',
-        price: '0',
-        priceCurrency: 'INR',
+    const schemaList: any[] = [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: formattedTitle,
+        url: currentUrl,
+        description,
+        applicationCategory: 'ProductivityApplication',
+        operatingSystem: 'All Web Browsers (Windows, Mac, iOS, Android, Linux)',
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'INR',
+        },
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '4.9',
+          reviewCount: '14250',
+          bestRating: '5',
+          worstRating: '1',
+        },
       },
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.9',
-        reviewCount: '14250',
-        bestRating: '5',
-        worstRating: '1',
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: 'https://www.doclly.online',
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: title.replace(/—.*$/, '').trim(),
+            item: currentUrl,
+          },
+        ],
       },
-    };
+    ];
 
     // If FAQ items are present, add FAQPage schema
     if (faq && faq.length > 0) {
-      schemaData['mainEntity'] = faq.map((item) => ({
-        '@type': 'Question',
-        name: item.question,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: item.answer,
-        },
-      }));
+      schemaList.push({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faq.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      });
     }
 
-    schemaScript.text = JSON.stringify(schemaData);
+    // If HowTo steps are present, add HowTo schema
+    if (howTo && howTo.steps && howTo.steps.length > 0) {
+      schemaList.push({
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: howTo.name,
+        description: howTo.description,
+        step: howTo.steps.map((step, idx) => ({
+          '@type': 'HowToStep',
+          position: idx + 1,
+          name: step.name,
+          text: step.text,
+        })),
+      });
+    }
+
+    schemaScript.text = JSON.stringify(schemaList);
 
     return () => {
       // Cleanup dynamic schema on route change
@@ -142,7 +193,7 @@ export const SeoHead: React.FC<SeoHeadProps> = ({
         dynamicSchema.remove();
       }
     };
-  }, [title, description, keywords, currentUrl, ogImage, faq]);
+  }, [title, description, keywords, currentUrl, ogImage, faq, howTo]);
 
   return null;
 };

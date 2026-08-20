@@ -72,6 +72,35 @@ export const AppContent: React.FC = () => {
           {/* Dedicated & Generic Tool Routes */}
           <Route path="/tools/:toolId" element={<ToolPage />} />
           
+          {/* Direct Root Tool URLs for Google SEO (like iLovePDF) */}
+          <Route path="/pdf-to-word" element={<ToolPage />} />
+          <Route path="/pdf_to_word" element={<ToolPage />} />
+          <Route path="/pdf-to-word-converter" element={<ToolPage />} />
+          <Route path="/compress-pdf" element={<ToolPage />} />
+          <Route path="/compress_pdf" element={<ToolPage />} />
+          <Route path="/merge-pdf" element={<ToolPage />} />
+          <Route path="/merge_pdf" element={<ToolPage />} />
+          <Route path="/split-pdf" element={<ToolPage />} />
+          <Route path="/split_pdf" element={<ToolPage />} />
+          <Route path="/edit-pdf" element={<ToolPage />} />
+          <Route path="/edit_pdf" element={<ToolPage />} />
+          <Route path="/pdf-to-excel" element={<ToolPage />} />
+          <Route path="/pdf_to_excel" element={<ToolPage />} />
+          <Route path="/pdf-to-jpg" element={<ToolPage />} />
+          <Route path="/pdf_to_jpg" element={<ToolPage />} />
+          <Route path="/jpg-to-pdf" element={<ToolPage />} />
+          <Route path="/jpg_to_pdf" element={<ToolPage />} />
+          <Route path="/word-to-pdf" element={<ToolPage />} />
+          <Route path="/word_to_pdf" element={<ToolPage />} />
+          <Route path="/sign-pdf" element={<ToolPage />} />
+          <Route path="/watermark-pdf" element={<ToolPage />} />
+          <Route path="/protect-pdf" element={<ToolPage />} />
+          <Route path="/unlock-pdf" element={<ToolPage />} />
+          <Route path="/organize-pdf" element={<ToolPage />} />
+          <Route path="/remove-pages" element={<ToolPage />} />
+          <Route path="/extract-pages" element={<ToolPage />} />
+          <Route path="/compare-pdf" element={<ToolPage />} />
+          
           {/* Dashboard, Pricing & Legal */}
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/pricing" element={<PricingPage />} />

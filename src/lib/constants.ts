@@ -55,9 +55,9 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Merge PDFs',
     seo: {
-      title: 'Merge PDF Files Online Free & Secure — Best PDF Combiner — Doclly',
-      description: 'Combine multiple PDF files into one single document in seconds. 100% free, secure client-side zero-retention architecture with drag-and-drop page reordering.',
-      keywords: ['merge pdf free', 'combine pdf files online', 'join pdf documents', 'best pdf merger', 'merge pdf without limit', 'merge pdf secure', 'doclly online'],
+      title: 'Merge PDF files online. Free PDF Combiner — Doclly',
+      description: 'Merge PDF files online for free. Combine multiple PDFs into one single document easily with drag-and-drop page reordering and 100% private client-side processing.',
+      keywords: ['merge pdf files online', 'free pdf combiner', 'merge pdf free', 'combine pdf files', 'join pdf documents', 'merge pdf online free', 'doclly'],
       faq: [
         { question: 'How do I merge multiple PDF files for free?', answer: 'Upload your PDF files, drag them into your preferred order, and click "Merge PDFs". Your combined file is created instantly.' },
         { question: 'Is my data secure when merging PDFs?', answer: 'Yes! All processing happens directly inside your browser memory with zero file uploads to external servers.' }
@@ -159,11 +159,12 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'DOCX',
     actionButtonText: 'Convert to Word',
     seo: {
-      title: 'PDF to Word Converter Free & Editable (.docx) — Best PDF to DOCX — Doclly',
-      description: 'Convert PDF files to editable Microsoft Word (.docx) documents with layout, fonts, and text fidelity preserved. 100% free and private.',
-      keywords: ['pdf to word converter free', 'convert pdf to docx', 'pdf to doc editable online', 'best pdf to word', 'convert pdf to word without losing formatting'],
+      title: 'Convert PDF to Word online for free — Doclly',
+      description: 'Convert PDF to editable Word documents for free. PDF to Word conversion is fast, secure and 100% accurate. Convert scanned PDF to DOCX keeping formatting and fonts.',
+      keywords: ['convert pdf to word', 'convert pdf to word online for free', 'pdf to word converter', 'pdf to docx editable', 'pdf to word free', 'convert scanned pdf to word', 'doclly'],
       faq: [
-        { question: 'Will the converted Word document be fully editable?', answer: 'Yes! Text, paragraphs, and headings are extracted into native Word document format.' }
+        { question: 'Will the converted Word document be fully editable?', answer: 'Yes! Text, paragraphs, and headings are extracted into native Word document format (.docx).' },
+        { question: 'How do I convert PDF to Word for free?', answer: 'Upload your PDF, click "Convert to Word", and your editable DOCX document downloads in seconds.' }
       ]
     }
   },
@@ -362,10 +363,11 @@ export const ALL_TOOLS: ToolDefinition[] = [
     outputFormat: 'PDF',
     actionButtonText: 'Compress PDF',
     seo: {
-      title: 'Compress PDF Online Free & Secure — Reduce PDF Size (Up to 90%) — Doclly',
-      description: 'Compress PDF documents with Balanced, Low, or Extreme 90% compression with instant before/after file size comparison. 100% free and private.',
-      keywords: ['compress pdf free', 'reduce pdf size online', 'shrink pdf file', 'compress pdf under 200kb', 'best pdf compressor', 'compress pdf secure', 'pdf optimizer online'],
+      title: 'Compress PDF online. Reduce PDF file size for free — Doclly',
+      description: 'Compress PDF files for free. Reduce PDF file size online while maintaining maximum quality, font sharpness, and <200 KB target limits with 100% private in-browser processing.',
+      keywords: ['compress pdf', 'compress pdf online', 'reduce pdf file size', 'compress pdf free', 'reduce pdf size online', 'compress pdf under 200kb', 'shrink pdf file', 'best pdf compressor', 'doclly'],
       faq: [
+        { question: 'How do I compress a PDF online for free?', answer: 'Upload your PDF document, choose your preferred compression level (Balanced or Extreme), and click "Compress PDF". Your optimized file downloads instantly.' },
         { question: 'How much can Doclly compress my PDF?', answer: 'Depending on embedded images, size is typically reduced by 40% to 90% while maintaining font sharpness.' }
       ]
     }

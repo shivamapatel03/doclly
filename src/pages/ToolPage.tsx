@@ -46,7 +46,12 @@ import { Copy, Check } from 'lucide-react';
 import { ThreeDIcon } from '../components/common/ThreeDIcon';
 
 export const ToolPage: React.FC = () => {
-  const { toolId } = useParams<{ toolId: string }>();
+  const { toolId: paramId } = useParams<{ toolId: string }>();
+  const location = useLocation();
+  
+  // Extract toolId from route param or root pathname (e.g. /pdf-to-word -> pdf-to-word)
+  const pathId = location.pathname.replace(/^\//, '').replace(/^tools\//, '').replace(/_/g, '-');
+  const toolId = (paramId || pathId || '').toLowerCase();
 
   // Route to specialized dedicated tool views with search keyword aliases
   if (toolId === 'merge-pdf' || toolId === 'combine-pdf') return <MergePdfPage />;
