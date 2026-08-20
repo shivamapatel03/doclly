@@ -104,9 +104,7 @@ export const Footer: React.FC = () => {
                 <Link to="/pricing" className="text-[#6B7280] hover:text-[#111111] transition-colors">Pricing</Link>
               </li>
               <li>
-                <Link to="/student" className="text-[#D97706] font-bold hover:text-amber-800 transition-colors flex items-center gap-1">
-                  <span>🎓 Student Offer (₹19)</span>
-                </Link>
+                <Link to="/student" className="text-[#6B7280] hover:text-[#111111] transition-colors">Student Offer</Link>
               </li>
               <li>
                 <Link to="/privacy" className="text-[#6B7280] hover:text-[#111111] transition-colors">Privacy & Security</Link>
