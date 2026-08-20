@@ -125,11 +125,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth }) => {
       icon3d: 'image',
     },
     {
-      to: '/tools/html-to-pdf',
-      label: 'HTML to PDF',
-      badge: 'HTML',
-      desc: 'Web code to PDF format',
-      icon3d: 'html',
+      to: '/govt-exam-resizer',
+      label: 'Govt Exam Photo Resizer',
+      badge: '<50 KB',
+      desc: 'UPSC, SSC, GATE & NEET presets',
+      icon3d: 'image',
     },
   ];
 

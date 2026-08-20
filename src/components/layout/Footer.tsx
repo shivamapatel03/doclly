@@ -90,6 +90,11 @@ export const Footer: React.FC = () => {
               <li>
                 <Link to="/tools/compress-pdf" className="text-[#6B7280] hover:text-[#111111] transition-colors">Compress PDF</Link>
               </li>
+              <li>
+                <Link to="/govt-exam-resizer" className="text-[#D97706] font-bold hover:text-amber-800 transition-colors flex items-center gap-1">
+                  <span>📸 Govt Exam Photo Resizer</span>
+                </Link>
+              </li>
             </ul>
           </div>
 
