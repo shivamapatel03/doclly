@@ -9,23 +9,22 @@ import {
   RotateCw,
   ZoomIn,
   ZoomOut,
-  Sparkles,
   Download,
   CheckCircle2,
   ShieldCheck,
   Zap,
-  Info,
   Calendar,
   User,
   ChevronDown,
-  RefreshCw
+  RefreshCw,
+  SlidersHorizontal,
+  Search
 } from 'lucide-react';
-import { ThreeDIcon } from '../../components/common/ThreeDIcon';
 
 interface ExamPreset {
   id: string;
   name: string;
-  category: 'govt' | 'entrance' | 'banking' | 'passport';
+  category: 'all' | 'govt' | 'entrance' | 'banking' | 'passport';
   docType: 'photo' | 'signature' | 'thumb' | 'postcard';
   widthPx: number;
   heightPx: number;
@@ -36,7 +35,7 @@ interface ExamPreset {
   maxKb: number;
   recommendedDpi: number;
   allowNameDateStamp: boolean;
-  description: string;
+  tag: string;
 }
 
 const EXAM_PRESETS: ExamPreset[] = [
@@ -55,7 +54,7 @@ const EXAM_PRESETS: ExamPreset[] = [
     maxKb: 50,
     recommendedDpi: 300,
     allowNameDateStamp: true,
-    description: '3.5 x 4.5 cm, strictly 20 KB to 50 KB (350x450 px)'
+    tag: '20-50 KB'
   },
   {
     id: 'upsc-sign',
@@ -71,12 +70,12 @@ const EXAM_PRESETS: ExamPreset[] = [
     maxKb: 20,
     recommendedDpi: 300,
     allowNameDateStamp: false,
-    description: '3.5 x 1.5 cm, strictly 10 KB to 20 KB'
+    tag: '10-20 KB'
   },
   // SSC
   {
     id: 'ssc-photo',
-    name: 'SSC (CGL / CHSL / MTS / GD) Photo',
+    name: 'SSC (CGL / CHSL / MTS) Photo',
     category: 'govt',
     docType: 'photo',
     widthPx: 350,
@@ -88,7 +87,7 @@ const EXAM_PRESETS: ExamPreset[] = [
     maxKb: 50,
     recommendedDpi: 300,
     allowNameDateStamp: true,
-    description: '3.5 x 4.5 cm, 20 KB - 50 KB with Name & Date'
+    tag: '20-50 KB'
   },
   {
     id: 'ssc-sign',
@@ -104,7 +103,7 @@ const EXAM_PRESETS: ExamPreset[] = [
     maxKb: 20,
     recommendedDpi: 300,
     allowNameDateStamp: false,
-    description: '4.0 x 2.0 cm, 10 KB - 20 KB (Black/Blue ink)'
+    tag: '10-20 KB'
   },
   // GATE / JAM
   {
@@ -121,7 +120,7 @@ const EXAM_PRESETS: ExamPreset[] = [
     maxKb: 200,
     recommendedDpi: 300,
     allowNameDateStamp: false,
-    description: '3.5 x 4.5 cm, 20 KB to 200 KB'
+    tag: '20-200 KB'
   },
   {
     id: 'gate-sign',
@@ -137,12 +136,12 @@ const EXAM_PRESETS: ExamPreset[] = [
     maxKb: 200,
     recommendedDpi: 300,
     allowNameDateStamp: false,
-    description: '3.0 x 0.8 cm, 5 KB to 200 KB'
+    tag: '5-200 KB'
   },
-  // NEET / NTA
+  // NEET
   {
     id: 'neet-photo',
-    name: 'NEET UG / PG Passport Photo',
+    name: 'NEET UG / PG Photo',
     category: 'entrance',
     docType: 'photo',
     widthPx: 350,
@@ -154,23 +153,23 @@ const EXAM_PRESETS: ExamPreset[] = [
     maxKb: 200,
     recommendedDpi: 300,
     allowNameDateStamp: true,
-    description: '10 KB to 200 KB with Name & Date of Photo (DOP)'
+    tag: '10-200 KB'
   },
   {
     id: 'neet-postcard',
-    name: 'NEET Postcard Photo (4x6 in)',
+    name: 'NEET Postcard (4x6 in)',
     category: 'entrance',
     docType: 'postcard',
     widthPx: 600,
     heightPx: 900,
     aspectRatio: 600 / 900,
-    widthCm: '4 x 6 inches',
+    widthCm: '4 x 6 in',
     heightCm: '10 x 15 cm',
     minKb: 50,
     maxKb: 300,
     recommendedDpi: 300,
     allowNameDateStamp: true,
-    description: '4 x 6 inch postcard size photo, 50 KB to 300 KB'
+    tag: '50-300 KB'
   },
   {
     id: 'neet-sign',
@@ -184,12 +183,12 @@ const EXAM_PRESETS: ExamPreset[] = [
     maxKb: 30,
     recommendedDpi: 300,
     allowNameDateStamp: false,
-    description: '4 KB to 30 KB with running handwriting'
+    tag: '4-30 KB'
   },
-  // JEE Main
+  // JEE
   {
     id: 'jee-photo',
-    name: 'JEE Main / Advanced Photo',
+    name: 'JEE Main / Adv Photo',
     category: 'entrance',
     docType: 'photo',
     widthPx: 350,
@@ -199,9 +198,9 @@ const EXAM_PRESETS: ExamPreset[] = [
     maxKb: 200,
     recommendedDpi: 300,
     allowNameDateStamp: true,
-    description: '10 KB to 200 KB, clear white background'
+    tag: '10-200 KB'
   },
-  // Banking (IBPS / SBI)
+  // Banking
   {
     id: 'ibps-photo',
     name: 'IBPS / SBI Banking Photo',
@@ -214,7 +213,7 @@ const EXAM_PRESETS: ExamPreset[] = [
     maxKb: 50,
     recommendedDpi: 200,
     allowNameDateStamp: false,
-    description: '200 x 230 px, strictly 20 KB to 50 KB'
+    tag: '20-50 KB'
   },
   {
     id: 'ibps-sign',
@@ -228,11 +227,11 @@ const EXAM_PRESETS: ExamPreset[] = [
     maxKb: 20,
     recommendedDpi: 200,
     allowNameDateStamp: false,
-    description: '140 x 60 px, strictly 10 KB to 20 KB'
+    tag: '10-20 KB'
   },
   {
     id: 'ibps-thumb',
-    name: 'IBPS Left Thumb Impression',
+    name: 'IBPS Thumb Impression',
     category: 'banking',
     docType: 'thumb',
     widthPx: 240,
@@ -242,9 +241,9 @@ const EXAM_PRESETS: ExamPreset[] = [
     maxKb: 50,
     recommendedDpi: 200,
     allowNameDateStamp: false,
-    description: '240 x 240 px, 20 KB to 50 KB (Blue/Black ink)'
+    tag: '20-50 KB'
   },
-  // Railway (RRB)
+  // Railway
   {
     id: 'rrb-photo',
     name: 'Railway RRB Photo',
@@ -253,14 +252,13 @@ const EXAM_PRESETS: ExamPreset[] = [
     widthPx: 350,
     heightPx: 450,
     aspectRatio: 350 / 450,
-    widthCm: '3.5 x 4.5 cm',
     minKb: 20,
     maxKb: 50,
     recommendedDpi: 300,
     allowNameDateStamp: false,
-    description: '3.5 x 4.5 cm, strictly 20 KB to 50 KB'
+    tag: '20-50 KB'
   },
-  // Passport / Visa
+  // Passport
   {
     id: 'passport-in',
     name: 'Indian Passport / Visa Photo',
@@ -274,12 +272,14 @@ const EXAM_PRESETS: ExamPreset[] = [
     maxKb: 100,
     recommendedDpi: 300,
     allowNameDateStamp: false,
-    description: '35 x 45 mm, 300 DPI, white plain background'
+    tag: '30-100 KB'
   }
 ];
 
 export const GovtExamResizerPage: React.FC = () => {
   const [selectedPresetId, setSelectedPresetId] = useState<string>('upsc-photo');
+  const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [presetSearch, setPresetSearch] = useState('');
   const [customMode, setCustomMode] = useState(false);
   const [customWidth, setCustomWidth] = useState<number>(350);
   const [customHeight, setCustomHeight] = useState<number>(450);
@@ -319,6 +319,14 @@ export const GovtExamResizerPage: React.FC = () => {
   const targetHeight = customMode ? customHeight : currentPreset.heightPx;
   const targetMinKb = customMode ? customMinKb : currentPreset.minKb;
   const targetMaxKb = customMode ? customMaxKb : currentPreset.maxKb;
+
+  // Filter Presets for Sidebar
+  const filteredPresets = EXAM_PRESETS.filter((p) => {
+    const catMatch = activeCategory === 'all' || p.category === activeCategory;
+    if (!catMatch) return false;
+    if (!presetSearch) return true;
+    return p.name.toLowerCase().includes(presetSearch.toLowerCase()) || p.tag.toLowerCase().includes(presetSearch.toLowerCase());
+  });
 
   // Handle image upload
   const handleFileSelect = (files: FileList | File[]) => {
@@ -415,7 +423,7 @@ export const GovtExamResizerPage: React.FC = () => {
     };
   }, [imageSrc, targetWidth, targetHeight, rotation, zoom, panX, panY, enableNameDateStamp, candidateName, photoDate]);
 
-  // Binary search JPEG compressor to guarantee file is inside [minKb, maxKb]
+  // Binary search JPEG compressor
   const handleProcessResize = async () => {
     if (!canvasRef.current) return;
     setIsProcessing(true);
@@ -431,7 +439,6 @@ export const GovtExamResizerPage: React.FC = () => {
       let bestBlob: Blob | null = null;
       let bestDiff = Infinity;
 
-      // 8-step binary search for exact quality
       for (let i = 0; i < 8; i++) {
         const midQuality = (low + high) / 2;
         const blob: Blob = await new Promise((resolve) =>
@@ -458,7 +465,6 @@ export const GovtExamResizerPage: React.FC = () => {
         }
       }
 
-      // Fallback if still too small/large
       const finalBlob: Blob =
         bestBlob ||
         (await new Promise<Blob>((resolve) =>
@@ -485,16 +491,16 @@ export const GovtExamResizerPage: React.FC = () => {
 
   const howToSteps = [
     {
-      name: 'Select Exam Preset or Custom Size',
-      text: 'Choose your exam (e.g. UPSC, SSC, GATE, NEET, JEE, IBPS) to automatically lock required dimensions (cm/px) and target KB.'
+      name: 'Select Exam Preset in Sidebar',
+      text: 'Choose your target exam (UPSC, SSC, GATE, NEET, JEE, IBPS) to automatically lock dimensions and KB limits.'
     },
     {
-      name: 'Upload & Adjust Photo / Signature',
-      text: 'Drag your photo into the canvas. Zoom and pan to center your face or signature. Add optional Name & Date stamp.'
+      name: 'Upload & Align in Studio',
+      text: 'Drop photo or signature. Use zoom, rotate, and center guide. Add Name & Date of Photo (DOP) if required.'
     },
     {
-      name: 'Download Compliant Photo (<50 KB)',
-      text: 'Click "Resize to Exact Size & KB" to automatically generate a portal-compliant JPEG ready for instant upload.'
+      name: 'Download Compliant File (<50 KB)',
+      text: 'Click "Resize to Exact Size & KB" to get your portal-compliant JPEG ready for instant upload.'
     }
   ];
 
@@ -518,7 +524,7 @@ export const GovtExamResizerPage: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
       <div className="absolute top-0 right-0 w-96 h-96 doclly-dot-pattern opacity-25 pointer-events-none doclly-radial-mask" />
 
       <SeoHead
@@ -545,125 +551,189 @@ export const GovtExamResizerPage: React.FC = () => {
 
       <Breadcrumb items={[{ label: 'Tools', to: '/' }, { label: 'Govt Exam Photo Resizer' }]} />
 
-      {/* Main Header */}
-      <div className="text-center max-w-2xl mx-auto space-y-2 mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFC800]/15 border border-[#DC9F00]/30 text-xs font-bold text-[#111111] mb-1">
-          <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-          <span>100% Portal Compliant • Zero Uploads Privacy</span>
-        </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-[#111111] tracking-tight">
+      {/* Main Clean Header */}
+      <div className="text-center max-w-2xl mx-auto space-y-1 mb-6">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111111] tracking-tight">
           Govt Exam Photo & Signature Resizer
         </h1>
-        <p className="text-sm sm:text-base text-[#6B7280]">
-          1-Click presets for <strong>UPSC, SSC, GATE, NEET, JEE & IBPS</strong>. Automatically resize to exact dimensions & <strong>&lt;50 KB</strong>.
+        <p className="text-xs sm:text-sm text-[#6B7280]">
+          1-Click presets for <strong>UPSC, SSC, GATE, NEET, JEE & IBPS</strong>. Exact dimensions & <strong>&lt;50 KB</strong>.
         </p>
       </div>
 
-      {/* Main Interactive Studio Card */}
-      <div className="bg-white border border-[#E5E5E5] rounded-3xl p-6 sm:p-8 shadow-xs relative z-10 space-y-8">
+      {/* Main Studio Card: Two-Column Workspace Layout (No Vertical Scrolling) */}
+      <div className="bg-white border border-[#E5E5E5] rounded-3xl p-5 sm:p-6 shadow-xs relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        {/* Preset Selector Grid */}
-        <div className="space-y-3">
+        {/* ========================================================= */}
+        {/* LEFT COLUMN: PRESET SELECTOR SIDEBAR                      */}
+        {/* ========================================================= */}
+        <div className="lg:col-span-4 border border-[#E5E5E5] rounded-2xl p-4 bg-[#FAFAFA] flex flex-col space-y-3">
+          
           <div className="flex items-center justify-between">
-            <label className="text-xs font-extrabold uppercase tracking-wider text-[#111111]">
-              1. Choose Exam Preset or Custom Size
-            </label>
+            <span className="text-xs font-extrabold uppercase tracking-wider text-[#111111]">
+              Exam Presets
+            </span>
             <button
               onClick={() => setCustomMode(!customMode)}
-              className="text-xs font-bold text-[#111111] hover:underline"
+              className="text-[11px] font-bold text-[#111111] hover:underline flex items-center gap-1"
             >
-              {customMode ? '← Use Standard Exam Presets' : '⚙️ Custom Dimensions'}
+              <SlidersHorizontal className="w-3 h-3" />
+              {customMode ? 'Presets' : 'Custom'}
             </button>
           </div>
 
           {!customMode ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
-              {EXAM_PRESETS.map((preset) => (
-                <button
-                  key={preset.id}
-                  onClick={() => {
-                    setSelectedPresetId(preset.id);
-                    setResultBlob(null);
-                  }}
-                  className={`p-3 rounded-xl border text-left transition-all flex flex-col justify-between ${
-                    selectedPresetId === preset.id
-                      ? 'border-[#111111] bg-[#111111] text-white shadow-xs'
-                      : 'border-[#E5E5E5] bg-[#FAFAFA] text-[#111111] hover:border-[#CBD5E1] hover:bg-white'
-                  }`}
-                >
-                  <div className="font-bold text-xs leading-snug">{preset.name}</div>
-                  <div
-                    className={`text-[10.5px] mt-1.5 font-medium ${
-                      selectedPresetId === preset.id ? 'text-amber-300' : 'text-[#6B7280]'
+            <>
+              {/* Category Filter Tabs */}
+              <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none">
+                {[
+                  { id: 'all', label: 'All' },
+                  { id: 'govt', label: 'Govt' },
+                  { id: 'entrance', label: 'Entrance' },
+                  { id: 'banking', label: 'Banking' },
+                  { id: 'passport', label: 'Passport' }
+                ].map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={`px-2.5 py-1 text-[10.5px] font-bold rounded-full transition-all whitespace-nowrap ${
+                      activeCategory === cat.id
+                        ? 'bg-[#111111] text-white shadow-2xs'
+                        : 'bg-white border border-[#E5E5E5] text-[#64748B] hover:bg-[#F1F5F9]'
                     }`}
                   >
-                    {preset.minKb} KB – {preset.maxKb} KB ({preset.widthPx}x{preset.heightPx} px)
-                  </div>
-                </button>
-              ))}
-            </div>
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Search Box */}
+              <div className="relative">
+                <Search className="w-3.5 h-3.5 text-[#94A3B8] absolute left-2.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder="Search exam (UPSC, SSC, GATE)..."
+                  value={presetSearch}
+                  onChange={(e) => setPresetSearch(e.target.value)}
+                  className="w-full pl-8 pr-3 py-1.5 bg-white border border-[#CBD5E1] rounded-lg text-xs outline-none focus:border-[#111111]"
+                />
+              </div>
+
+              {/* Presets Vertical Scroll List */}
+              <div className="space-y-1.5 max-h-[340px] overflow-y-auto pr-1">
+                {filteredPresets.map((preset) => (
+                  <button
+                    key={preset.id}
+                    onClick={() => {
+                      setSelectedPresetId(preset.id);
+                      setResultBlob(null);
+                    }}
+                    className={`w-full p-2.5 rounded-xl border text-left transition-all flex items-center justify-between ${
+                      selectedPresetId === preset.id
+                        ? 'border-[#111111] bg-[#111111] text-white shadow-xs'
+                        : 'border-[#E5E5E5] bg-white text-[#111111] hover:border-[#CBD5E1]'
+                    }`}
+                  >
+                    <div className="min-w-0 pr-2">
+                      <div className="font-bold text-xs truncate">{preset.name}</div>
+                      <div
+                        className={`text-[10px] ${
+                          selectedPresetId === preset.id ? 'text-zinc-300' : 'text-[#6B7280]'
+                        }`}
+                      >
+                        {preset.widthPx}x{preset.heightPx} px {preset.widthCm && `(${preset.widthCm})`}
+                      </div>
+                    </div>
+                    <span
+                      className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full shrink-0 ${
+                        selectedPresetId === preset.id
+                          ? 'bg-[#FFC800] text-[#111111]'
+                          : 'bg-[#F1F5F9] text-[#475569]'
+                      }`}
+                    >
+                      {preset.tag}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl">
-              <div>
-                <label className="block text-xs font-bold text-[#334155] mb-1">Width (px)</label>
-                <input
-                  type="number"
-                  value={customWidth}
-                  onChange={(e) => setCustomWidth(Number(e.target.value))}
-                  className="w-full px-3 py-2 bg-white border border-[#CBD5E1] rounded-lg text-xs font-bold"
-                />
+            <div className="space-y-3 p-3 bg-white border border-[#E2E8F0] rounded-xl">
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-[10px] font-bold text-[#475569] mb-0.5">Width (px)</label>
+                  <input
+                    type="number"
+                    value={customWidth}
+                    onChange={(e) => setCustomWidth(Number(e.target.value))}
+                    className="w-full px-2.5 py-1.5 bg-[#F8FAFC] border border-[#CBD5E1] rounded text-xs font-bold"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-[#475569] mb-0.5">Height (px)</label>
+                  <input
+                    type="number"
+                    value={customHeight}
+                    onChange={(e) => setCustomHeight(Number(e.target.value))}
+                    className="w-full px-2.5 py-1.5 bg-[#F8FAFC] border border-[#CBD5E1] rounded text-xs font-bold"
+                  />
+                </div>
               </div>
-              <div>
-                <label className="block text-xs font-bold text-[#334155] mb-1">Height (px)</label>
-                <input
-                  type="number"
-                  value={customHeight}
-                  onChange={(e) => setCustomHeight(Number(e.target.value))}
-                  className="w-full px-3 py-2 bg-white border border-[#CBD5E1] rounded-lg text-xs font-bold"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-[#334155] mb-1">Min Size (KB)</label>
-                <input
-                  type="number"
-                  value={customMinKb}
-                  onChange={(e) => setCustomMinKb(Number(e.target.value))}
-                  className="w-full px-3 py-2 bg-white border border-[#CBD5E1] rounded-lg text-xs font-bold"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-[#334155] mb-1">Max Size (KB)</label>
-                <input
-                  type="number"
-                  value={customMaxKb}
-                  onChange={(e) => setCustomMaxKb(Number(e.target.value))}
-                  className="w-full px-3 py-2 bg-white border border-[#CBD5E1] rounded-lg text-xs font-bold"
-                />
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-[10px] font-bold text-[#475569] mb-0.5">Min KB</label>
+                  <input
+                    type="number"
+                    value={customMinKb}
+                    onChange={(e) => setCustomMinKb(Number(e.target.value))}
+                    className="w-full px-2.5 py-1.5 bg-[#F8FAFC] border border-[#CBD5E1] rounded text-xs font-bold"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-[#475569] mb-0.5">Max KB</label>
+                  <input
+                    type="number"
+                    value={customMaxKb}
+                    onChange={(e) => setCustomMaxKb(Number(e.target.value))}
+                    className="w-full px-2.5 py-1.5 bg-[#F8FAFC] border border-[#CBD5E1] rounded text-xs font-bold"
+                  />
+                </div>
               </div>
             </div>
           )}
+
+          {/* Current Target Specs Footer */}
+          <div className="pt-2 border-t border-[#E5E5E5] flex items-center justify-between text-[11px] text-[#64748B]">
+            <span>Target Bound:</span>
+            <strong className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+              {targetMinKb} KB – {targetMaxKb} KB
+            </strong>
+          </div>
+
         </div>
 
-        {/* Upload & Crop Studio */}
-        <div className="space-y-4">
-          <label className="text-xs font-extrabold uppercase tracking-wider text-[#111111]">
-            2. Upload & Crop Your Image
-          </label>
-
+        {/* ========================================================= */}
+        {/* RIGHT COLUMN: MAIN INTERACTIVE STUDIO & DOWNLOAD          */}
+        {/* ========================================================= */}
+        <div className="lg:col-span-8 flex flex-col space-y-4">
+          
           {!imageSrc ? (
             <div
-              onClick={() => document.getElementById('examImageInput')?.click()}
-              className="border-2 border-dashed border-[#CBD5E1] rounded-2xl p-10 text-center cursor-pointer hover:border-[#FFC800] hover:bg-[#FFFBEB]/40 transition-all space-y-3"
+              onClick={() => document.getElementById('examImageInputMain')?.click()}
+              className="border-2 border-dashed border-[#CBD5E1] rounded-2xl p-12 text-center cursor-pointer hover:border-[#FFC800] hover:bg-[#FFFBEB]/40 transition-all flex flex-col items-center justify-center space-y-3 min-h-[340px]"
             >
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-[#F4F4F5] flex items-center justify-center">
+              <div className="w-14 h-14 rounded-2xl bg-[#F4F4F5] flex items-center justify-center">
                 <Upload className="w-6 h-6 text-[#6B7280]" />
               </div>
               <div>
                 <p className="text-sm font-bold text-[#111111]">Click to upload photo or signature</p>
-                <p className="text-xs text-[#6B7280]">Supports JPG, JPEG, PNG, WebP (Max 25 MB)</p>
+                <p className="text-xs text-[#6B7280]">Supports JPG, JPEG, PNG, WebP</p>
               </div>
+              <span className="text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">
+                Active Preset: {customMode ? 'Custom Dimensions' : currentPreset.name}
+              </span>
               <input
-                id="examImageInput"
+                id="examImageInputMain"
                 type="file"
                 accept="image/*"
                 onChange={(e) => e.target.files && handleFileSelect(e.target.files)}
@@ -671,15 +741,15 @@ export const GovtExamResizerPage: React.FC = () => {
               />
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-start">
               
-              {/* Left Column: Canvas Preview & Controls */}
-              <div className="lg:col-span-7 space-y-4 flex flex-col items-center">
+              {/* Studio Canvas Area */}
+              <div className="md:col-span-6 flex flex-col items-center space-y-3">
                 <div
                   className="relative border-2 border-[#111111] rounded-2xl overflow-hidden shadow-md bg-white cursor-grab active:cursor-grabbing flex items-center justify-center"
                   style={{
-                    width: Math.min(320, targetWidth),
-                    height: (Math.min(320, targetWidth) / targetWidth) * targetHeight
+                    width: Math.min(260, targetWidth),
+                    height: (Math.min(260, targetWidth) / targetWidth) * targetHeight
                   }}
                   onMouseDown={handleMouseDown}
                   onMouseMove={handleMouseMove}
@@ -688,20 +758,20 @@ export const GovtExamResizerPage: React.FC = () => {
                 >
                   <canvas ref={canvasRef} className="w-full h-full object-contain pointer-events-none" />
 
-                  {/* Face / Center Guide Overlay */}
+                  {/* Face Guide Overlay for Photos */}
                   {currentPreset.docType === 'photo' && (
-                    <div className="absolute inset-0 pointer-events-none border border-dashed border-sky-400/60 rounded-full m-8 flex items-center justify-center opacity-40">
-                      <span className="text-[10px] font-bold text-sky-600 bg-white/80 px-1.5 py-0.5 rounded">
-                        Face Area
+                    <div className="absolute inset-0 pointer-events-none border border-dashed border-sky-400/60 rounded-full m-6 flex items-center justify-center opacity-40">
+                      <span className="text-[9px] font-bold text-sky-600 bg-white/80 px-1 py-0.5 rounded">
+                        Face
                       </span>
                     </div>
                   )}
                 </div>
 
-                {/* Adjust Controls Bar */}
-                <div className="w-full max-w-sm flex items-center justify-between gap-4 p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-xs">
-                  <div className="flex items-center gap-2 flex-1">
-                    <ZoomOut className="w-4 h-4 text-[#64748B]" />
+                {/* Compact Zoom & Rotate Toolbar */}
+                <div className="w-full max-w-[260px] flex items-center justify-between gap-2 p-2 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-xs">
+                  <div className="flex items-center gap-1.5 flex-1">
+                    <ZoomOut className="w-3.5 h-3.5 text-[#64748B]" />
                     <input
                       type="range"
                       min="0.5"
@@ -711,15 +781,15 @@ export const GovtExamResizerPage: React.FC = () => {
                       onChange={(e) => setZoom(parseFloat(e.target.value))}
                       className="w-full accent-[#111111]"
                     />
-                    <ZoomIn className="w-4 h-4 text-[#64748B]" />
+                    <ZoomIn className="w-3.5 h-3.5 text-[#64748B]" />
                   </div>
 
                   <button
                     onClick={() => setRotation((r) => (r + 90) % 360)}
-                    className="p-1.5 hover:bg-white rounded-lg border border-transparent hover:border-[#CBD5E1] transition-all"
+                    className="p-1 hover:bg-white rounded border border-transparent hover:border-[#CBD5E1]"
                     title="Rotate 90°"
                   >
-                    <RotateCw className="w-4 h-4 text-[#111111]" />
+                    <RotateCw className="w-3.5 h-3.5 text-[#111111]" />
                   </button>
 
                   <button
@@ -729,84 +799,70 @@ export const GovtExamResizerPage: React.FC = () => {
                       setPanY(0);
                       setRotation(0);
                     }}
-                    className="p-1.5 hover:bg-white rounded-lg border border-transparent hover:border-[#CBD5E1] transition-all"
+                    className="p-1 hover:bg-white rounded border border-transparent hover:border-[#CBD5E1]"
                     title="Reset Alignment"
                   >
-                    <RefreshCw className="w-4 h-4 text-[#111111]" />
+                    <RefreshCw className="w-3.5 h-3.5 text-[#111111]" />
                   </button>
                 </div>
-
-                <p className="text-[11px] text-[#6B7280] text-center">
-                  💡 <strong>Tip:</strong> Drag image inside the frame to center your face or signature.
-                </p>
               </div>
 
-              {/* Right Column: Settings & Download Card */}
-              <div className="lg:col-span-5 space-y-5">
+              {/* Studio Right Controls & Download Action */}
+              <div className="md:col-span-6 space-y-4">
                 
-                {/* Requirements Info Card */}
-                <div className="p-4 bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl space-y-2">
-                  <div className="flex items-center justify-between text-xs font-extrabold text-[#111111]">
-                    <span>Target Requirements</span>
-                    <span className="text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded-full">
-                      {targetMinKb} KB – {targetMaxKb} KB
-                    </span>
+                {/* Active Preset Specs Banner */}
+                <div className="p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-xs space-y-1">
+                  <div className="flex items-center justify-between font-bold text-[#111111]">
+                    <span>{customMode ? 'Custom Specs' : currentPreset.name}</span>
+                    <span className="text-emerald-700">{targetMinKb} - {targetMaxKb} KB</span>
                   </div>
-                  <div className="text-xs text-[#64748B] space-y-1">
-                    <div>• Dimensions: <strong>{targetWidth} × {targetHeight} px</strong> {currentPreset.widthCm && `(${currentPreset.widthCm} x ${currentPreset.heightCm})`}</div>
-                    <div>• DPI: <strong>{currentPreset.recommendedDpi} DPI compliant</strong></div>
-                    <div>• Format: <strong>JPEG / JPG standard</strong></div>
+                  <div className="text-[11px] text-[#64748B]">
+                    Output: <strong>{targetWidth}x{targetHeight} px</strong> ({currentPreset.recommendedDpi} DPI)
                   </div>
                 </div>
 
-                {/* Name & Date of Photo (DOP) Stamp Toggle */}
+                {/* Name & Date Stamp (DOP) */}
                 {currentPreset.allowNameDateStamp && (
-                  <div className="p-4 bg-white border border-[#E5E5E5] rounded-2xl space-y-3 shadow-2xs">
+                  <div className="p-3 bg-white border border-[#E5E5E5] rounded-xl space-y-2 text-xs">
                     <label className="flex items-center justify-between cursor-pointer">
-                      <span className="text-xs font-bold text-[#111111] flex items-center gap-1.5">
+                      <span className="font-bold text-[#111111] flex items-center gap-1">
                         <User className="w-3.5 h-3.5 text-blue-600" />
-                        Add Name & Date Stamp (D.O.P)
+                        Add Name & Date Stamp
                       </span>
                       <input
                         type="checkbox"
                         checked={enableNameDateStamp}
                         onChange={(e) => setEnableNameDateStamp(e.target.checked)}
-                        className="w-4 h-4 accent-[#FFC800] rounded"
+                        className="w-3.5 h-3.5 accent-[#FFC800] rounded"
                       />
                     </label>
 
                     {enableNameDateStamp && (
-                      <div className="space-y-2 pt-1 border-t border-[#F1F5F9]">
-                        <div>
-                          <label className="block text-[11px] font-semibold text-[#475569] mb-1">Candidate Name</label>
-                          <input
-                            type="text"
-                            placeholder="e.g. RAHUL SHARMA"
-                            value={candidateName}
-                            onChange={(e) => setCandidateName(e.target.value)}
-                            className="w-full px-3 py-1.5 text-xs bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg font-bold"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[11px] font-semibold text-[#475569] mb-1">Date of Photo (D.O.P)</label>
-                          <input
-                            type="date"
-                            value={photoDate}
-                            onChange={(e) => setPhotoDate(e.target.value)}
-                            className="w-full px-3 py-1.5 text-xs bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg"
-                          />
-                        </div>
+                      <div className="space-y-1.5 pt-1.5 border-t border-[#F1F5F9]">
+                        <input
+                          type="text"
+                          placeholder="Candidate Name (e.g. RAHUL SHARMA)"
+                          value={candidateName}
+                          onChange={(e) => setCandidateName(e.target.value)}
+                          className="w-full px-2.5 py-1 text-xs bg-[#F8FAFC] border border-[#CBD5E1] rounded font-bold"
+                        />
+                        <input
+                          type="date"
+                          value={photoDate}
+                          onChange={(e) => setPhotoDate(e.target.value)}
+                          className="w-full px-2.5 py-1 text-xs bg-[#F8FAFC] border border-[#CBD5E1] rounded"
+                        />
                       </div>
                     )}
                   </div>
                 )}
 
-                {/* Process Button */}
-                <div className="space-y-3 pt-2">
+                {/* Resize CTA Button */}
+                <div className="space-y-2">
                   <Button
-                    size="lg"
+                    size="md"
                     variant="primary"
-                    className="w-full"
+                    className="w-full py-3"
                     disabled={isProcessing}
                     isLoading={isProcessing}
                     onClick={handleProcessResize}
@@ -820,31 +876,31 @@ export const GovtExamResizerPage: React.FC = () => {
                       setImageFile(null);
                       setResultBlob(null);
                     }}
-                    className="w-full py-2 text-xs font-bold text-[#6B7280] hover:text-[#111111] hover:underline text-center"
+                    className="w-full text-[11px] font-bold text-[#6B7280] hover:text-[#111111] hover:underline text-center"
                   >
-                    Upload Different Image
+                    Change Image
                   </button>
                 </div>
 
-                {/* Result & Download Box */}
+                {/* Result & Instant Download Box */}
                 {resultBlob && (
-                  <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl space-y-3 animate-in fade-in duration-200">
-                    <div className="flex items-center gap-2 text-emerald-800 font-bold text-xs">
+                  <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-2xl space-y-2.5 animate-in fade-in duration-200">
+                    <div className="flex items-center gap-1.5 text-emerald-800 font-bold text-xs">
                       <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                      <span>Ready for Instant Portal Upload!</span>
+                      <span>Ready for Instant Upload!</span>
                     </div>
 
-                    <div className="flex items-center justify-between text-xs text-emerald-900 bg-white/70 p-2.5 rounded-xl border border-emerald-100">
-                      <span>Dimensions: <strong>{targetWidth}x{targetHeight} px</strong></span>
-                      <span>Final Size: <strong className="text-emerald-700">{resultSizeKb} KB</strong></span>
+                    <div className="flex items-center justify-between text-[11.5px] text-emerald-900 bg-white/70 p-2 rounded-xl border border-emerald-100">
+                      <span>{targetWidth}x{targetHeight} px</span>
+                      <strong className="text-emerald-700">{resultSizeKb} KB (Compliant)</strong>
                     </div>
 
                     <button
                       onClick={handleDownload}
-                      className="w-full py-3 px-4 bg-[#FFC800] hover:bg-[#F5B800] text-[#111111] font-extrabold text-xs rounded-full border border-[#DC9F00] shadow-sm flex items-center justify-center gap-2 transition-all"
+                      className="w-full py-2.5 px-3 bg-[#FFC800] hover:bg-[#F5B800] text-[#111111] font-extrabold text-xs rounded-full border border-[#DC9F00] shadow-xs flex items-center justify-center gap-1.5 transition-all"
                     >
-                      <Download className="w-4 h-4" />
-                      Download Compliant Photo (.jpg)
+                      <Download className="w-3.5 h-3.5" />
+                      Download Compliant JPEG
                     </button>
                   </div>
                 )}
@@ -852,73 +908,47 @@ export const GovtExamResizerPage: React.FC = () => {
               </div>
             </div>
           )}
+
         </div>
 
       </div>
 
       {/* 3-Step How-To Guide */}
-      <section className="mt-16 space-y-8">
-        <div className="text-center max-w-xl mx-auto space-y-2">
-          <h2 className="text-2xl font-extrabold text-[#111111]">
+      <section className="mt-14 space-y-6">
+        <div className="text-center max-w-xl mx-auto space-y-1">
+          <h2 className="text-xl font-extrabold text-[#111111]">
             How to resize photo and signature for exams
           </h2>
-          <p className="text-sm text-[#6B7280]">
+          <p className="text-xs text-[#6B7280]">
             Generate portal-ready photos in 3 simple steps without Photoshop:
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {howToSteps.map((step, idx) => (
-            <div key={idx} className="bg-white p-6 rounded-2xl border border-[#E5E5E5] space-y-3 shadow-2xs">
-              <div className="w-8 h-8 rounded-full bg-[#FFC800] text-[#111111] font-extrabold flex items-center justify-center text-sm shadow-xs">
+            <div key={idx} className="bg-white p-5 rounded-2xl border border-[#E5E5E5] space-y-2 shadow-2xs">
+              <div className="w-7 h-7 rounded-full bg-[#FFC800] text-[#111111] font-extrabold flex items-center justify-center text-xs shadow-xs">
                 {idx + 1}
               </div>
-              <h3 className="font-bold text-[#111111] text-base">{step.name}</h3>
+              <h3 className="font-bold text-[#111111] text-sm">{step.name}</h3>
               <p className="text-xs text-[#6B7280] leading-relaxed">{step.text}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Feature Highlights */}
-      <section className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl p-6 space-y-2">
-          <ShieldCheck className="w-6 h-6 text-emerald-600" />
-          <h3 className="font-bold text-[#111111] text-sm">100% In-Browser Privacy</h3>
-          <p className="text-xs text-[#64748B] leading-relaxed">
-            Your photos and signatures are never uploaded to any cloud server. Everything executes locally in your browser memory.
-          </p>
-        </div>
-
-        <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl p-6 space-y-2">
-          <Zap className="w-6 h-6 text-amber-500" />
-          <h3 className="font-bold text-[#111111] text-sm">Strict KB Bound Guarantee</h3>
-          <p className="text-xs text-[#64748B] leading-relaxed">
-            Automated binary search compression guarantees your output file lands strictly between the minimum and maximum KB limits.
-          </p>
-        </div>
-
-        <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl p-6 space-y-2">
-          <Calendar className="w-6 h-6 text-blue-600" />
-          <h3 className="font-bold text-[#111111] text-sm">Name & DOP Stamp</h3>
-          <p className="text-xs text-[#64748B] leading-relaxed">
-            Meets strict SSC CGL and NEET specifications requiring the candidate name and date of photo stamped on the bottom.
-          </p>
-        </div>
-      </section>
-
       {/* FAQ Accordion Section */}
-      <section className="mt-16 space-y-6">
-        <div className="text-center max-w-xl mx-auto space-y-2">
-          <h2 className="text-2xl font-extrabold text-[#111111]">
+      <section className="mt-14 space-y-5">
+        <div className="text-center max-w-xl mx-auto space-y-1">
+          <h2 className="text-xl font-extrabold text-[#111111]">
             Frequently Asked Questions
           </h2>
-          <p className="text-sm text-[#6B7280]">
+          <p className="text-xs text-[#6B7280]">
             Everything you need to know about resizing exam photos and signatures.
           </p>
         </div>
 
-        <div className="space-y-3 max-w-2xl mx-auto">
+        <div className="space-y-2.5 max-w-2xl mx-auto">
           {faqList.map((item, idx) => (
             <div
               key={idx}
@@ -926,13 +956,13 @@ export const GovtExamResizerPage: React.FC = () => {
             >
               <button
                 onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                className="w-full px-5 py-4 text-left font-bold text-sm text-[#111111] flex items-center justify-between hover:bg-[#FAFAFA]"
+                className="w-full px-4 py-3 text-left font-bold text-xs sm:text-sm text-[#111111] flex items-center justify-between hover:bg-[#FAFAFA]"
               >
                 <span>{item.question}</span>
-                <ChevronDown className={`w-4 h-4 text-[#6B7280] transition-transform ${openFaq === idx ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-3.5 h-3.5 text-[#6B7280] transition-transform ${openFaq === idx ? 'rotate-180' : ''}`} />
               </button>
               {openFaq === idx && (
-                <div className="px-5 pb-4 text-xs text-[#6B7280] leading-relaxed border-t border-[#F1F5F9] pt-3">
+                <div className="px-4 pb-3 text-xs text-[#6B7280] leading-relaxed border-t border-[#F1F5F9] pt-2.5">
                   {item.answer}
                 </div>
               )}
