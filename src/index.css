@@ -204,3 +204,113 @@ input[type="number"]::-webkit-outer-spin-button {
 .animate-doclly-float-4 {
   animation: docllyFloat4 7.5s ease-in-out infinite;
 }
+
+/* ==========================================================================
+   GTA Vice City Style Pixel Plane & Trailing Banner Animations
+   ========================================================================== */
+@keyframes planeFly {
+  0% {
+    transform: translateX(-120%) translateY(0px);
+  }
+  25% {
+    transform: translateX(25vw) translateY(-6px);
+  }
+  50% {
+    transform: translateX(50vw) translateY(4px);
+  }
+  75% {
+    transform: translateX(75vw) translateY(-5px);
+  }
+  100% {
+    transform: translateX(calc(100vw + 120%)) translateY(0px);
+  }
+}
+
+@keyframes skyCruising {
+  0% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  20% {
+    transform: translateY(-5px) translateX(8px) rotate(-1.5deg);
+  }
+  40% {
+    transform: translateY(-2px) translateX(14px) rotate(-0.5deg);
+  }
+  60% {
+    transform: translateY(4px) translateX(4px) rotate(1deg);
+  }
+  80% {
+    transform: translateY(2px) translateX(-8px) rotate(0.5deg);
+  }
+  100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+}
+
+@keyframes bannerFlutter {
+  0%, 100% {
+    transform: rotate(0deg) skewY(0deg) scaleX(1);
+  }
+  20% {
+    transform: rotate(-1.8deg) skewY(-1.2deg) scaleX(0.99) translateY(-1.5px);
+  }
+  45% {
+    transform: rotate(1.2deg) skewY(1deg) scaleX(1.01) translateY(1px);
+  }
+  70% {
+    transform: rotate(-1deg) skewY(-0.8deg) scaleX(0.995) translateY(-0.5px);
+  }
+  85% {
+    transform: rotate(0.8deg) skewY(0.6deg) scaleX(1.005) translateY(0.5px);
+  }
+}
+
+.animate-plane-hover {
+  animation: skyCruising 5.5s ease-in-out infinite;
+  display: inline-flex;
+  will-change: transform;
+}
+
+.animate-banner-wave {
+  animation: bannerFlutter 1.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes propellerSideSpin {
+  0% {
+    opacity: 1;
+    transform: scaleY(1) scaleX(1);
+  }
+  25% {
+    opacity: 0.85;
+    transform: scaleY(0.65) scaleX(1.3) skewY(18deg);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scaleY(0.12) scaleX(2.0);
+  }
+  75% {
+    opacity: 0.85;
+    transform: scaleY(0.65) scaleX(1.3) skewY(-18deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1) scaleX(1);
+  }
+}
+
+@keyframes propBlurPulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scaleY(0.95);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scaleY(1.05);
+  }
+}
+
+.animate-prop-blur {
+  animation: propBlurPulse 0.12s ease-in-out infinite;
+  transform-origin: 60px 18px;
+}
