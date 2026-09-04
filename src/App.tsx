@@ -7,6 +7,7 @@ import { AuthProvider } from './context/AuthContext';
 import { CommandMenu } from './components/common/CommandMenu';
 import { AuthModal } from './pages/AuthModal';
 import { PwaInstallPrompt } from './components/common/PwaInstallPrompt';
+import { AnnouncementBar } from './components/layout/AnnouncementBar';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Analytics } from '@vercel/analytics/react';
 
@@ -47,6 +48,9 @@ export const AppContent: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen bg-white text-[#111111] antialiased">
       <ScrollToTop />
+
+      {/* Doclly Beta Version Announcement Bar */}
+      <AnnouncementBar />
 
       {/* Sticky Top Navbar */}
       <Navbar
